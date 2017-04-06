@@ -5,6 +5,9 @@
  */
 package cardgame;
 
+import cardgame.time.Phases;
+import cardgame.interfaces.Phase;
+import cardgame.interfaces.PhaseManager;
 import java.util.Deque;
 import java.util.EnumMap;
 

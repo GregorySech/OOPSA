@@ -5,15 +5,15 @@
  */
 package cardgame.cards;
 
-import cardgame.Card;
-import cardgame.Effect;
-import cardgame.Enchantment;
+import cardgame.interfaces.Card;
+import cardgame.interfaces.Effect;
+import cardgame.interfaces.Enchantment;
 import cardgame.Player;
 import cardgame.AbstractEnchantmentCardEffect;
 import cardgame.AbstractEnchantment;
 import cardgame.CardGame;
-import cardgame.Creature;
-import cardgame.TriggerAction;
+import cardgame.interfaces.Creature;
+import cardgame.interfaces.TriggerAction;
 import cardgame.Triggers;
 
 

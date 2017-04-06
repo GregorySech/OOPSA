@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cardgame;
+package cardgame.interfaces;
 
 /**
  *
  * @author atorsell
  */
-public interface Permanent {
-    String name();
-    void insert();
-    void remove();    
+public interface TriggerAction {
+    void execute(Object args);
 }

@@ -5,6 +5,12 @@
  */
 package cardgame;
 
+import cardgame.time.Phases;
+import cardgame.interfaces.Card;
+import cardgame.interfaces.Creature;
+import cardgame.interfaces.Enchantment;
+import cardgame.interfaces.Phase;
+import cardgame.interfaces.PhaseManager;
 import java.util.Iterator;
 import java.util.ArrayDeque;
 import java.util.ArrayList;

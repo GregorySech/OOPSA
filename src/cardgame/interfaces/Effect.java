@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cardgame;
+package cardgame.interfaces;
 
 /**
  *
  * @author atorsell
  */
-public interface Enchantment extends Permanent {
+public interface Effect {
+    // pays for effect and places it in the stack
+    boolean play();
     
+    // resolves the effect
+    void resolve();
 }

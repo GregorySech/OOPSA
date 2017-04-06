@@ -5,6 +5,8 @@
  */
 package cardgame;
 
+import cardgame.interfaces.Effect;
+
 /**
  *
  * @author atorsell

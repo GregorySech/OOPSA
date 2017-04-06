@@ -5,6 +5,7 @@
  */
 package cardgame;
 
+import cardgame.interfaces.Effect;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 

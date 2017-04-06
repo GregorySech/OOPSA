@@ -5,6 +5,8 @@
  */
 package cardgame;
 
+import cardgame.interfaces.Enchantment;
+
 /**
  *
  * @author atorsell

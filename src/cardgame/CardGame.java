@@ -5,6 +5,9 @@
  */
 package cardgame;
 
+import cardgame.time.Phases;
+import cardgame.interfaces.Card;
+import cardgame.interfaces.TurnManager;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;

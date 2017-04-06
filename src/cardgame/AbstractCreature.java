@@ -5,6 +5,8 @@
  */
 package cardgame;
 
+import cardgame.interfaces.Creature;
+
 /**
  *
  * @author atorsell
