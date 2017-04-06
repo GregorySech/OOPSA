@@ -5,8 +5,6 @@
  */
 package cardgame;
 
-import cardgame.interfaces.Phase;
-
 /**
  *
  * @author atorsell

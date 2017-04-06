@@ -5,10 +5,6 @@
  */
 package cardgame;
 
-import cardgame.interfaces.Card;
-import cardgame.interfaces.Creature;
-import cardgame.interfaces.Effect;
-import cardgame.interfaces.Phase;
 import java.util.ArrayList;
 import java.util.Scanner;
 

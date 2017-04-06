@@ -9,10 +9,10 @@ package cardgame;
  *
  * @author atorsell
  */
-public abstract class AbstractEffect implements Effect {
-    @Override
-    public boolean play() { 
-        CardGame.instance.getStack().add(this);
-        return true;
-    }
+public interface TurnManager {
+    Player getCurrentPlayer();
+    
+    Player getCurrentAdversary();
+    
+    Player nextPlayer();
 }

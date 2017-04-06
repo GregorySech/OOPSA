@@ -5,8 +5,6 @@
  */
 package cardgame;
 
-import cardgame.interfaces.Card;
-
 /**
  *
  * @author atorsell

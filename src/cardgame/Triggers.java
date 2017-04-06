@@ -5,7 +5,6 @@
  */
 package cardgame;
 
-import cardgame.interfaces.TriggerAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 

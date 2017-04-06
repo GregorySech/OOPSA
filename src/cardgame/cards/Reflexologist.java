@@ -7,10 +7,10 @@ package cardgame.cards;
 
 import cardgame.AbstractCreature;
 import cardgame.AbstractCreatureCardEffect;
-import cardgame.interfaces.Card;
+import cardgame.Card;
 import cardgame.CardGame;
-import cardgame.interfaces.Creature;
-import cardgame.interfaces.Effect;
+import cardgame.Creature;
+import cardgame.Effect;
 import cardgame.Player;
 import java.util.ArrayList;
 import java.util.List;

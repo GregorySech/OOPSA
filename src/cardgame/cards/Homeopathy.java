@@ -6,8 +6,8 @@
 package cardgame.cards;
 
 import cardgame.AbstractCardEffect;
-import cardgame.interfaces.Card;
-import cardgame.interfaces.Effect;
+import cardgame.Card;
+import cardgame.Effect;
 import cardgame.Player;
 
 /**

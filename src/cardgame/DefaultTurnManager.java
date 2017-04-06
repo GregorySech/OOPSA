@@ -5,8 +5,6 @@
  */
 package cardgame;
 
-import cardgame.interfaces.TurnManager;
-
 /**
  *
  * @author atorsell

@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cardgame.interfaces;
-
-import cardgame.Player;
+package cardgame;
 
 /**
  *
  * @author atorsell
  */
-public interface TurnManager {
-    Player getCurrentPlayer();
-    
-    Player getCurrentAdversary();
-    
-    Player nextPlayer();
+public interface TriggerAction {
+    void execute(Object args);
 }
