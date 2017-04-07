@@ -79,7 +79,7 @@ public class CardGame {
     Player getCurrentPlayer() { return turnManagerStack.peek().getCurrentPlayer(); }
     Player getCurrentAdversary() { return turnManagerStack.peek().getCurrentAdversary(); }
     Player nextPlayer() { return turnManagerStack.peek().nextPlayer(); }
-    
+    int getPlayerID(Player p){return p == Players[0] ? 0 : 1;}
     
     // Stack access
     private final CardStack stack = new CardStack();
