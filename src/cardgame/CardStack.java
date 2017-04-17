@@ -39,10 +39,7 @@ public class CardStack implements Iterable<Effect> {
         // alternate in placing effect until bith players pass
         int numberPasses=0;
         
-        if (!playAvailableEffect(CardGame.instance.getPlayer(playerID), true))
-            ++numberPasses;
-        
-        int responsePlayerIdx = (playerID+1)%2;
+        int responsePlayerIdx = (playerID)%2;
         while (numberPasses<2) {
             if (playAvailableEffect(CardGame.instance.getPlayer(responsePlayerIdx),false))
                 numberPasses=0;
@@ -56,7 +53,7 @@ public class CardStack implements Iterable<Effect> {
         // looks for all playable effects from cards in hand and creatures in play
     // and asks player for which one to play
     // includes creatures and sorceries only if isMain is true
-    private boolean playAvailableEffect(Player activePlayer, boolean isMain) {
+    public boolean playAvailableEffect(Player activePlayer, boolean isMain) {
         //collect and display available effects...
         ArrayList<Effect> availableEffects = new ArrayList<>();
         Scanner reader = CardGame.instance.getScanner();

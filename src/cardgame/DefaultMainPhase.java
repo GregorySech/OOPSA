@@ -20,11 +20,9 @@ public class DefaultMainPhase implements Phase {
         System.out.println(currentPlayer.name() + ": main phase");
         
         CardGame.instance.getTriggers().trigger(Triggers.MAIN_FILTER);
-        
-        CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(currentPlayer));
+                
+        if (CardGame.instance.getStack().playAvailableEffect(currentPlayer, true))
+            CardGame.instance.getStack().fill(responsePlayerIdx);
     }
-    
-    
-
     
 }
