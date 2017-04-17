@@ -5,8 +5,11 @@
  */
 package cardgame;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  *
@@ -19,7 +22,37 @@ public class DefaultCombatPhase implements Phase {
      * @return list of attackers chosen by the currentPlayer. 
      */
     protected List<Creature> attackSubPhase(){
-        return null;
+        List<Creature> attackers = new LinkedList<>();
+        List<Creature> possible = new ArrayList<>(CardGame.instance.getCurrentPlayer().getCreatures());
+        Scanner reader = CardGame.instance.getScanner();
+        int i, lastChoice = 0;
+        for(Creature c : possible)
+            if(c.isTapped())
+                possible.remove(c);
+        System.out.println("["+CardGame.instance.getCurrentPlayer().name()
+                + "]"
+                + " choose your attackers:");
+        do{
+            i = 0;
+            lastChoice = 0;
+            
+            for(Creature c : possible){
+                System.out.println("["+(++i)+"]"+c.toString());
+            }
+            
+            System.out.println("[0] to end selection");
+            lastChoice = reader.nextInt();
+            if(lastChoice != 0)
+                attackers.add(possible.remove(lastChoice-1));
+        }while(lastChoice!=0);
+        if(attackers.size()>0){
+            CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentAdversary()));
+            for(Creature a : attackers){
+                if(!CardGame.instance.getCurrentPlayer().getCreatures().contains(a))
+                    attackers.remove(a);
+            }
+        }
+        return attackers;
     }
     
     /**
@@ -47,6 +80,6 @@ public class DefaultCombatPhase implements Phase {
         System.out.println(currentPlayer.name() + ": combat phase");
         
         CardGame.instance.getTriggers().trigger(Triggers.COMBAT_FILTER);
-        // TODO combat
+        damageSubPhase(defenceSubPhase(attackSubPhase()));
     }
 }
