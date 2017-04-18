@@ -14,6 +14,7 @@ public abstract class AbstractCreature implements Creature {
     protected Player owner;
     protected boolean isTapped = false;
     protected int damageLeft = getToughness();
+    protected CreatureDecorator headDecorator = null;
         
         protected AbstractCreature(Player owner) { this.owner=owner; }
         
@@ -71,5 +72,18 @@ public abstract class AbstractCreature implements Creature {
     @Override
         public String toString() {
             return name() + " (Creature)";
+        }
+        
+    @Override
+        public CreatureDecorator getFirstCreatureDecorator(){
+            return headDecorator;
+        }
+        
+    @Override
+        public void addCreatureDecorator(CreatureDecorator cd){
+            if(headDecorator == null)
+                headDecorator = cd;
+            else
+                getFirstCreatureDecorator().addCreatureDecorator(cd);
         }
 }
