@@ -6,10 +6,12 @@
 package cardgame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  *
@@ -70,8 +72,51 @@ public class DefaultCombatPhase implements Phase {
      * a battle with no defenders will be creature vs player.
      */
     protected void damageSubPhase(Map<Creature, List<Creature>> battles){
+        Map<Creature, Integer> damage = new TreeMap<>();
+        for(Map.Entry<Creature, List<Creature>> entry : battles.entrySet()){
+            int damagecreature=0,attack, damagedefensor=0;
+            Creature mycreature=entry.getKey();
+            List<Creature> mylist=entry.getValue();
+            attack=mycreature.getPower();
+            //adv damage
+           if(mylist.isEmpty()){
+                System.out.println("Inflicting damage to adversary");
+                Player adversary=CardGame.instance.getCurrentAdversary();
+                adversary.inflictDamage(mycreature.getPower());
+           }
+            //creature damage
+            for (Creature c: mylist) {
+               damagecreature= damagecreature +c.getPower();
+               System.out.println("Damage creature:"+damagecreature);
+               System.out.println("Toughness creature:"+ (mycreature.getToughness()-damagecreature));
+            }
+            damage.put(mycreature, damagecreature);
+            
+           //defensor damage
         
-    }
+         Iterator <Creature> c= mylist.iterator();
+         while(c.hasNext() && mycreature.getPower()>0 ){
+             if(mycreature.getPower() > c.next().getToughness()){
+                   damagedefensor=damagedefensor+mycreature.getPower();
+                  /* aggiornare l'attack della creatura mycreature*/
+                  attack=attack-c.next().getToughness();
+               }
+             else {
+                damagedefensor=damagedefensor+mycreature.getPower()-c.next().getToughness();
+                 /*aggiornare l'attack della creatura*/
+                 attack=attack-c.next().getToughness();
+             }
+            damage.put(c.next(), damagedefensor);
+         }
+        }
+
+       for(Map.Entry<Creature,Integer> e : damage.entrySet()){
+           Creature a=e.getKey();
+           Integer d=e.getValue();
+           a.inflictDamage(d);
+       }
+      
+      }
     
     @Override
     public void execute() {
