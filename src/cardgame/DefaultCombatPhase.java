@@ -96,7 +96,6 @@ public class DefaultCombatPhase implements Phase {
             def = new ArrayList<>();
         }
         
-        /* CHIEDERE A TORSELLO SE SERVE : */
         CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentPlayer()));
             
         return atkDef;
