@@ -162,7 +162,9 @@ public class Player {
     private final ArrayList<Creature> creatures = new ArrayList<>();
     public List<Creature> getCreatures() {return creatures;}
     // destroy a creature in play
-    public void destroy(Creature c) {creatures.remove(c);} 
+    public void destroy(Creature c) {
+        c.remove();
+    } 
     
     
     
@@ -170,5 +172,7 @@ public class Player {
     private final ArrayList<Enchantment> enchantments = new ArrayList<>();
     public List<Enchantment> getEnchantments() {return enchantments;}
     // destroy a creature in play
-    public void destroy(Enchantment c) {enchantments.remove(c);} 
+    public void destroy(Enchantment c) {
+        c.remove();
+    } 
 }

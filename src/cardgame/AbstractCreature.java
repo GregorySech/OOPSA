@@ -49,9 +49,12 @@ public abstract class AbstractCreature implements Creature {
     @Override
         public boolean isTapped() { return isTapped; }
     @Override
-        public void attack() {} // to do in assignment 2
+        public void attack() {
+            this.tap();
+        }
     @Override
-        public void defend(Creature c) {} // to do in assignment 2
+        public void defend(Creature c) {
+        }
     @Override
         public void inflictDamage(int dmg) { 
             damageLeft -= dmg; 

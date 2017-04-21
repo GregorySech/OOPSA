@@ -26,33 +26,33 @@ public class DefaultCombatPhase implements Phase {
     protected List<Creature> attackSubPhase(){
         List<Creature> attackers = new LinkedList<>();
         List<Creature> possible = new ArrayList<>(CardGame.instance.getCurrentPlayer().getCreatures());
+        Creature t;
         Scanner reader = CardGame.instance.getScanner();
-        int i, lastChoice = 0;
+        int i, lastChoice;
         for(Creature c : possible)
             if(c.isTapped())
                 possible.remove(c);
-        System.out.println("["+CardGame.instance.getCurrentPlayer().name()
-                + "]"
-                + " choose your attackers:");
-        do{
-            i = 0;
-            lastChoice = 0;
-            
-            for(Creature c : possible){
-                System.out.println("["+(++i)+"]"+c.toString());
-            }
-            
-            System.out.println("[0] to end selection");
-            lastChoice = reader.nextInt();
-            if(lastChoice != 0)
-                attackers.add(possible.remove(lastChoice-1));
-        }while(lastChoice!=0);
-        if(attackers.size()>0){
-            CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentAdversary()));
-            for(Creature a : attackers){
-                if(!CardGame.instance.getCurrentPlayer().getCreatures().contains(a))
-                    attackers.remove(a);
-            }
+
+        if(!possible.isEmpty()){
+            System.out.println("["+CardGame.instance.getCurrentPlayer().name()+ "] choose your attackers:");
+            do{
+                i = 0;
+                for(Creature c : possible){
+                    System.out.println("["+(++i)+"]"+c.toString());
+                }
+                System.out.println("[0] to end selection");
+                lastChoice = reader.nextInt();
+                if(lastChoice != 0 && lastChoice <= possible.size()){
+                    t = possible.remove(lastChoice-1);
+                    t.attack();
+                    attackers.add(t);
+                }
+            }while(lastChoice!=0);
+        }
+        CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentAdversary()));
+        for(Creature a : attackers){
+            if(!CardGame.instance.getCurrentPlayer().getCreatures().contains(a))
+                attackers.remove(a);
         }
         return attackers;
     }
@@ -64,6 +64,7 @@ public class DefaultCombatPhase implements Phase {
      * @return Map(attacker, defenders) chosen by the enemy of CurrentPlayer.
      */
     protected Map<Creature, List<Creature>> defenceSubPhase(List<Creature> attackers){
+        Creature t;
         
         Map<Creature, List<Creature>> atkDef = new HashMap<>();
         List<Creature> def = new ArrayList<>();
@@ -71,11 +72,9 @@ public class DefaultCombatPhase implements Phase {
         Player adversaryPlayer = CardGame.instance.getCurrentAdversary();
         List<Creature> field = new ArrayList<>(adversaryPlayer.getCreatures());
       
-        System.out.println(adversaryPlayer.name() + ": Choose defenders");
-        
-        /*println del nome dell'attaccante*/
-        
+        System.out.println(adversaryPlayer.name() + ": Choose defenders");        
         Scanner reader = CardGame.instance.getScanner();
+        
         for(Creature a : attackers){
             System.out.println("Attacker : "+a.name());
             int idx;
@@ -85,11 +84,13 @@ public class DefaultCombatPhase implements Phase {
                 for(int i=0; i!=field.size(); ++i) {
                         System.out.println(Integer.toString(i+1)+") " + field.get(i) );
                 }
-                idx= reader.nextInt()-1;
+                idx= reader.nextInt();
 
 
-                if (idx>=0 && idx<field.size()){
-                        def.add(field.remove(idx));
+                if (idx > 0 && idx < field.size()){
+                    t = field.remove(idx-1);
+                    def.add(t);
+                    t.defend(a);
                 }
             }while(idx!=0);
             atkDef.put(a, def);
@@ -97,7 +98,18 @@ public class DefaultCombatPhase implements Phase {
         }
         
         CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentPlayer()));
-            
+        
+        for(Map.Entry<Creature, List<Creature>> entry : atkDef.entrySet()){
+            if(!CardGame.instance.getCurrentPlayer().getCreatures().contains(entry.getKey())){
+                atkDef.remove(entry.getKey());
+            }else{
+                def = entry.getValue();
+                for(Creature d : def){
+                    if(!CardGame.instance.getCurrentAdversary().getCreatures().contains(d))
+                        def.remove(d);
+                }
+            }
+        }
         return atkDef;
     }
     /**
@@ -114,9 +126,9 @@ public class DefaultCombatPhase implements Phase {
             attack=mycreature.getPower();
             //adv damage
            if(mylist.isEmpty()){
-                System.out.println("Inflicting damage to adversary");
                 Player adversary=CardGame.instance.getCurrentAdversary();
                 adversary.inflictDamage(mycreature.getPower());
+                System.out.println("Inflicting damage to adversary (life left : "+adversary.getLife()+")");
            }
             //creature damage
             for (Creature c: mylist) {

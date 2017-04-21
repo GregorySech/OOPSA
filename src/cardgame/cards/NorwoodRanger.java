@@ -88,7 +88,11 @@ public class NorwoodRanger implements Card{
     public boolean isInstant() {
         return false;
     }
+
+    @Override
+    public String toString() { return name() + " (" + type() + ") [" + ruleText() +"]";}
    
+    
 
    
     
