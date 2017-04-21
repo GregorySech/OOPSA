@@ -14,9 +14,13 @@ public abstract class AbstractCreature implements Creature {
     protected Player owner;
     protected boolean isTapped = false;
     protected int damageLeft = getToughness();
-    //protected CreatureDecorator headDecorator = null;
+    
+    private final CreatureDecorator headDecorator;
         
-        protected AbstractCreature(Player owner) { this.owner=owner; }
+    protected AbstractCreature(Player owner) {
+        this.owner=owner; 
+        this.headDecorator = new HeadCreatureDecorator(this);
+    }
         
     @Override
         public boolean tap() { 
@@ -74,16 +78,18 @@ public abstract class AbstractCreature implements Creature {
             return name() + " (Creature)";
         }
         
-    /*@Override
-        public CreatureDecorator getFirstCreatureDecorator(){
-            return headDecorator;
+    @Override
+        public void removeCreatureDecorator(CreatureDecorator cd){
+            getCreatureDecoratorHead().addCreatureDecorator(cd);
         }
         
     @Override
         public void addCreatureDecorator(CreatureDecorator cd){
-            if(headDecorator == null)
-                headDecorator = cd;
-            else
-                getFirstCreatureDecorator().addCreatureDecorator(cd);
-        }*/
+            getCreatureDecoratorHead().removeCreatureDecorator(cd);
+        }
+        
+    @Override
+        public Creature getCreatureDecoratorHead(){
+            return headDecorator;
+        }
 }

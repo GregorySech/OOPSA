@@ -13,44 +13,61 @@ import java.util.List;
  */
 public abstract class CreatureDecorator implements Creature {
     
-    protected Creature c;
+    protected Creature decoratedCreature;
     
-    public CreatureDecorator(Creature c){ this.c=c; }
+    public CreatureDecorator(Creature decoratedCreature){ 
+        this.decoratedCreature=decoratedCreature; 
+    }
         
     @Override
-    public boolean tap(){ return c.tap(); }
+    public boolean tap(){ return decoratedCreature.tap(); }
     @Override
-    public boolean untap(){ return c.untap(); }
+    public boolean untap(){ return decoratedCreature.untap(); }
     @Override
-    public boolean isTapped(){ return c.isTapped(); }
+    public boolean isTapped(){ return decoratedCreature.isTapped(); }
     @Override
-    public void attack(){c.attack(); }
+    public void attack(){decoratedCreature.attack(); }
     @Override
-    public void defend(Creature cr){ c.defend(cr); }
+    public void defend(Creature cr){ decoratedCreature.defend(cr); }
     @Override
-    public void inflictDamage(int dmg){ c.inflictDamage(dmg); }
+    public void inflictDamage(int dmg){ decoratedCreature.inflictDamage(dmg); }
     @Override
-    public void resetDamage(){ c.resetDamage(); }
+    public void resetDamage(){ decoratedCreature.resetDamage(); }
     @Override
-    public int getPower(){ return c.getPower(); }
+    public int getPower(){ return decoratedCreature.getPower(); }
     @Override
-    public int getToughness(){ return c.getToughness(); }
+    public int getToughness(){ return decoratedCreature.getToughness(); }
     @Override
-    public List<Effect> effects(){ return c.effects(); }
+    public List<Effect> effects(){ return decoratedCreature.effects(); }
     @Override
-    public List<Effect> avaliableEffects(){ return c.avaliableEffects(); }
+    public List<Effect> avaliableEffects(){ return decoratedCreature.avaliableEffects(); }
     
     @Override
-    public String name(){ return c.name(); }
+    public String name(){ return decoratedCreature.name(); }
     @Override
-    public void insert(){ c.insert(); }
+    public void insert(){ decoratedCreature.insert(); }
     @Override
-    public void remove(){ c.remove(); }
+    public void remove(){ decoratedCreature.remove(); }
 
-    /*@Override
-    public void addCreatureDecorator(CreatureDecorator cd){ c.addCreatureDecorator(cd);}
     @Override
-    public CreatureDecorator getFirstCreatureDecorator(){ return c.getFirstCreatureDecorator();}
-    */
+    public void addCreatureDecorator(CreatureDecorator cd){ 
+        decoratedCreature.addCreatureDecorator(cd);
+    }
+    @Override
+    public Creature getCreatureDecoratorHead(){
+        return decoratedCreature.getCreatureDecoratorHead();
+    }
+    @Override
+    public void removeCreatureDecorator(CreatureDecorator cd){
+        decoratedCreature.removeCreatureDecorator(cd);
+    }
+    
+    public Creature getDecoratedCreature(){
+        return decoratedCreature;
+    }
+    
+    public void setDecoratedCreature(Creature c){
+        decoratedCreature = c;
+    }
     
 }
