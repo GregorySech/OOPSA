@@ -6,6 +6,7 @@
 package cardgame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +65,38 @@ public class DefaultCombatPhase implements Phase {
      * @return Map(attacker, defenders) chosen by the enemy of CurrentPlayer.
      */
     protected Map<Creature, List<Creature>> defenceSubPhase(List<Creature> attackers){
-        return null;
+        
+        Map<Creature, List<Creature>> atkDef = new HashMap<>();
+        List<Creature> def = new ArrayList<>();
+        
+        Player adversaryPlayer = CardGame.instance.getCurrentAdversary();
+        List<Creature> field = new ArrayList<>(adversaryPlayer.getCreatures());
+      
+        System.out.println(adversaryPlayer.name() + ": Choose defenders");
+        
+        /*println del nome dell'attaccante*/
+        
+        Scanner reader = CardGame.instance.getScanner();
+        for(Creature a : attackers){
+            System.out.println("Attacker : "+a.name());
+            int idx;
+            do{       
+                System.out.println(adversaryPlayer.name()+" Choose a card or press 0");
+
+                for(int i=0; i!=field.size(); ++i) {
+                        System.out.println(Integer.toString(i+1)+") " + field.get(i) );
+                }
+                idx= reader.nextInt()-1;
+
+
+                if (idx>=0 && idx<field.size()){
+                        def.add(field.remove(idx));
+                }
+            }while(idx!=0);
+            atkDef.put(a, def);
+            def = new ArrayList<>();
+        }
+        return atkDef;
     }
     /**
      * 
