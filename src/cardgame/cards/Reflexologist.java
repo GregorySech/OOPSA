@@ -26,6 +26,7 @@ public class Reflexologist implements Card {
         @Override
         protected Creature createCreature() { return new ReflexologistCreature(owner); }
     }
+    
     @Override
     public Effect getEffect(Player p) { return new ReflexologistEffect(p,this); }
     

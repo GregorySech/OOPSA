@@ -30,6 +30,9 @@ public interface Creature extends Permanent {
     // depending on state, e.g., tapped/untapped
     List<Effect> avaliableEffects();
     
-    CreatureDecorator getFirstCreatureDecorator();
-    void addCreatureDecorator(CreatureDecorator cd);
+    //CreatureDecorator getFirstCreatureDecorator();
+    //void addCreatureDecorator(CreatureDecorator cd);
+    
+    /*int getActualPower();
+    int getActualToughness();*/
 }

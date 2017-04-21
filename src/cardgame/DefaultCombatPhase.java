@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 /**
  *
@@ -96,6 +95,10 @@ public class DefaultCombatPhase implements Phase {
             atkDef.put(a, def);
             def = new ArrayList<>();
         }
+        
+        /* CHIEDERE A TORSELLO SE SERVE : */
+        CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentPlayer()));
+            
         return atkDef;
     }
     /**
@@ -104,7 +107,7 @@ public class DefaultCombatPhase implements Phase {
      * a battle with no defenders will be creature vs player.
      */
     protected void damageSubPhase(Map<Creature, List<Creature>> battles){
-        Map<Creature, Integer> damage = new TreeMap<>();
+        Map<Creature, Integer> damage = new HashMap<>();
         for(Map.Entry<Creature, List<Creature>> entry : battles.entrySet()){
             int damagecreature=0,attack, damagedefensor=0;
             Creature mycreature=entry.getKey();
@@ -127,18 +130,20 @@ public class DefaultCombatPhase implements Phase {
            //defensor damage
         
          Iterator <Creature> c= mylist.iterator();
+         Creature d;
          while(c.hasNext() && mycreature.getPower()>0 ){
-             if(mycreature.getPower() > c.next().getToughness()){
+             d = c.next();
+             if(mycreature.getPower() > d.getToughness()){
                    damagedefensor=damagedefensor+mycreature.getPower();
                   /* aggiornare l'attack della creatura mycreature*/
-                  attack=attack-c.next().getToughness();
+                  attack=attack-d.getToughness();
                }
              else {
-                damagedefensor=damagedefensor+mycreature.getPower()-c.next().getToughness();
+                damagedefensor=damagedefensor+mycreature.getPower()-d.getToughness();
                  /*aggiornare l'attack della creatura*/
-                 attack=attack-c.next().getToughness();
+                 attack=attack-d.getToughness();
              }
-            damage.put(c.next(), damagedefensor);
+            damage.put(d, damagedefensor);
          }
         }
 

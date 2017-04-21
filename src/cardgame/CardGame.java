@@ -5,14 +5,13 @@
  */
 package cardgame;
 
+import cardgame.cards.BronzeSable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Scanner;
 
-import cardgame.cards.Homeopathy;
-import cardgame.cards.Reflexologist;
-import cardgame.cards.FriendlyEnvironment;
+import cardgame.cards.*;
 
 /**
  *
@@ -27,7 +26,8 @@ public class CardGame {
         //create decks
         ArrayList<Card> deck = new ArrayList<>();
         for (int i=0; i!=5; ++i) deck.add(new Homeopathy());
-        for (int i=0; i!=5; ++i) deck.add(new Reflexologist());
+        for (int i=0; i!=2; ++i) deck.add(new BronzeSable());
+        for (int i=0; i!=3; ++i) deck.add(new NorwoodRanger());
         for (int i=0; i!=5; ++i) deck.add(new FriendlyEnvironment());
         
         instance.getPlayer(0).setDeck(deck.iterator());

@@ -47,10 +47,10 @@ public abstract class CreatureDecorator implements Creature {
     @Override
     public void remove(){ c.remove(); }
 
-    @Override
+    /*@Override
     public void addCreatureDecorator(CreatureDecorator cd){ c.addCreatureDecorator(cd);}
     @Override
     public CreatureDecorator getFirstCreatureDecorator(){ return c.getFirstCreatureDecorator();}
-    
+    */
     
 }

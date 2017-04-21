@@ -9,7 +9,7 @@ package cardgame;
  *
  * @author Elena
  */
-public class PoweringDecorator extends CreatureDecorator{
+public class PoweringDecorator /*extends CreatureDecorator*/{/*
    
     private int powerAdded;
     private int toughnessAdded;
@@ -24,7 +24,7 @@ public class PoweringDecorator extends CreatureDecorator{
     public int getPower(){ return c.getPower()+powerAdded; }
     
     @Override
-    public int getToughness(){ return c.getToughness()+toughnessAdded; }
+    public int getToughness(){ return c.getToughness()+toughnessAdded; }*/
     
     
 }

@@ -14,7 +14,7 @@ public abstract class AbstractCreature implements Creature {
     protected Player owner;
     protected boolean isTapped = false;
     protected int damageLeft = getToughness();
-    protected CreatureDecorator headDecorator = null;
+    //protected CreatureDecorator headDecorator = null;
         
         protected AbstractCreature(Player owner) { this.owner=owner; }
         
@@ -74,7 +74,7 @@ public abstract class AbstractCreature implements Creature {
             return name() + " (Creature)";
         }
         
-    @Override
+    /*@Override
         public CreatureDecorator getFirstCreatureDecorator(){
             return headDecorator;
         }
@@ -85,5 +85,5 @@ public abstract class AbstractCreature implements Creature {
                 headDecorator = cd;
             else
                 getFirstCreatureDecorator().addCreatureDecorator(cd);
-        }
+        }*/
 }
