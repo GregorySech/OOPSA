@@ -37,6 +37,13 @@ public abstract class AbstractEnchantment implements Enchantment {
     public boolean targetable() {
         return true;
     }
+
+    @Override
+    public void changeOwner(Player p) {
+        remove();
+        owner = p;
+        insert();
+    }
     
     
 }

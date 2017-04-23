@@ -21,4 +21,6 @@ public abstract class AbstractCardEffect extends AbstractEffect {
     }
     
     public String toString() { return card.toString(); }
+    
+    public Player getOwner(){return owner;}
 }

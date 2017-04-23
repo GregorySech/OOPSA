@@ -74,6 +74,11 @@ public abstract class CreatureDecorator implements Creature {
     public boolean targetable() {
         return decoratedCreature.targetable();
     }
+
+    @Override
+    public void changeOwner(Player p) {
+        decoratedCreature.changeOwner(p);
+    }
     
     
     

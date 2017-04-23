@@ -14,5 +14,5 @@ public interface Permanent {
     void insert();
     void remove();    
     boolean targetable();
-
+    void changeOwner(Player p);
 }

@@ -100,6 +100,14 @@ public abstract class AbstractCreature implements Creature {
     public boolean targetable() {
         return true;
     }
+
+    @Override
+    public void changeOwner(Player p) {
+        remove();
+        owner = p;
+        insert();
+    }
         
+    
         
 }
