@@ -95,4 +95,11 @@ public abstract class AbstractCreature implements Creature {
         public Creature getCreatureDecoratorHead(){
             return headDecorator;
         }
+
+    @Override
+    public boolean targetable() {
+        return true;
+    }
+        
+        
 }

@@ -18,160 +18,166 @@ import java.util.Scanner;
  * @author atorsell
  */
 public class DefaultCombatPhase implements Phase {
+
     /**
-     * Asks the CurrentPlayer which creature will start the attack. 
-     * Next there is a stack fill started by the enemy of CurrentPlayer.
-     * @return list of attackers chosen by the currentPlayer. 
+     * Asks the CurrentPlayer which creature will start the attack. Next there
+     * is a stack fill started by the enemy of CurrentPlayer.
+     *
+     * @return list of attackers chosen by the currentPlayer.
      */
-    protected List<Creature> attackSubPhase(){
+    protected List<Creature> attackSubPhase() {
         List<Creature> attackers = new LinkedList<>();
         List<Creature> possible = new ArrayList<>(CardGame.instance.getCurrentPlayer().getCreatures());
         Creature t;
         Scanner reader = CardGame.instance.getScanner();
         int i, lastChoice;
-        for(Creature c : possible)
-            if(c.isTapped())
+        for (Creature c : possible) {
+            if (c.isTapped()) {
                 possible.remove(c);
+            }
+        }
 
-        if(!possible.isEmpty()){
-            System.out.println("["+CardGame.instance.getCurrentPlayer().name()+ "] choose your attackers:");
-            do{
+        if (!possible.isEmpty()) {
+            System.out.println("[" + CardGame.instance.getCurrentPlayer().name() + "] choose your attackers:");
+            do {
                 i = 0;
-                for(Creature c : possible){
-                    System.out.println("["+(++i)+"]"+c.toString());
+                for (Creature c : possible) {
+                    System.out.println("[" + (++i) + "]" + c.toString());
                 }
                 System.out.println("[0] to end selection");
                 lastChoice = reader.nextInt();
-                if(lastChoice != 0 && lastChoice <= possible.size()){
-                    t = possible.remove(lastChoice-1);
+                if (lastChoice != 0 && lastChoice <= possible.size()) {
+                    t = possible.remove(lastChoice - 1);
                     t.attack();
                     attackers.add(t);
                 }
-            }while(lastChoice!=0);
+            } while (lastChoice != 0);
         }
         CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentAdversary()));
-        for(Creature a : attackers){
-            if(!CardGame.instance.getCurrentPlayer().getCreatures().contains(a))
+        for (Creature a : attackers) {
+            if (!CardGame.instance.getCurrentPlayer().getCreatures().contains(a)) {
                 attackers.remove(a);
+            }
         }
         return attackers;
     }
-    
+
     /**
      * Asks the enemy of CurrentPlayer if and how the attackers will be blocked.
      * Next there is a stack fill started by CurrentPlayer.
+     *
      * @param attackers list of attackers.
      * @return Map(attacker, defenders) chosen by the enemy of CurrentPlayer.
      */
-    protected Map<Creature, List<Creature>> defenceSubPhase(List<Creature> attackers){
+    protected Map<Creature, List<Creature>> defenceSubPhase(List<Creature> attackers) {
         Creature t;
-        
+
         Map<Creature, List<Creature>> atkDef = new HashMap<>();
         List<Creature> def = new ArrayList<>();
-        
+
         Player adversaryPlayer = CardGame.instance.getCurrentAdversary();
         List<Creature> field = new ArrayList<>(adversaryPlayer.getCreatures());
-      
-        System.out.println(adversaryPlayer.name() + ": Choose defenders");        
+
+        System.out.println(adversaryPlayer.name() + ": Choose defenders");
         Scanner reader = CardGame.instance.getScanner();
-        
-        for(Creature a : attackers){
-            System.out.println("Attacker : "+a.name());
+
+        for (Creature a : attackers) {
+            System.out.println("Attacker : " + a.name());
             int idx;
-            do{       
-                System.out.println(adversaryPlayer.name()+" Choose a card or press 0");
+            do {
+                System.out.println(adversaryPlayer.name() + " Choose a card or press 0");
 
-                for(int i=0; i!=field.size(); ++i) {
-                        System.out.println(Integer.toString(i+1)+") " + field.get(i) );
+                for (int i = 0; i != field.size(); ++i) {
+                    System.out.println(Integer.toString(i + 1) + ") " + field.get(i));
                 }
-                idx= reader.nextInt();
+                idx = reader.nextInt();
 
-
-                if (idx > 0 && idx < field.size()){
-                    t = field.remove(idx-1);
+                if (idx > 0 && idx < field.size()) {
+                    t = field.remove(idx - 1);
                     def.add(t);
                     t.defend(a);
                 }
-            }while(idx!=0);
+            } while (idx != 0);
             atkDef.put(a, def);
             def = new ArrayList<>();
         }
-        
+
         CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentPlayer()));
-        
-        for(Map.Entry<Creature, List<Creature>> entry : atkDef.entrySet()){
-            if(!CardGame.instance.getCurrentPlayer().getCreatures().contains(entry.getKey())){
+
+        for (Map.Entry<Creature, List<Creature>> entry : atkDef.entrySet()) {
+            if (!CardGame.instance.getCurrentPlayer().getCreatures().contains(entry.getKey())) {
                 atkDef.remove(entry.getKey());
-            }else{
+            } else {
                 def = entry.getValue();
-                for(Creature d : def){
-                    if(!CardGame.instance.getCurrentAdversary().getCreatures().contains(d))
+                for (Creature d : def) {
+                    if (!CardGame.instance.getCurrentAdversary().getCreatures().contains(d)) {
                         def.remove(d);
+                    }
                 }
             }
         }
         return atkDef;
     }
+
     /**
-     * 
-     * @param battles Map(attacker, defenders) each entry is a single battle. 
-     * a battle with no defenders will be creature vs player.
+     *
+     * @param battles Map(attacker, defenders) each entry is a single battle. a
+     * battle with no defenders will be creature vs player.
      */
-    protected void damageSubPhase(Map<Creature, List<Creature>> battles){
+    protected void damageSubPhase(Map<Creature, List<Creature>> battles) {
         Map<Creature, Integer> damage = new HashMap<>();
-        for(Map.Entry<Creature, List<Creature>> entry : battles.entrySet()){
-            int damagecreature=0,attack, damagedefensor=0;
-            Creature mycreature=entry.getKey();
-            List<Creature> mylist=entry.getValue();
-            attack=mycreature.getPower();
+        CardGame.instance.getTriggers().trigger(Triggers.START_DAMAGE_SUBPHASE_FILTER);
+
+        for (Map.Entry<Creature, List<Creature>> entry : battles.entrySet()) {
+            int damagecreature = 0, attack, damagedefensor = 0;
+            Creature mycreature = entry.getKey();
+            List<Creature> mylist = entry.getValue();
+            attack = mycreature.getPower();
             //adv damage
-           if(mylist.isEmpty()){
-                Player adversary=CardGame.instance.getCurrentAdversary();
+            if (mylist.isEmpty()) {
+                Player adversary = CardGame.instance.getCurrentAdversary();
                 adversary.inflictDamage(mycreature.getPower());
-                System.out.println("Inflicting damage to adversary (life left : "+adversary.getLife()+")");
-           }
+                System.out.println("Inflicting damage to adversary (life left : " + adversary.getLife() + ")");
+            }
             //creature damage
-            for (Creature c: mylist) {
-               damagecreature= damagecreature +c.getPower();
-               System.out.println("Damage creature:"+damagecreature);
-               System.out.println("Toughness creature:"+ (mycreature.getToughness()-damagecreature));
+            for (Creature c : mylist) {
+                damagecreature = damagecreature + c.getPower();
+                System.out.println("Damage creature:" + damagecreature);
+                System.out.println("Toughness creature:" + (mycreature.getToughness() - damagecreature));
             }
             damage.put(mycreature, damagecreature);
-            
-           //defensor damage
-        
-         Iterator <Creature> c= mylist.iterator();
-         Creature d;
-         while(c.hasNext() && mycreature.getPower()>0 ){
-             d = c.next();
-             if(mycreature.getPower() > d.getToughness()){
-                   damagedefensor=damagedefensor+mycreature.getPower();
-                  /* aggiornare l'attack della creatura mycreature*/
-                  attack=attack-d.getToughness();
-               }
-             else {
-                damagedefensor=damagedefensor+mycreature.getPower()-d.getToughness();
-                 /*aggiornare l'attack della creatura*/
-                 attack=attack-d.getToughness();
-             }
-            damage.put(d, damagedefensor);
-         }
-        }
 
-       for(Map.Entry<Creature,Integer> e : damage.entrySet()){
-           Creature a=e.getKey();
-           Integer d=e.getValue();
-           a.inflictDamage(d);
-       }
-      
-      }
-    
+            //defensor damage
+            Iterator<Creature> c = mylist.iterator();
+            Creature d;
+            while (c.hasNext() && mycreature.getPower() > 0) {
+                d = c.next();
+                if (mycreature.getPower() > d.getToughness()) {
+                    damagedefensor = damagedefensor + mycreature.getPower();
+                    /* aggiornare l'attack della creatura mycreature*/
+                    attack = attack - d.getToughness();
+                } else {
+                    damagedefensor = damagedefensor + mycreature.getPower() - d.getToughness();
+                    /*aggiornare l'attack della creatura*/
+                    attack = attack - d.getToughness();
+                }
+                damage.put(d, damagedefensor);
+            }
+        }
+        for (Map.Entry<Creature, Integer> e : damage.entrySet()) {
+            Creature a = e.getKey();
+            Integer d = e.getValue();
+            a.inflictDamage(d);
+        }
+        CardGame.instance.getTriggers().trigger(Triggers.END_DAMAGE_SUBPHASE_FILTER);
+    }
+
     @Override
     public void execute() {
         Player currentPlayer = CardGame.instance.getCurrentPlayer();
-        
+
         System.out.println(currentPlayer.name() + ": combat phase");
-        
+
         CardGame.instance.getTriggers().trigger(Triggers.COMBAT_FILTER);
         damageSubPhase(defenceSubPhase(attackSubPhase()));
     }

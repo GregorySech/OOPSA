@@ -32,4 +32,11 @@ public abstract class AbstractEnchantment implements Enchantment {
     public String toString() {
         return name() + " (Enchantment)";
     }
+
+    @Override
+    public boolean targetable() {
+        return true;
+    }
+    
+    
 }

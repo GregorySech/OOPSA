@@ -69,5 +69,12 @@ public abstract class CreatureDecorator implements Creature {
     public void setDecoratedCreature(Creature c){
         decoratedCreature = c;
     }
+
+    @Override
+    public boolean targetable() {
+        return decoratedCreature.targetable();
+    }
+    
+    
     
 }

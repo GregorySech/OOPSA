@@ -18,30 +18,34 @@ import java.util.List;
  *
  * @author Elena
  */
-public class NorwoodRanger implements Card{
-    
-     
-    public class NorwoodRangerEffect extends AbstractCreatureCardEffect{
-            public NorwoodRangerEffect(Player p, Card c){super(p,c);}
-            @Override
-            protected Creature createCreature() { return new NorwoodRangerCreature(owner); }
+public class NorwoodRanger implements Card {
+
+    public class NorwoodRangerEffect extends AbstractCreatureCardEffect {
+
+        public NorwoodRangerEffect(Player p, Card c) {
+            super(p, c);
+        }
+
+        @Override
+        protected Creature createCreature() {
+            return new NorwoodRangerCreature(owner);
+        }
     }
-    
 
     @Override
     public Effect getEffect(Player owner) {
-        return new NorwoodRangerEffect(owner,this);
+        return new NorwoodRangerEffect(owner, this);
     }
-    
-    private class NorwoodRangerCreature extends AbstractCreature{
-        
-        ArrayList<Effect> all_effects= new ArrayList<>();
-        ArrayList<Effect> tap_effects= new ArrayList<>();
-        
-        NorwoodRangerCreature(Player owner){
+
+    private class NorwoodRangerCreature extends AbstractCreature {
+
+        ArrayList<Effect> all_effects = new ArrayList<>();
+        ArrayList<Effect> tap_effects = new ArrayList<>();
+
+        NorwoodRangerCreature(Player owner) {
             super(owner);
         }
-        
+
         @Override
         public int getPower() {
             return 1;
@@ -64,14 +68,14 @@ public class NorwoodRanger implements Card{
 
         @Override
         public String name() {
-            return "Norwood Ranger";            
+            return "Norwood Ranger";
         }
-    
+
     }
 
     @Override
     public String name() {
-            return "Norwood Ranger";            
+        return "Norwood Ranger";
     }
 
     @Override
@@ -90,11 +94,8 @@ public class NorwoodRanger implements Card{
     }
 
     @Override
-    public String toString() { return name() + " (" + type() + ") [" + ruleText() +"]";}
-   
-    
+    public String toString() {
+        return name() + " (" + type() + ") [" + ruleText() + "]";
+    }
 
-   
-    
 }
-

@@ -35,4 +35,5 @@ public interface Creature extends Permanent {
     Creature getCreatureDecoratorHead();
     void addCreatureDecorator(CreatureDecorator cd);
     void removeCreatureDecorator(CreatureDecorator cd);
+    
 }

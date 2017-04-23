@@ -15,26 +15,45 @@ import cardgame.Player;
  * @author atorsell
  */
 public class Homeopathy implements Card {
-    
+
     private class HomeopathyEffect extends AbstractCardEffect {
-        public HomeopathyEffect(Player p, Card c) { super(p,c); }
+
+        public HomeopathyEffect(Player p, Card c) {
+            super(p, c);
+        }
+
         @Override
-        public void resolve() {}
+        public void resolve() {
+        }
     }
 
     @Override
-    public Effect getEffect(Player owner) { 
-        return new HomeopathyEffect(owner, this); 
+    public Effect getEffect(Player owner) {
+        return new HomeopathyEffect(owner, this);
     }
-    
+
     @Override
-    public String name() { return "Homeopathy"; }
+    public String name() {
+        return "Homeopathy";
+    }
+
     @Override
-    public String type() { return "Instant"; }
+    public String type() {
+        return "Instant";
+    }
+
     @Override
-    public String ruleText() { return name() + " does nothing"; }
+    public String ruleText() {
+        return name() + " does nothing";
+    }
+
     @Override
-    public String toString() { return name() + " (" + type() + ") [" + ruleText() +"]";}
+    public String toString() {
+        return name() + " (" + type() + ") [" + ruleText() + "]";
+    }
+
     @Override
-    public boolean isInstant() { return true; }
+    public boolean isInstant() {
+        return true;
+    }
 }
