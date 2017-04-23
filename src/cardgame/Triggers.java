@@ -72,8 +72,8 @@ public class Triggers {
     public static final int EXIT_CREATURE_FILTER = 64;
     public static final int ENTER_ENCHANTMENT_FILTER = 128;
     public static final int EXIT_ENCHANTMENT_FILTER = 256;
-    public static final int START_DAMAGE_SUBPHASE_FILTER = EXIT_ENCHANTMENT_FILTER * 2;
-    public static final int END_DAMAGE_SUBPHASE_FILTER = START_DAMAGE_SUBPHASE_FILTER * 2;
-    public static final int EFFECT_CASTED = END_DAMAGE_SUBPHASE_FILTER * 2;
+    public static final int START_DAMAGE_SUBPHASE_FILTER = 512;
+    public static final int END_DAMAGE_SUBPHASE_FILTER = 1024;
+    public static final int EFFECT_CASTED = 2048;
 
 }
