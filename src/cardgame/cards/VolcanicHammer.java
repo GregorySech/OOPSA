@@ -12,6 +12,7 @@ import cardgame.Creature;
 import cardgame.Effect;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,14 +74,20 @@ public class VolcanicHammer implements Card {
                     if(last==1){
                         int i =0,j; 
                         List <Creature> playercreature=CardGame.instance.getCurrentPlayer().getCreatures();
+                        List <Creature> plc= new ArrayList(playercreature);
+                        for(Creature c: plc){
+                            if(!(c.targetable())){
+                            c.remove();
+                            }
+                        }
                         do{
-                           for(Creature c: playercreature){
-                                System.out.println(playercreature.get(i));
+                           for(Creature c: plc){
+                                System.out.println(plc.get(i));
                             }
                              System.out.println("[0] to end selection");
                             j=CardGame.instance.getScanner().nextInt();
-                            if(j != 0 && j<= playercreature.size()&& !playercreature.isEmpty()){
-                                target=playercreature.get(j);
+                            if(j != 0 && j<= plc.size()&& !plc.isEmpty()){
+                                target=plc.get(j);
                             }
                             else 
                                 target=null;
@@ -89,14 +96,20 @@ public class VolcanicHammer implements Card {
                     else{
                         int i=0, j;
                          List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
-                        do{
-                           for(Creature c: adversarycreature){
-                                System.out.println(adversarycreature.get(i));
+                         List <Creature> adc= new ArrayList(adversarycreature);
+                         for(Creature c: adc){
+                            if(!(c.targetable())){
+                            c.remove();
+                            }
+                          }
+                         do{
+                           for(Creature c: adc){
+                                System.out.println(adc.get(i));
                             }
                              System.out.println("[0] to end selection");
                             j=CardGame.instance.getScanner().nextInt();
-                            if(j != 0 && j<= adversarycreature.size() && !adversarycreature.isEmpty()){
-                                target=adversarycreature.get(j);
+                            if(j != 0 && j<= adc.size() && !adc.isEmpty()){
+                                target=adc.get(j);
                             }
                             else 
                                 target=null;
