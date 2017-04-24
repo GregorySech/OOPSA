@@ -92,7 +92,7 @@ public class DefaultCombatPhase implements Phase {
                 }
                 idx = reader.nextInt();
 
-                if (idx > 0 && idx < field.size()) {
+                if (idx > 0 && idx <= field.size()) {
                     t = field.remove(idx - 1);
                     def.add(t);
                     t.defend(a);

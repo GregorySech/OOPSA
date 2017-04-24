@@ -18,7 +18,6 @@ public abstract class AbstractCreatureCardEffect extends AbstractCardEffect {
     @Override
     public void resolve() {
         Creature c=createCreature();
-        owner.getCreatures().add(c);
         c.insert();
     }
 }

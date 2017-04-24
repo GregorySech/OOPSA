@@ -67,6 +67,7 @@ public abstract class AbstractCreature implements Creature {
     
     @Override
         public void insert() {
+            owner.getCreatures().add(this);
             CardGame.instance.getTriggers().trigger(Triggers.ENTER_CREATURE_FILTER,this);
         }
     

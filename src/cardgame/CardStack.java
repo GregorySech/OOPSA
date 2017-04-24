@@ -21,6 +21,7 @@ public class CardStack implements Iterable<Effect> {
     
     public void add(Effect e) { 
         stack.push(e); 
+        CardGame.instance.getTriggers().trigger(Triggers.EFFECT_CASTED, e);
     }
     
     public void remove(Effect e) { stack.remove(e); }
