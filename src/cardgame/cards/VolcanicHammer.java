@@ -34,14 +34,16 @@ public class VolcanicHammer implements Card {
 
         @Override
         public void resolve(){
-             if(target instanceof Player)
+            if(target != null){
+           if(target instanceof Player)
               ((Player)target).inflictDamage(3);
-           else 
-               ((Creature)target).inflictDamage(3);
+           else {
+                ((Creature)target).inflictDamage(3); 
+             } 
          }
+        }
 
         @Override
-        @SuppressWarnings("empty-statement")
         public void chooseTarget() {
             int last;
             System.out.println("Volcanic Hammer targetting phase : ");
@@ -69,32 +71,43 @@ public class VolcanicHammer implements Card {
                         last= CardGame.instance.getScanner().nextInt();
                     }while(last<1 || last >2);
                     if(last==1){
+                        int i =0,j; 
                         List <Creature> playercreature=CardGame.instance.getCurrentPlayer().getCreatures();
-                        for(Creature c: playercreature){
-                            System.out.println(playercreature.get(last));
-                            last= CardGame.instance.getScanner().nextInt();
-                        }
-                        if(! playercreature.isEmpty()){
-                            target=playercreature.get(last);
-                        }
-                       
+                        do{
+                           for(Creature c: playercreature){
+                                System.out.println(playercreature.get(i));
+                            }
+                             System.out.println("[0] to end selection");
+                            j=CardGame.instance.getScanner().nextInt();
+                            if(j != 0 && j<= playercreature.size()&& !playercreature.isEmpty()){
+                                target=playercreature.get(j);
+                            }
+                            else 
+                                target=null;
+                        }while(j != 0);   
                     }
                     else{
-                        List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
-                        for(Creature c: adversarycreature){
-                            System.out.println(adversarycreature.get(last));
-                            last= CardGame.instance.getScanner().nextInt();
-                        }
-                        if(! adversarycreature.isEmpty()){
-                            target=adversarycreature.get(last);
-                        }
+                        int i=0, j;
+                         List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
+                        do{
+                           for(Creature c: adversarycreature){
+                                System.out.println(adversarycreature.get(i));
+                            }
+                             System.out.println("[0] to end selection");
+                            j=CardGame.instance.getScanner().nextInt();
+                            if(j != 0 && j<= adversarycreature.size() && !adversarycreature.isEmpty()){
+                                target=adversarycreature.get(j);
+                            }
+                            else 
+                                target=null;
+                        }while(j != 0);   
                     }
-                                              
                 }
                 
             }while(last < 1 || last > 2);
             
         }
+         
 
         @Override
         public Object getTarget() {
