@@ -39,7 +39,7 @@ public class Triggers {
     public void deregister(TriggerAction a) {
         for (int i = actions.size(); i > 0;) {
             i--;
-            if (a.equals(actions.get(i))) {
+            if (a.equals(actions.get(i).action)) {
                 actions.remove(i);
             }
         }

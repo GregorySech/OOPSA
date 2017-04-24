@@ -49,6 +49,11 @@ public class FalsePeace implements Card {
                 System.out.println("[2] " + CardGame.instance.getCurrentAdversary().name());
                 last = CardGame.instance.getScanner().nextInt();
             } while (last < 1 || last > 2);
+            if(last == 1){
+                target = CardGame.instance.getCurrentPlayer();
+            }else{
+                target = CardGame.instance.getCurrentAdversary();
+            }
         }
 
         @Override

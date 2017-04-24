@@ -11,6 +11,7 @@ import cardgame.CardGame;
 import cardgame.Creature;
 import cardgame.Effect;
 import cardgame.Player;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,8 +27,8 @@ public class DayOfJudgment implements Card{
         }
         @Override
         public void resolve() {
-            List<Creature> creaturesPlayer = CardGame.instance.getCurrentPlayer().getCreatures();
-            List<Creature> creaturesAdversary = CardGame.instance.getCurrentAdversary().getCreatures();
+            List<Creature> creaturesPlayer = new ArrayList<>(CardGame.instance.getCurrentPlayer().getCreatures());
+            List<Creature> creaturesAdversary = new ArrayList<>(CardGame.instance.getCurrentAdversary().getCreatures());
             for(Creature c : creaturesPlayer)
                 c.getCreatureDecoratorHead().remove();
             for(Creature c: creaturesAdversary)

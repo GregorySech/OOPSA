@@ -37,6 +37,18 @@ public class CardGame {
         for (int i = 0; i != 5; ++i) {
             deck.add(new VolcanicHammer());
         }
+        for (int i = 0; i != 5; ++i) {
+            deck.add(new Darkness());
+        }
+        for (int i = 0; i != 5; ++i) {
+            deck.add(new DayOfJudgment());
+        }
+        for (int i = 0; i != 5; ++i) {
+            deck.add(new FalsePeace());
+        }
+        for (int i = 0; i != 5; ++i){
+            deck.add(new BronzeSable());
+        }
 
         instance.getPlayer(0).setDeck(deck.iterator());
         instance.getPlayer(1).setDeck(deck.iterator());

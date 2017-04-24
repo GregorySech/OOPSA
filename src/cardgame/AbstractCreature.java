@@ -92,12 +92,12 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void removeCreatureDecorator(CreatureDecorator cd) {
-        getCreatureDecoratorHead().addCreatureDecorator(cd);
+        getCreatureDecoratorHead().removeCreatureDecorator(cd);
     }
 
     @Override
     public void addCreatureDecorator(CreatureDecorator cd) {
-        getCreatureDecoratorHead().removeCreatureDecorator(cd);
+        getCreatureDecoratorHead().addCreatureDecorator(cd);
     }
 
     @Override
