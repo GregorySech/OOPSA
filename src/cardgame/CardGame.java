@@ -26,16 +26,16 @@ public class CardGame {
         //create decks
         ArrayList<Card> deck = new ArrayList<>();
         for (int i = 0; i != 5; ++i) {
-            deck.add(new Homeopathy());
+            deck.add(new AetherFlash());
         }
-        for (int i = 0; i != 2; ++i) {
-            deck.add(new BronzeSable());
+        for (int i = 0; i != 5; ++i) {
+            deck.add(new ArgothianEnchantress());
         }
-        for (int i = 0; i != 3; ++i) {
+        for (int i = 0; i != 5; ++i) {
             deck.add(new NorwoodRanger());
         }
         for (int i = 0; i != 5; ++i) {
-            deck.add(new FriendlyEnvironment());
+            deck.add(new VolcanicHammer());
         }
 
         instance.getPlayer(0).setDeck(deck.iterator());

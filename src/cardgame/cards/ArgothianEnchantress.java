@@ -59,6 +59,7 @@ public class ArgothianEnchantress implements Card {
                 if (args instanceof AbstractEnchantmentCardEffect) {
                     AbstractEnchantmentCardEffect enchantment = (AbstractEnchantmentCardEffect) args;
                     if (enchantment.getOwner() == designatedCaster) {
+                        System.out.println("ArgothianEnchantress : you've casted an enchantment, draw a card!");
                         designatedCaster.draw();
                     }
                 }
