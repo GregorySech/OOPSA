@@ -42,7 +42,7 @@ public class DefaultCombatPhase implements Phase {
             do {
                 i = 0;
                 for (Creature c : possible) {
-                    System.out.println("[" + (++i) + "]" + c.toString());
+                    System.out.println("[" + (++i) + "]" + c.getCreatureDecoratorHead());
                 }
                 System.out.println("[0] to end selection");
                 lastChoice = reader.nextInt();

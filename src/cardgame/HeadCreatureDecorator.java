@@ -32,21 +32,22 @@ public class HeadCreatureDecorator extends CreatureDecorator {
         CreatureDecorator prec = this;
         boolean flag = false;
         boolean found = false;
-        while(!flag && !found){
-            if(next instanceof CreatureDecorator){
-                if(next == cd)
-                   found = true;
-                else{
-                    prec = ((CreatureDecorator)next);
-                    next = ((CreatureDecorator)next).getDecoratedCreature();
+        while (!flag && !found) {
+            if (next instanceof CreatureDecorator) {
+                if (next == cd) {
+                    found = true;
+                } else {
+                    prec = ((CreatureDecorator) next);
+                    next = ((CreatureDecorator) next).getDecoratedCreature();
                 }
-            }else
+            } else {
                 flag = true;
+            }
         }
-        if(found){
-            prec.setDecoratedCreature(((CreatureDecorator)next).getDecoratedCreature());
-            ((CreatureDecorator)next).setDecoratedCreature(null);
+        if (found) {
+            prec.setDecoratedCreature(((CreatureDecorator) next).getDecoratedCreature());
+            ((CreatureDecorator) next).setDecoratedCreature(null);
         }
     }
-    
+
 }

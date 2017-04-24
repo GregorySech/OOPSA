@@ -45,6 +45,7 @@ public class AetherFlash implements Card {
             public void execute(Object args) {
                 if (args != null && args instanceof Creature) {
                     Creature c = (Creature) args;
+                    System.out.println("AetherFlash: 2 damages to the fresh summoned creature "+c.name());
                     c.getCreatureDecoratorHead().inflictDamage(2);
                 }
             }

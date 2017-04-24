@@ -13,6 +13,7 @@ import cardgame.Effect;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,112 +22,101 @@ import java.util.List;
  */
 public class VolcanicHammer implements Card {
 
-    private class VolcanicHammerEffect extends AbstractCardEffect implements SingleTargetEffect{
+    private class VolcanicHammerEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Object target;
-        public VolcanicHammerEffect(Player p, Card c){
-            super(p,c);
+
+        public VolcanicHammerEffect(Player p, Card c) {
+            super(p, c);
         }
+
         @Override
-        public boolean play(){
+        public boolean play() {
             chooseTarget();
             return super.play();
         }
 
         @Override
-        public void resolve(){
-            if(target != null){
-           if(target instanceof Player)
-              ((Player)target).inflictDamage(3);
-           else {
-                ((Creature)target).inflictDamage(3); 
-             } 
-         }
+        public void resolve() {
+            if (target != null) {
+                if (target instanceof Player) {
+                    ((Player) target).inflictDamage(3);
+                } else {
+                    ((Creature) target).inflictDamage(3);
+                }
+            }
+        }
+
+        private void chooseCreature(Player p) {
+            int i = 0, j;
+            List<Creature> playercreature = p.getCreatures();
+            List<Creature> plc = new ArrayList(playercreature);
+            Creature cr = null;
+            for (Iterator<Creature> it = plc.iterator(); it.hasNext();) {
+                cr = it.next();
+                if (!(cr.targetable())) {
+                    it.remove();
+                }
+            }
+            do {
+                i = 0;
+                for (Creature c : plc) {
+                    System.out.println("[" + (++i) + "]" + c);
+                }
+                System.out.println("[0] to end selection");
+                j = CardGame.instance.getScanner().nextInt();
+                if (j != 0 && j <= plc.size()) {
+                    target = plc.get(j - 1);
+                } else {
+                    target = null;
+                }
+            } while (j < 0 || j > plc.size());
         }
 
         @Override
         public void chooseTarget() {
             int last;
             System.out.println("Volcanic Hammer targetting phase : ");
-            do{
+            do {
                 System.out.println("What do you want to target :");
                 System.out.println("[1]" + "A Player");
                 System.out.println("[2]" + " A Creature");
-                last= CardGame.instance.getScanner().nextInt();
-                if(last==1){
-                    do{
+                last = CardGame.instance.getScanner().nextInt();
+                if (last == 1) {
+                    do {
                         System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name());
                         System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name());
-                        last= CardGame.instance.getScanner().nextInt();
-                    }while(last<1 || last >2);
-                    if(last==1)
-                       target=CardGame.instance.getCurrentPlayer();
-                    else 
-                       target=CardGame.instance.getCurrentAdversary();
-                }
-                else {
-                    System.out.println("What creature do you want to target:");
-                     do{
-                        System.out.println("[1]" + "Player creatures");
-                        System.out.println("[2]" +"Adversary Creature");
-                        last= CardGame.instance.getScanner().nextInt();
-                    }while(last<1 || last >2);
-                    if(last==1){
-                        int i =0,j; 
-                        List <Creature> playercreature=CardGame.instance.getCurrentPlayer().getCreatures();
-                        List <Creature> plc= new ArrayList(playercreature);
-                        for(Creature c: plc){
-                            if(!(c.targetable())){
-                            c.remove();
-                            }
-                        }
-                        do{
-                           for(Creature c: plc){
-                                System.out.println(plc.get(i));
-                            }
-                             System.out.println("[0] to end selection");
-                            j=CardGame.instance.getScanner().nextInt();
-                            if(j != 0 && j<= plc.size()&& !plc.isEmpty()){
-                                target=plc.get(j);
-                            }
-                            else 
-                                target=null;
-                        }while(j != 0);   
+                        last = CardGame.instance.getScanner().nextInt();
+                    } while (last < 1 || last > 2);
+                    if (last == 1) {
+                        target = CardGame.instance.getCurrentPlayer(); 
+                    } else {
+                        target = CardGame.instance.getCurrentAdversary();
                     }
-                    else{
-                        int i=0, j;
-                         List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
-                         List <Creature> adc= new ArrayList(adversarycreature);
-                         for(Creature c: adc){
-                            if(!(c.targetable())){
-                            c.remove();
-                            }
-                          }
-                         do{
-                           for(Creature c: adc){
-                                System.out.println(adc.get(i));
-                            }
-                             System.out.println("[0] to end selection");
-                            j=CardGame.instance.getScanner().nextInt();
-                            if(j != 0 && j<= adc.size() && !adc.isEmpty()){
-                                target=adc.get(j);
-                            }
-                            else 
-                                target=null;
-                        }while(j != 0);   
+                } else {
+                    System.out.println("Whom creature do you want to target:");
+                    do {
+                        System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name() +"\'s creature");
+                        System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name() +"\'s creature");
+                        last = CardGame.instance.getScanner().nextInt();
+                    } while (last < 1 || last > 2);
+                    if (last == 1) {
+                        chooseCreature(CardGame.instance.getCurrentPlayer());
+                    } else {
+                        chooseCreature(CardGame.instance.getCurrentAdversary());
                     }
                 }
-                
-            }while(last < 1 || last > 2);
-            
+
+            } while (last < 1 || last > 2);
+
         }
-         
 
         @Override
         public Object getTarget() {
             return target;
         }
     }
+
     @Override
     public Effect getEffect(Player owner) {
         return new VolcanicHammerEffect(owner, this);

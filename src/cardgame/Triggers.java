@@ -7,6 +7,7 @@ package cardgame;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -36,7 +37,8 @@ public class Triggers {
     }
 
     public void deregister(TriggerAction a) {
-        for (int i = actions.size(); i >= 0; --i) {
+        for (int i = actions.size(); i > 0;) {
+            i--;
             if (a.equals(actions.get(i))) {
                 actions.remove(i);
             }
