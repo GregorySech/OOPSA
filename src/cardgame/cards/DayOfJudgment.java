@@ -29,9 +29,9 @@ public class DayOfJudgment implements Card{
             List<Creature> creaturesPlayer = CardGame.instance.getCurrentPlayer().getCreatures();
             List<Creature> creaturesAdversary = CardGame.instance.getCurrentAdversary().getCreatures();
             for(Creature c : creaturesPlayer)
-                c.remove();
+                c.getCreatureDecoratorHead().remove();
             for(Creature c: creaturesAdversary)
-                c.remove();
+                c.getCreatureDecoratorHead().remove();
         }
     }
     @Override

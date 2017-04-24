@@ -45,7 +45,7 @@ public class AetherFlash implements Card {
             public void execute(Object args) {
                 if (args != null && args instanceof Creature) {
                     Creature c = (Creature) args;
-                    c.inflictDamage(2);
+                    c.getCreatureDecoratorHead().inflictDamage(2);
                 }
             }
         };

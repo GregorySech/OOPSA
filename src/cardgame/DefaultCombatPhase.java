@@ -32,7 +32,7 @@ public class DefaultCombatPhase implements Phase {
         Scanner reader = CardGame.instance.getScanner();
         int i, lastChoice;
         for (Creature c : possible) {
-            if (c.isTapped()) {
+            if (c.getCreatureDecoratorHead().isTapped()) {
                 possible.remove(c);
             }
         }
@@ -48,7 +48,7 @@ public class DefaultCombatPhase implements Phase {
                 lastChoice = reader.nextInt();
                 if (lastChoice != 0 && lastChoice <= possible.size()) {
                     t = possible.remove(lastChoice - 1);
-                    t.attack();
+                    t.getCreatureDecoratorHead().attack();
                     attackers.add(t);
                 }
             } while (lastChoice != 0);
@@ -82,20 +82,20 @@ public class DefaultCombatPhase implements Phase {
         Scanner reader = CardGame.instance.getScanner();
 
         for (Creature a : attackers) {
-            System.out.println("Attacker : " + a.name());
+            System.out.println("Attacker : " + a.getCreatureDecoratorHead().name());
             int idx;
             do {
                 System.out.println(adversaryPlayer.name() + " Choose a card or press 0");
 
                 for (int i = 0; i != field.size(); ++i) {
-                    System.out.println(Integer.toString(i + 1) + ") " + field.get(i));
+                    System.out.println(Integer.toString(i + 1) + ") " + field.get(i).getCreatureDecoratorHead());
                 }
                 idx = reader.nextInt();
 
                 if (idx > 0 && idx <= field.size()) {
                     t = field.remove(idx - 1);
                     def.add(t);
-                    t.defend(a);
+                    t.getCreatureDecoratorHead().defend(a);
                 }
             } while (idx != 0);
             atkDef.put(a, def);
@@ -132,34 +132,34 @@ public class DefaultCombatPhase implements Phase {
             int damagecreature = 0, attack, damagedefensor = 0;
             Creature mycreature = entry.getKey();
             List<Creature> mylist = entry.getValue();
-            attack = mycreature.getPower();
+            attack = mycreature.getCreatureDecoratorHead().getPower();
             //adv damage
             if (mylist.isEmpty()) {
                 Player adversary = CardGame.instance.getCurrentAdversary();
-                adversary.inflictDamage(mycreature.getPower());
+                adversary.inflictDamage(mycreature.getCreatureDecoratorHead().getPower());
                 System.out.println("Inflicting damage to adversary (life left : " + adversary.getLife() + ")");
             }
             //creature damage
             for (Creature c : mylist) {
-                damagecreature = damagecreature + c.getPower();
+                damagecreature = damagecreature + c.getCreatureDecoratorHead().getPower();
                 System.out.println("Damage creature:" + damagecreature);
-                System.out.println("Toughness creature:" + (mycreature.getToughness() - damagecreature));
+                System.out.println("Toughness creature:" + (mycreature.getCreatureDecoratorHead().getToughness() - damagecreature));
             }
             damage.put(mycreature, damagecreature);
 
             //defensor damage
             Iterator<Creature> c = mylist.iterator();
             Creature d;
-            while (c.hasNext() && mycreature.getPower() > 0) {
+            while (c.hasNext() && mycreature.getCreatureDecoratorHead().getPower() > 0) {
                 d = c.next();
-                if (mycreature.getPower() > d.getToughness()) {
-                    damagedefensor = damagedefensor + mycreature.getPower();
+                if (mycreature.getCreatureDecoratorHead().getPower() > d.getCreatureDecoratorHead().getToughness()) {
+                    damagedefensor = damagedefensor + mycreature.getCreatureDecoratorHead().getPower();
                     /* aggiornare l'attack della creatura mycreature*/
-                    attack = attack - d.getToughness();
+                    attack = attack - d.getCreatureDecoratorHead().getToughness();
                 } else {
-                    damagedefensor = damagedefensor + mycreature.getPower() - d.getToughness();
+                    damagedefensor = damagedefensor + mycreature.getCreatureDecoratorHead().getPower() - d.getCreatureDecoratorHead().getToughness();
                     /*aggiornare l'attack della creatura*/
-                    attack = attack - d.getToughness();
+                    attack = attack - d.getCreatureDecoratorHead().getToughness();
                 }
                 damage.put(d, damagedefensor);
             }
@@ -167,7 +167,7 @@ public class DefaultCombatPhase implements Phase {
         for (Map.Entry<Creature, Integer> e : damage.entrySet()) {
             Creature a = e.getKey();
             Integer d = e.getValue();
-            a.inflictDamage(d);
+            a.getCreatureDecoratorHead().inflictDamage(d);
         }
         CardGame.instance.getTriggers().trigger(Triggers.END_DAMAGE_SUBPHASE_FILTER);
     }
