@@ -26,6 +26,8 @@ public class CardStack implements Iterable<Effect> {
     
     public void remove(Effect e) { stack.remove(e); }
     
+    public void removeNext(){stack.pop();}
+    
     public void resolve() {
         while(!stack.isEmpty()) { 
             Effect e = stack.pop();
