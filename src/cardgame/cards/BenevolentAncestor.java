@@ -9,6 +9,7 @@ import cardgame.AbstractCreature;
 import cardgame.AbstractCreatureCardEffect;
 import cardgame.Card;
 import cardgame.CardGame;
+import cardgame.ChangePowerToughnessCreatureDecorator;
 import cardgame.Creature;
 import cardgame.Effect;
 import cardgame.Player;
@@ -28,7 +29,7 @@ import java.util.List;
  * 
  * 
  * 
- * /* NON ANCORA COMPLETATO, MANCANO EXECUTE E "NON PUO ATTACCARE" */
+ * /* NON ANCORA COMPLETATO */
 
 
 
@@ -39,8 +40,8 @@ import java.util.List;
 
 public class BenevolentAncestor implements Card {
 
-    private class BenevolentAncestorEffect extends AbstractCreatureCardEffect implements SingleTargetEffect {
-        private Object target;
+    private class BenevolentAncestorEffect extends AbstractCreatureCardEffect{
+        
         BenevolentAncestorEffect(Player p, Card c) {
             super(p, c);
         }
@@ -49,80 +50,12 @@ public class BenevolentAncestor implements Card {
         protected Creature createCreature() {
             return new BenevolentAncestorCreature(owner);
         }
-
-        @Override
-        public void chooseTarget() {
-             int last;
-            System.out.println("Benevolent Ancestor targetting phase : ");
-            do{
-                System.out.println("What do you want to target :");
-                System.out.println("[1]" + "A Player");
-                System.out.println("[2]" + " A Creature");
-                last= CardGame.instance.getScanner().nextInt();
-                if(last==1){
-                    do{
-                        System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name());
-                        System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name());
-                        last= CardGame.instance.getScanner().nextInt();
-                    }while(last<1 || last >2);
-                    if(last==1)
-                       target=CardGame.instance.getCurrentPlayer();
-                    else 
-                       target=CardGame.instance.getCurrentAdversary();
-                }
-                else {
-                    System.out.println("What creature do you want to target:");
-                     do{
-                        System.out.println("[1]" + "Player creatures");
-                        System.out.println("[2]" +"Adversary Creature");
-                        last= CardGame.instance.getScanner().nextInt();
-                    }while(last<1 || last >2);
-                    if(last==1){
-                        int i =0,j; 
-                        List <Creature> playercreature=CardGame.instance.getCurrentPlayer().getCreatures();
-                        do{
-                           for(Creature c: playercreature){
-                                System.out.println(playercreature.get(i));
-                            }
-                             System.out.println("[0] to end selection");
-                            j=CardGame.instance.getScanner().nextInt();
-                            if(j != 0 && j<= playercreature.size()&& !playercreature.isEmpty()){
-                                target=playercreature.get(j);
-                            }
-                            else 
-                                target=null;
-                        }while(j != 0);   
-                    }
-                    else{
-                        int i=0, j;
-                         List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
-                        do{
-                           for(Creature c: adversarycreature){
-                                System.out.println(adversarycreature.get(i));
-                            }
-                             System.out.println("[0] to end selection");
-                            j=CardGame.instance.getScanner().nextInt();
-                            if(j != 0 && j<= adversarycreature.size() && !adversarycreature.isEmpty()){
-                                target=adversarycreature.get(j);
-                            }
-                            else 
-                                target=null;
-                        }while(j != 0);   
-                    }
-                }
-                
-            }while(last < 1 || last > 2);
-            
-        }
-
-        @Override
-        public Object getTarget() {
-            return target;
-        }
     }
 
-    private class BenevolentAncestorCreature extends AbstractCreature {
-
+    private class BenevolentAncestorCreature extends AbstractCreature implements SingleTargetEffect{
+        private Creature target=null;
+        private Player targetp=null;
+        
         ArrayList<Effect> effects = new ArrayList<>();
 
         TriggerAction ProtectFromOneDamage;
@@ -130,7 +63,89 @@ public class BenevolentAncestor implements Card {
         BenevolentAncestorCreature(Player owner) {
             super(owner);
         }
+        
+        @Override
+        public void attack(){
+            throw new UnsupportedOperationException("This creature can't attack");
+        }
 
+        @Override
+        public void chooseTarget() {
+             int last;
+            System.out.println("Benevolent Ancestor targetting phase : ");
+            do{
+                System.out.println("Choose the character to target :");
+                System.out.println("[1]" + "A Player");
+                System.out.println("[2]" + " A Creature");
+                last= CardGame.instance.getScanner().nextInt();
+            }while(last < 1 || last > 2);
+            if(last==1){
+                do{
+                   System.out.println("Choose the player to target :");
+                   System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name());
+                   System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name());
+                   last= CardGame.instance.getScanner().nextInt();
+                }while(last<1 || last >2);
+                if(last==1){
+                   targetp=CardGame.instance.getCurrentPlayer();
+                }
+                else {
+                   targetp=CardGame.instance.getCurrentAdversary();
+                }
+            }
+            else {
+                System.out.println("Choose the owner of the creature you want to target:");
+                do{
+                   System.out.println("[1]" + "Player creatures");
+                   System.out.println("[2]" +"Adversary Creature");
+                   last= CardGame.instance.getScanner().nextInt();
+                }while(last<1 || last >2);
+                if(last==1){
+                   int i =0,j; 
+                   List <Creature> playercreature=CardGame.instance.getCurrentPlayer().getCreatures();
+                      for(Creature c: playercreature){
+                           System.out.println(Integer.toString(i + 1) + ") " +playercreature.get(i));
+                       }
+                       j=CardGame.instance.getScanner().nextInt();
+                       if(j<= playercreature.size()&& !playercreature.isEmpty()){
+                           target=playercreature.get(j-1);
+                       }
+                       else {
+                           target=null; 
+                       }
+                }
+                else{
+                    int i=0, j;
+                     List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
+                       for(Creature c: adversarycreature){
+                            System.out.println(Integer.toString(i + 1) + ") " + adversarycreature.get(i));
+                        }
+                        j=CardGame.instance.getScanner().nextInt();
+                        if(j<= adversarycreature.size() && !adversarycreature.isEmpty()){
+                            target=adversarycreature.get(j-1);
+                        }
+                        else{
+                            target=null;
+                        }
+                }
+            }    
+        }
+
+        @Override
+        public Object getTarget() {
+            return target;
+        }
+
+        @Override
+        public boolean play() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        } /*NON SO*/
+
+        @Override
+        public void resolve() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        } /*NON SO*/
+        
         private class BenevolentAncestorTrigger implements TriggerAction {
 
             Player designatedCaster;
@@ -141,8 +156,15 @@ public class BenevolentAncestor implements Card {
 
             @Override
             public void execute(Object args) {
-                /* PARTE MANCANTE */
+                if(targetp==null && target!=null)
+                    target.addCreatureDecorator(new ChangePowerToughnessCreatureDecorator(target, 0, 1));   
+                    /*andra' via alla fine del turno? e se viene danneggiato alla fine del turno non devo togliere nulla?*/
+                else if(targetp!=null && target==null)
+                     /*non esistono decoratori per player vero?*/  
+                    targetp.heal(1);
+                    /*se prende danno non devo fare target.damage(1), ma se non prende danno allora si*/
             }
+           
         }
 
         @Override
