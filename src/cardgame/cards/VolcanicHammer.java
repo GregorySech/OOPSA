@@ -80,30 +80,31 @@ public class VolcanicHammer implements Card {
             do {
                 System.out.println("What do you want to target :");
                 System.out.println("[1]" + "A Player");
-                System.out.println("[2]" + " A Creature");
+                System.out.println("[2]" + "A Creature");
                 last = CardGame.instance.getScanner().nextInt();
                 if (last == 1) {
                     do {
-                        System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name());
-                        System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name());
+                        
+                        System.out.println("[1]" + owner.name());
+                        System.out.println("[2]" + CardGame.instance.getRival(owner).name());
                         last = CardGame.instance.getScanner().nextInt();
                     } while (last < 1 || last > 2);
                     if (last == 1) {
-                        target = CardGame.instance.getCurrentPlayer(); 
+                        target = owner; 
                     } else {
-                        target = CardGame.instance.getCurrentAdversary();
+                        target = CardGame.instance.getRival(owner);
                     }
                 } else {
                     System.out.println("Whom creature do you want to target:");
                     do {
-                        System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name() +"\'s creature");
-                        System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name() +"\'s creature");
+                        System.out.println("[1]" + owner.name() +"\'s creature");
+                        System.out.println("[2]" + CardGame.instance.getRival(owner).name() +"\'s creature");
                         last = CardGame.instance.getScanner().nextInt();
                     } while (last < 1 || last > 2);
                     if (last == 1) {
-                        chooseCreature(CardGame.instance.getCurrentPlayer());
+                        chooseCreature(owner);
                     } else {
-                        chooseCreature(CardGame.instance.getCurrentAdversary());
+                        chooseCreature(CardGame.instance.getRival(owner));
                     }
                 }
 

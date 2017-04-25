@@ -11,23 +11,23 @@ import cardgame.SkipPhase;
  *
  * @author Elena
  */
-public class SavorTheMoment implements Card{
-    
-    private class SavorTheMomentEffect extends AbstractCardEffect{
+public class SavorTheMoment implements Card {
 
-        public SavorTheMomentEffect(Player p, Card c){
-            super(p,c);
+    private class SavorTheMomentEffect extends AbstractCardEffect {
+
+        public SavorTheMomentEffect(Player p, Card c) {
+            super(p, c);
         }
-        
+
         @Override
         public void resolve() {
-        /* NON CAPISCO COME FARLO!! */
+            /* NON CAPISCO COME FARLO!! */
         }
     }
 
     @Override
     public Effect getEffect(Player owner) {
-        return new SavorTheMomentEffect(owner,this);
+        return new SavorTheMomentEffect(owner, this);
     }
 
     @Override
@@ -49,10 +49,10 @@ public class SavorTheMoment implements Card{
     public boolean isInstant() {
         return false;
     }
-    
+
     @Override
     public String toString() {
         return name() + " (" + type() + ") [" + ruleText() + "]";
     }
-    
+
 }

@@ -20,80 +20,85 @@ import java.util.List;
  *
  * @author Elena
  */
-public class AggressiveUrge implements Card{
+public class AggressiveUrge implements Card {
 
-    private class AggressiveUrgeEffect extends AbstractCardEffect implements SingleTargetEffect{
+    private class AggressiveUrgeEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Creature target;
-        
-        public AggressiveUrgeEffect(Player p, Card c){
-            super(p,c);
+
+        public AggressiveUrgeEffect(Player p, Card c) {
+            super(p, c);
         }
-        
+
         @Override
-        public boolean play(){
+        public boolean play() {
             chooseTarget();
             return super.play();
         }
-        
+
         @Override
         public void resolve() {
             /* NON SO COSA METTERE COME PRIMO ARGOMENTO DEL DECORATORE CPTCD */
-            /* poi visto che è un istantaneo andrebbe rimosso alla fine del turno, come si fa? */
+ /* poi visto che è un istantaneo andrebbe rimosso alla fine del turno, come si fa? */
             target.addCreatureDecorator(new ChangePowerToughnessCreatureDecorator(target, 1, 1));
         }
 
-        private void chooseCreature(Player p){
-            
+        private void chooseCreature(Player p) {
+
             List<Creature> playerCreature = p.getCreatures();
             List<Creature> plC = new ArrayList(playerCreature);
-            
-            for(Iterator<Creature> c = plC.iterator(); c.hasNext();){
+
+            for (Iterator<Creature> c = plC.iterator(); c.hasNext();) {
                 Creature cr = c.next();
-                if(!cr.targetable())
+                if (!cr.targetable()) {
                     c.remove();
+                }
             }
-            
-            int choose,i;
+
+            int choose, i;
             i = 0;
-            do{
+            do {
                 for (Creature c : plC) {
                     System.out.println("[" + (++i) + "]" + c.toString());
                 }
                 System.out.println("[0] to end selection");
-                
+
                 choose = CardGame.instance.getScanner().nextInt();
-                if(choose != 0 && choose<=plC.size())
-                    target = plC.get(choose-1);
-                else
+                if (choose != 0 && choose <= plC.size()) {
+                    target = plC.get(choose - 1);
+                } else {
                     target = null;
-            
-            }while(choose < 0 || choose > plC.size() );
-            
-        
+                }
+
+            } while (choose < 0 || choose > plC.size());
+
         }
+
         @Override
         public void chooseTarget() {
             int choose;
             System.out.println("Aggressive Urge targetting phase : ");
-            do{
-                System.out.println("Whom creature do you want to target:");
-                
-                System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name() +"\'s creature :");
-                for (Creature c : CardGame.instance.getCurrentPlayer().getCreatures()) 
+            do {
+                System.out.println("Whose creature do you want to target?");
+
+                System.out.println("[1]" + owner.name() + "\'s creature :");
+                for (Creature c : (owner).getCreatures()) {
                     System.out.println("- " + c.toString());
-                
-                System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name() +"\'s creature :");
-                for (Creature c : CardGame.instance.getCurrentAdversary().getCreatures()) 
+                }
+
+                System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
+                for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
                     System.out.println("- " + c.toString());
-                
+                }
+
                 choose = CardGame.instance.getScanner().nextInt();
-            }while(choose !=1 && choose !=2);
-            
-            if(choose == 1)
-                chooseCreature(CardGame.instance.getCurrentPlayer());
-            else
-                chooseCreature(CardGame.instance.getCurrentAdversary());
+            } while (choose != 1 && choose != 2);
+
+            if (choose == 1) {
+                chooseCreature(owner);
+            } else {
+                chooseCreature(CardGame.instance.getRival(owner));
+            }
         }
 
         @Override
@@ -101,10 +106,10 @@ public class AggressiveUrge implements Card{
             return target;
         }
     }
-    
+
     @Override
     public Effect getEffect(Player owner) {
-        return new AggressiveUrgeEffect(owner,this);
+        return new AggressiveUrgeEffect(owner, this);
     }
 
     @Override
@@ -126,7 +131,7 @@ public class AggressiveUrge implements Card{
     public boolean isInstant() {
         return true;
     }
-    
+
     @Override
     public String toString() {
         return name() + " (" + type() + ") [" + ruleText() + "]";

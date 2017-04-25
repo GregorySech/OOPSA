@@ -50,4 +50,10 @@ public class HeadCreatureDecorator extends CreatureDecorator {
         }
     }
 
+    @Override
+    public int getPower() {
+        return decoratedCreature.getPower() < 0 ? 0 : decoratedCreature.getPower();
+    }
+
+    
 }

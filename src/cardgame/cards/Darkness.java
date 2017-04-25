@@ -25,9 +25,9 @@ public class Darkness implements Card {
 
     private class DarknessEffect extends AbstractCardEffect {
 
-        private List<DarknessDecorator> decorators;
-        private ActivateDarknessTriggerAction activator;
-        private DeactivateDarknessTriggerAction deactivator;
+        private final List<DarknessDecorator> decorators;
+        private final ActivateDarknessTriggerAction activator;
+        private final DeactivateDarknessTriggerAction deactivator;
 
         public DarknessEffect(Player p, Card c) {
             super(p, c);
@@ -49,7 +49,7 @@ public class Darkness implements Card {
 
     private class ActivateDarknessTriggerAction implements TriggerAction {
 
-        private List<DarknessDecorator> l;
+        private final List<DarknessDecorator> l;
 
         public ActivateDarknessTriggerAction(List<DarknessDecorator> l) {
             this.l = l;
@@ -91,8 +91,8 @@ public class Darkness implements Card {
 
     private class ExpireDarknessTriggerAction implements TriggerAction {
 
-        private ActivateDarknessTriggerAction activator;
-        private DeactivateDarknessTriggerAction deactivator;
+        private final ActivateDarknessTriggerAction activator;
+        private final DeactivateDarknessTriggerAction deactivator;
 
         public ExpireDarknessTriggerAction(ActivateDarknessTriggerAction ac, DeactivateDarknessTriggerAction dc) {
             this.activator = ac;
