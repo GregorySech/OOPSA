@@ -10,14 +10,18 @@ import cardgame.Card;
 import cardgame.Effect;
 import cardgame.Player;
 import cardgame.CardGame;
+import cardgame.CardStack;
+import cardgame.SingleTargetEffect;
+import java.util.*;
+
 
 /**
  *
  * @author denny
  */
 public class Cancel implements Card {
-     private class CancelEffect extends AbstractCardEffect{
-
+     private class CancelEffect extends AbstractCardEffect implements SingleTargetEffect {
+        private Effect target;
         public CancelEffect(Player p, Card c){
             super(p,c);
         }
@@ -28,7 +32,28 @@ public class Cancel implements Card {
 
         @Override
         public void resolve(){
-            CardGame.instance.getStack().removeNext();
+            CardGame.instance.getStack().remove(target);
+        }
+
+        @Override
+        public void chooseTarget() {
+            int i =0,j; 
+            CardStack StackEffetti=CardGame.instance.getStack();
+            Iterator iter= StackEffetti.iterator();
+            while(iter.hasNext()){
+                System.out.println(Integer.toString(i + 1) + ") " + iter.next());
+            }
+            j=CardGame.instance.getScanner().nextInt();
+            iter = StackEffetti.iterator();
+            for(i=0;i<j-1;i++){
+               iter.next();
+            }
+            target=(Effect)iter.next();
+            }
+
+        @Override
+        public Object getTarget() {
+            return target;
         }
 
     }
