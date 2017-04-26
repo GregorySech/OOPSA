@@ -142,6 +142,7 @@ public class DefaultCombatPhase implements Phase {
             //creature damage
             for (Creature c : mylist) {
                 damagecreature = damagecreature + c.getCreatureDecoratorHead().getPower();
+                System.out.println("Statistics : ["+c.getCreatureDecoratorHead().getPower()+"/"+c.getCreatureDecoratorHead().getToughness()+"]");
                 System.out.println("Damage creature:" + damagecreature);
                 System.out.println("Toughness creature:" + (mycreature.getCreatureDecoratorHead().getToughness() - damagecreature));
             }

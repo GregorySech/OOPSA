@@ -25,29 +25,60 @@ public class CardGame {
     public static void main(String[] args) {
         //create decks
         ArrayList<Card> deck = new ArrayList<>();
-        for (int i = 0; i != 5; ++i) {
+        
+        for (int i = 0; i != 1; ++i) {
             deck.add(new AetherFlash());
         }
-        for (int i = 0; i != 5; ++i) {
+        for (int i = 0; i != 1; ++i) {
             deck.add(new ArgothianEnchantress());
         }
-        for (int i = 0; i != 5; ++i) {
+        for (int i = 0; i != 1; ++i) {
             deck.add(new NorwoodRanger());
         }
-        for (int i = 0; i != 5; ++i) {
+        for (int i = 0; i != 1; ++i) {
             deck.add(new VolcanicHammer());
         }
-        for (int i = 0; i != 5; ++i) {
+        for (int i = 0; i != 1; ++i) {
             deck.add(new Darkness());
         }
-        for (int i = 0; i != 5; ++i) {
-            deck.add(new DayOfJudgment());
-        }
-        for (int i = 0; i != 5; ++i) {
+        for (int i = 0; i != 1; ++i) {
             deck.add(new FalsePeace());
         }
-        for (int i = 0; i != 5; ++i){
+        for (int i = 0; i != 1; ++i){
             deck.add(new BronzeSable());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new AggressiveUrge());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new ArgothianEnchantress());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new AuraBlast());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new BoilingEarth());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new CalmingVerse());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new Cancel());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new DayOfJudgment());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new FalsePeace());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new Fatigue());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new SavorTheMoment());
+        }
+        for (int i = 0; i != 1; ++i){
+            deck.add(new VolcanicHammer());
         }
 
         instance.getPlayer(0).setDeck(deck.iterator());

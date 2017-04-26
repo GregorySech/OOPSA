@@ -27,6 +27,7 @@ public class Cancel implements Card {
         }
         @Override
         public boolean play(){
+            chooseTarget();
             return super.play();
         }
 

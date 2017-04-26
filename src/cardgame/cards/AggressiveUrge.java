@@ -53,15 +53,14 @@ public class AggressiveUrge implements Card {
         private void chooseCreature(Player p) {
 
             List<Creature> playerCreature = p.getCreatures();
-            List<Creature> plC = new ArrayList(playerCreature);
+            List<Creature> plC = new ArrayList();
 
-            for (Iterator<Creature> c = plC.iterator(); c.hasNext();) {
-                Creature cr = c.next();
-                if (!cr.targetable()) {
-                    c.remove();
+            for (Creature c : playerCreature) {
+                if (c.targetable()) {
+                    plC.add(c);
                 }
             }
-
+            
             int choose, i;
             do {
                 i = 0;
