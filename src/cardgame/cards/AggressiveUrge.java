@@ -12,6 +12,8 @@ import cardgame.Creature;
 import cardgame.Effect;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
+import cardgame.TriggerAction;
+import cardgame.Triggers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,9 +27,12 @@ public class AggressiveUrge implements Card {
     private class AggressiveUrgeEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Creature target;
+        private AggressiveUrgeTriggerAction deactivator;
+        private AggressiveUrgeDecorator decoratore;
 
         public AggressiveUrgeEffect(Player p, Card c) {
             super(p, c);
+            deactivator = new AggressiveUrgeTriggerAction(decoratore);
         }
 
         @Override
@@ -38,9 +43,8 @@ public class AggressiveUrge implements Card {
 
         @Override
         public void resolve() {
-            /* NON SO COSA METTERE COME PRIMO ARGOMENTO DEL DECORATORE CPTCD */
- /* poi visto che è un istantaneo andrebbe rimosso alla fine del turno, come si fa? */
-            target.addCreatureDecorator(new ChangePowerToughnessCreatureDecorator(target, 1, 1));
+            Triggers t= CardGame.instance.getTriggers();
+            t.register(Triggers.END_FILTER, deactivator);
         }
 
         private void chooseCreature(Player p) {
@@ -56,8 +60,8 @@ public class AggressiveUrge implements Card {
             }
 
             int choose, i;
-            i = 0;
             do {
+                i = 0;
                 for (Creature c : plC) {
                     System.out.println("[" + (++i) + "]" + c.toString());
                 }
@@ -107,6 +111,28 @@ public class AggressiveUrge implements Card {
         }
     }
 
+    private class AggressiveUrgeTriggerAction implements TriggerAction{
+        private AggressiveUrgeDecorator d ;
+       
+        public AggressiveUrgeTriggerAction( AggressiveUrgeDecorator decoratore){
+            this.d = d;
+        }
+        @Override
+        public void execute(Object args) {
+           d.removeCreatureDecorator(d);
+        }
+        
+    }
+    
+    private class AggressiveUrgeDecorator extends ChangePowerToughnessCreatureDecorator{
+        
+        public AggressiveUrgeDecorator(Creature decoratore, int powerAdded, int toughnessAdded) {
+            super(decoratore, 1, 1);
+        }
+        
+    }
+    
+    
     @Override
     public Effect getEffect(Player owner) {
         return new AggressiveUrgeEffect(owner, this);
