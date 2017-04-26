@@ -8,20 +8,21 @@ package cardgame;
 /**
  *
  * @author Elena
- * MANCANO FACTORY PER TUTTO TRANNE CREATURE
  */
 public class FactoryProducer {
     
-    public static AbstractFactory getFactory(String choice){
+    Factory fact = new Factory();
+    
+    public AbstractFactory getFactory(String choice){
         
         if(choice.equalsIgnoreCase("Creature"))
-            return new CreatureFactory();
-        /*if(choice.equalsIgnoreCase("Enchantment"))
-            return new EnchantmentFactory();
+            return fact.getCreatureFactory();
+        if(choice.equalsIgnoreCase("Enchantment"))
+            return fact.getEnchantmentFactory();
         if(choice.equalsIgnoreCase("Sorcery"))
-            return new SorceryFactory();
+            return fact.getSorceryFactory();
         if(choice.equalsIgnoreCase("Instant"))
-            return new InstantFactory();*/
+            return fact.getInstantFactory();
         
         return null;
     }
