@@ -27,7 +27,7 @@ public class AggressiveUrge implements Card {
     private class AggressiveUrgeEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Creature target;
-        private AggressiveUrgeTriggerAction deactivator;
+        private final AggressiveUrgeTriggerAction deactivator;
         private AggressiveUrgeDecorator decoratore;
 
         public AggressiveUrgeEffect(Player p, Card c) {

@@ -12,8 +12,9 @@ import cardgame.Creature;
 import cardgame.Effect;
 import cardgame.Enchantment;
 import cardgame.Player;
-import cardgame.TriggerAction;
-import cardgame.Triggers;
+import cardgame.SingleTargetEffect;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,7 +23,9 @@ import java.util.List;
  */
 public class Abduction implements Card{
     
-    private class AbductionEffect extends AbstractEnchantmentCardEffect{
+    private class AbductionEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect{
+        
+        private Creature target;
         
         public AbductionEffect(Player p, Card c){
             super(p,c);
@@ -35,13 +38,79 @@ public class Abduction implements Card{
         
         @Override
         public void resolve() {
-            /* come faccio a capire se una creatura è enchanted? */            
-            List<Creature> creatures = CardGame.instance.getCurrentAdversary().getCreatures();
-            for( Creature c: creatures )
-                c.untap();
-            creatures = CardGame.instance.getCurrentPlayer().getCreatures();
-            for( Creature c: creatures )
-                c.untap();
+            
+            if (target != null) {
+                    if(!owner.getCreatures().contains(target)){
+                        System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
+                        target.getCreatureDecoratorHead().changeOwner(owner);
+                    }
+                    target.untap();
+                    System.out.println(target.name()+" is untapped");
+            }
+            
+        }
+
+        private void chooseCreature(Player p) {
+
+            List<Creature> playerCreature = p.getCreatures();
+            List<Creature> plC = new ArrayList(playerCreature);
+
+            for (Iterator<Creature> c = plC.iterator(); c.hasNext();) {
+                Creature cr = c.next();
+                if (!cr.targetable()) {
+                    c.remove();
+                }
+            }
+
+            int choose, i;
+            do {
+                i = 0;
+                for (Creature c : plC) {
+                    System.out.println("[" + (++i) + "]" + c.toString());
+                }
+                System.out.println("[0] to end selection");
+
+                choose = CardGame.instance.getScanner().nextInt();
+                if (choose != 0 && choose <= plC.size()) {
+                    target = plC.get(choose - 1);
+                } else {
+                    target = null;
+                }
+
+            } while (choose < 0 || choose > plC.size());
+
+        }
+        
+        @Override
+        public void chooseTarget() {
+            int choose;
+            System.out.println("Abduction targetting phase : ");
+            do {
+                System.out.println("Whose creature do you want to target?");
+
+                System.out.println("[1]" + owner.name() + "\'s creature :");
+                for (Creature c : (owner).getCreatures()) {
+                    System.out.println("- " + c.toString());
+                }
+
+                System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
+                for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
+                    System.out.println("- " + c.toString());
+                }
+
+                choose = CardGame.instance.getScanner().nextInt();
+            } while (choose != 1 && choose != 2);
+
+            if (choose == 1) {
+                chooseCreature(owner);
+            } else {
+                chooseCreature(CardGame.instance.getRival(owner));
+            }
+        }
+
+        @Override
+        public Object getTarget() {
+            return target;
         }
     }
     
@@ -51,37 +120,9 @@ public class Abduction implements Card{
             super(owner);
         }
         
-        private final TriggerAction controlAction = new TriggerAction() {
-            @Override
-            public void execute(Object args) {
-                /* come faccio a capire se una creatura è enchanted? */
-                if (args != null && args instanceof Creature) {
-                    Creature c = (Creature) args;
-                    if(!owner.getCreatures().contains(c)){
-                        System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+c.name());
-                        c.getCreatureDecoratorHead().changeOwner(owner);
-                    }
-                }
-            }
-        };
-        
         @Override
         public String name() {
             return "Abduction";
-        }
-        
-        @Override
-        public void insert() {
-            /*CONTROLLARE SE è GIUSTO!*/
-            super.insert();
-            CardGame.instance.getTriggers().register(Triggers.ENTER_CREATURE_FILTER, controlAction);
-        }
-
-        @Override
-        public void remove() {
-            /*CONTROLLARE SE è GIUSTO!*/
-            super.remove();
-            CardGame.instance.getTriggers().deregister(controlAction);
         }
     }
 
