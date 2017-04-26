@@ -39,6 +39,9 @@ public class Cancel implements Card {
         @Override
         public void chooseTarget() {
             int i =0,j; 
+            System.out.println("Cancel targeting phase :");
+            System.out.println("Choose the target :");
+            
             CardStack StackEffetti=CardGame.instance.getStack();
             Iterator iter= StackEffetti.iterator();
             while(iter.hasNext()){

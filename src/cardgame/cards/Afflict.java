@@ -16,7 +16,6 @@ import cardgame.SingleTargetEffect;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -34,7 +33,6 @@ public class Afflict  implements Card{
        
        public AfflictEffect(Player p, Card c){
            super(p,c);
-           deactivator= new AfflictTriggerAction(di);
        }
        
       @Override
@@ -45,19 +43,25 @@ public class Afflict  implements Card{
 
        @Override
        public void resolve() {
-         Triggers t= CardGame.instance.getTriggers();
-         t.register(Triggers.END_FILTER, deactivator);
+           if(target != null){
+               di = new AfflictDecorator(target);
+               deactivator = new AfflictTriggerAction(di);
+                Triggers t= CardGame.instance.getTriggers();
+                t.register(Triggers.END_FILTER, deactivator);
+           }
+         if(target.getToughness() < 1){
+             target.remove();
+         }
            
        }
        private void chooseCreature(Player p) {
             int i = 0, j;
             List<Creature> playercreature = p.getCreatures();
             List<Creature> plc = new ArrayList(playercreature);
-            Creature cr = null;
-            for (Iterator<Creature> it = plc.iterator(); it.hasNext();) {
-                cr = it.next();
-                if (!(cr.targetable())) {
-                    it.remove();
+
+            for (Creature c : playercreature) {
+                if (c.targetable()) {
+                    plc.add(c);
                 }
             }
             do {
@@ -85,10 +89,10 @@ public class Afflict  implements Card{
                last=CardGame.instance.getScanner().nextInt();
            }while(last <1 || last > 2);
            if(last==1){
-               chooseCreature(CardGame.instance.getCurrentPlayer());
+               chooseCreature(owner);
            }
            else{
-                chooseCreature(CardGame.instance.getCurrentAdversary());
+                chooseCreature(CardGame.instance.getRival(owner));
            }
        }
 
@@ -101,8 +105,8 @@ public class Afflict  implements Card{
     private class AfflictTriggerAction implements TriggerAction{
         private AfflictDecorator d ;
        
-        public AfflictTriggerAction( AfflictDecorator d){
-            this.d=d;
+        public AfflictTriggerAction( AfflictDecorator decorator){
+            d=decorator;
         }
         @Override
         public void execute(Object args) {
@@ -113,7 +117,7 @@ public class Afflict  implements Card{
     
     private class AfflictDecorator extends ChangePowerToughnessCreatureDecorator{
         
-        public AfflictDecorator(Creature decoratore, int powerAdded, int toughnessAdded) {
+        public AfflictDecorator(Creature decoratore) {
             super(decoratore, -1, -1);
         }
         
