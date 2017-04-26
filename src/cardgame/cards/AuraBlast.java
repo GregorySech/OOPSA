@@ -22,7 +22,7 @@ public class AuraBlast implements Card {
 
     private class AuraBlastEffect extends AbstractCardEffect implements SingleTargetEffect{
 
-        private Object target;
+        private Enchantment target;
         public AuraBlastEffect(Player p, Card c){
             super(p,c);
         }
@@ -35,11 +35,11 @@ public class AuraBlast implements Card {
         @Override
         public void resolve(){
             if(target != null){
-                   ((Enchantment)target).remove();
-                    this.getOwner().draw();
+                   (target).remove();
+                    owner.draw();
             }
             else {
-                   this.getOwner().draw();
+                   owner.draw();
             } 
             
         }
@@ -50,15 +50,15 @@ public class AuraBlast implements Card {
             System.out.println("Aura Blast targeting phase : ");
             do{
                 System.out.println("Choose the owner of the enchantment to target:");
-                System.out.println("[1]" + "Player enchantment");
-                System.out.println("[2]" +"Adversary enchantment");
+                System.out.println("[1]" + "Player's enchantment");
+                System.out.println("[2]" +"Adversary's enchantment");
                 last= CardGame.instance.getScanner().nextInt();
             }while(last<1 || last >2);
             
             
             if(last==1){
                 int i =0,j; 
-                List <Enchantment> playerEnchantment=CardGame.instance.getCurrentPlayer().getEnchantments();
+                List <Enchantment> playerEnchantment=owner.getEnchantments();
                 do{
                     System.out.println("Choose the enchantment to target:");
                     for(Enchantment c: playerEnchantment){
@@ -79,7 +79,7 @@ public class AuraBlast implements Card {
             }
             else{
                 int i=0, j;
-                List <Enchantment> adversaryEnchantment=CardGame.instance.getCurrentAdversary().getEnchantments();
+                List <Enchantment> adversaryEnchantment=CardGame.instance.getRival(owner).getEnchantments();
                 do{
                     System.out.println("Choose the enchantment to target:");
                     for(Enchantment c: adversaryEnchantment){
