@@ -47,6 +47,9 @@ public class Afflict  implements Card{
        public void resolve() {
          Triggers t= CardGame.instance.getTriggers();
          t.register(Triggers.END_FILTER, deactivator);
+         if(target.getToughness() < 1){
+             target.remove();
+         }
            
        }
        private void chooseCreature(Player p) {
