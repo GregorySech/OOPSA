@@ -61,7 +61,7 @@ public class Player {
     }
 
     public void inflictDamage(int pts) {
-        s.inflictDamage(pts);
+        s.getHeadStrategy().inflictDamage(pts);
     }
 
     public void heal(int pts) {
