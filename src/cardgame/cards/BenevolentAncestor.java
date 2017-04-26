@@ -66,13 +66,14 @@ public class BenevolentAncestor implements Card {
         
         @Override
         public void attack(){
-            throw new UnsupportedOperationException("This creature can't attack");
+            /*throw new UnsupportedOperationException("This creature can't attack");*/
+            System.out.println("This creature can't attack");
         }
 
         @Override
         public void chooseTarget() {
              int last;
-            System.out.println("Benevolent Ancestor targetting phase : ");
+            System.out.println("Benevolent Ancestor targeting phase : ");
             do{
                 System.out.println("Choose the character to target :");
                 System.out.println("[1]" + "A Player");
@@ -81,28 +82,28 @@ public class BenevolentAncestor implements Card {
             }while(last < 1 || last > 2);
             if(last==1){
                 do{
-                   System.out.println("Choose the player to target :");
-                   System.out.println("[1]" + CardGame.instance.getCurrentPlayer().name());
-                   System.out.println("[2]" + CardGame.instance.getCurrentAdversary().name());
+                   System.out.println("Choose the target :");
+                   System.out.println("[1] Current player" + owner.name());
+                   System.out.println("[2] Adversary player" + CardGame.instance.getRival(owner).name());
                    last= CardGame.instance.getScanner().nextInt();
                 }while(last<1 || last >2);
                 if(last==1){
-                   targetp=CardGame.instance.getCurrentPlayer();
+                   targetp=owner;
                 }
                 else {
-                   targetp=CardGame.instance.getCurrentAdversary();
+                   targetp=CardGame.instance.getRival(owner);
                 }
             }
             else {
                 System.out.println("Choose the owner of the creature you want to target:");
                 do{
-                   System.out.println("[1]" + "Player creatures");
-                   System.out.println("[2]" +"Adversary Creature");
+                   System.out.println("[1]" + "Player's creatures");
+                   System.out.println("[2]" +"Adversary's creature");
                    last= CardGame.instance.getScanner().nextInt();
                 }while(last<1 || last >2);
                 if(last==1){
                    int i =0,j; 
-                   List <Creature> playercreature=CardGame.instance.getCurrentPlayer().getCreatures();
+                   List <Creature> playercreature=owner.getCreatures();
                       for(Creature c: playercreature){
                            System.out.println(Integer.toString(i + 1) + ") " +playercreature.get(i));
                        }
@@ -116,7 +117,7 @@ public class BenevolentAncestor implements Card {
                 }
                 else{
                     int i=0, j;
-                     List <Creature> adversarycreature=CardGame.instance.getCurrentAdversary().getCreatures();
+                     List <Creature> adversarycreature=CardGame.instance.getRival(owner).getCreatures();
                        for(Creature c: adversarycreature){
                             System.out.println(Integer.toString(i + 1) + ") " + adversarycreature.get(i));
                         }
