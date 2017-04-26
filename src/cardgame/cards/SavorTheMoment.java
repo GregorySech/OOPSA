@@ -21,7 +21,8 @@ public class SavorTheMoment implements Card {
 
         @Override
         public void resolve() {
-            /* NON CAPISCO COME FARLO!! */
+            owner.setPhase(Phases.NULL, new SkipPhase(Phases.NULL));
+            owner.setPhase(Phases.UNTAP, new SkipPhase(Phases.UNTAP));
         }
     }
 

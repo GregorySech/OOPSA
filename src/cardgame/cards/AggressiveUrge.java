@@ -27,12 +27,11 @@ public class AggressiveUrge implements Card {
     private class AggressiveUrgeEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Creature target;
-        private final AggressiveUrgeTriggerAction deactivator;
+        private AggressiveUrgeTriggerAction deactivator;
         private AggressiveUrgeDecorator decoratore;
 
         public AggressiveUrgeEffect(Player p, Card c) {
             super(p, c);
-            deactivator = new AggressiveUrgeTriggerAction(decoratore);
         }
 
         @Override
@@ -43,8 +42,12 @@ public class AggressiveUrge implements Card {
 
         @Override
         public void resolve() {
-            Triggers t= CardGame.instance.getTriggers();
-            t.register(Triggers.END_FILTER, deactivator);
+            if(target!=null){
+                decoratore = new AggressiveUrgeDecorator(target);
+                deactivator = new AggressiveUrgeTriggerAction(decoratore);
+                Triggers t= CardGame.instance.getTriggers();
+                t.register(Triggers.END_FILTER, deactivator);
+            }
         }
 
         private void chooseCreature(Player p) {
@@ -115,8 +118,9 @@ public class AggressiveUrge implements Card {
         private AggressiveUrgeDecorator d ;
        
         public AggressiveUrgeTriggerAction( AggressiveUrgeDecorator decoratore){
-            this.d = d;
+            d = decoratore;
         }
+        
         @Override
         public void execute(Object args) {
            d.removeCreatureDecorator(d);
@@ -126,7 +130,7 @@ public class AggressiveUrge implements Card {
     
     private class AggressiveUrgeDecorator extends ChangePowerToughnessCreatureDecorator{
         
-        public AggressiveUrgeDecorator(Creature decoratore, int powerAdded, int toughnessAdded) {
+        public AggressiveUrgeDecorator(Creature decoratore) {
             super(decoratore, 1, 1);
         }
         

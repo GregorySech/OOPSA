@@ -1,8 +1,5 @@
-/*
- * DEVO FARE UNTAP DELLE ENCHANTED CREATURE E CAMBIARE OWNER NELLE ENCHANTED CREATURE NON CONTROLLATE DALL'OWNER DI ABDUCTION
- */
 package cardgame.cards;
-
+/*MANCA IL QUANDO MUORE*/
 
 import cardgame.AbstractEnchantment;
 import cardgame.AbstractEnchantmentCardEffect;
@@ -38,7 +35,7 @@ public class Abduction implements Card{
         
         @Override
         public void resolve() {
-            
+            /* forse è meglio nell'insert */
             if (target != null) {
                     if(!owner.getCreatures().contains(target)){
                         System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
@@ -47,6 +44,8 @@ public class Abduction implements Card{
                     target.untap();
                     System.out.println(target.name()+" is untapped");
             }
+            
+            super.resolve();
             
         }
 
