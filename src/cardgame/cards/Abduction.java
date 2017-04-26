@@ -10,6 +10,7 @@ import cardgame.Effect;
 import cardgame.Enchantment;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
+import cardgame.Triggers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.List;
  * @author Elena
  */
 public class Abduction implements Card{
-    
-    private class AbductionEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect{
         
         private Creature target;
+        
+    private class AbductionEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect{
+        
+        
         
         public AbductionEffect(Player p, Card c){
             super(p,c);
@@ -33,9 +36,8 @@ public class Abduction implements Card{
             return new AbductionEnchantment(owner);
         }
         
-        @Override
+        /*@Override
         public void resolve() {
-            /* forse è meglio nell'insert */
             if (target != null) {
                     if(!owner.getCreatures().contains(target)){
                         System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
@@ -47,7 +49,7 @@ public class Abduction implements Card{
             
             super.resolve();
             
-        }
+        }*/
 
         private void chooseCreature(Player p) {
 
@@ -115,8 +117,30 @@ public class Abduction implements Card{
     
     private class AbductionEnchantment extends AbstractEnchantment{
 
+        private Player originalTargetOwner = owner;
         public AbductionEnchantment(Player owner){
             super(owner);
+        }
+        
+        @Override
+        public void insert() {
+            if (target != null) {
+                    if(!owner.getCreatures().contains(target)){
+                        originalTargetOwner = CardGame.instance.getRival(owner);
+                        System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
+                        target.getCreatureDecoratorHead().changeOwner(owner);
+                    }
+                    target.untap();
+                    System.out.println(target.name()+" is untapped");
+            }
+            super.insert();
+        }
+        
+        @Override
+        public void remove(){
+            /*creatura target torna nelle mani del suo owner originale*/
+            target.getCreatureDecoratorHead().changeOwner(originalTargetOwner);
+            super.remove();
         }
         
         @Override
