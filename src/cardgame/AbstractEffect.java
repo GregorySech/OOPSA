@@ -13,6 +13,7 @@ public abstract class AbstractEffect implements Effect {
     @Override
     public boolean play() { 
         CardGame.instance.getStack().add(this);
+        CardGame.instance.getTriggers().trigger(Triggers.EFFECT_CASTED,this);
         return true;
     }
 }

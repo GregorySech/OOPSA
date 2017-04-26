@@ -77,5 +77,7 @@ public class Triggers {
     public static final int START_DAMAGE_SUBPHASE_FILTER = 512;
     public static final int END_DAMAGE_SUBPHASE_FILTER = 1024;
     public static final int EFFECT_CASTED = 2048;
+    
+    public static final int ATTACKED_FILTER = 4096;
 
 }
