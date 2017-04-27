@@ -157,7 +157,7 @@ public class CardGame {
         return turnManagerStack.peek().nextPlayer();
     }
 
-    int getPlayerID(Player p) {
+    public int getPlayerID(Player p) {
         return p == Players[0] ? 0 : 1;
     }
 
