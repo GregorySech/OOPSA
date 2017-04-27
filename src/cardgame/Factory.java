@@ -19,28 +19,29 @@ public class Factory{
     public SorceryFactory getSorceryFactory(){ return new SorceryFactory(); }
     public InstantFactory getInstantFactory(){ return new InstantFactory(); }
     
-    public class CreatureFactory extends AbstractFactory {
+    public class CreatureFactory extends AbstractFactory{
 
         @Override
         public Card getCreature(String creature) {
 
             if(creature == null)
                 return null;
+            if(creature.equalsIgnoreCase("Argothian Enchantress"))
+                return new ArgothianEnchantress();
+            if(creature.equalsIgnoreCase("Benevolent Ancestor"))
+                return new BenevolentAncestor();
             if(creature.equalsIgnoreCase("Bronze Sable"))
                 return new BronzeSable();
             if(creature.equalsIgnoreCase("Norwood Ranger"))
                 return new NorwoodRanger();
-            if(creature.equalsIgnoreCase("Argothian Enchantress"))
-                return new ArgothianEnchantress();
-            /*if(creature.equalsIgnoreCase("Benevolent Ancestor"))
-                return new BenevolentAnchestor();*/
+            
 
             return null;
         }
 
     }
     
-    public class EnchantmentFactory extends AbstractFactory {
+    public class EnchantmentFactory extends AbstractFactory{
 
         @Override
         public Card getEnchantment(String enchantment) {
@@ -51,6 +52,8 @@ public class Factory{
                 return new Abduction();
             if(enchantment.equalsIgnoreCase("Aether Barrier"))
                 return new AetherBarrier();
+            if(enchantment.equalsIgnoreCase("Aether Flash"))
+                return new AetherFlash();
             if(enchantment.equalsIgnoreCase("Ancestral Mask"))
                 return new AncestralMask();
 
@@ -80,8 +83,8 @@ public class Factory{
                 return new SavorTheMoment();
             if(sorcery.equalsIgnoreCase("Volcanic Hammer"))
                 return new VolcanicHammer();
-            /*if(sorcery.equalsIgnoreCase("World at War"))
-                return new WorldAtWar();*/
+            if(sorcery.equalsIgnoreCase("World at War"))
+                return new WorldAtWar();
             
             return null;
         }
