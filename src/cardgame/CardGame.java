@@ -24,13 +24,14 @@ public class CardGame {
     
     public static void main(String[] args) {
         //create decks
-        ArrayList<Card> deck = new ArrayList<>();
+        ArrayList<Card> deck1 = new ArrayList<>();
+        ArrayList<Card> deck2 = new ArrayList<>();
         
         
-        createDeck(deck,1);
-        instance.getPlayer(0).setDeck(deck.iterator());
-        createDeck(deck,2);
-        instance.getPlayer(1).setDeck(deck.iterator());
+        createDeck(deck1,1);
+        instance.getPlayer(0).setDeck(deck1.iterator());
+        createDeck(deck2,2);
+        instance.getPlayer(1).setDeck(deck2.iterator());
 
         instance.run();
     }
