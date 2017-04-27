@@ -1,5 +1,6 @@
 package cardgame.cards;
-/*MANCA IL QUANDO MUORE*/
+
+/* NON FUUNZIONA IL QUANDO MUORE */
 
 import cardgame.AbstractEnchantment;
 import cardgame.AbstractEnchantmentCardEffect;
@@ -10,7 +11,6 @@ import cardgame.Effect;
 import cardgame.Enchantment;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
-import cardgame.Triggers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +50,12 @@ public class Abduction implements Card{
             super.resolve();
             
         }*/
+        
+        @Override
+        public boolean play(){
+            chooseTarget();
+            return super.play();
+        }
 
         private void chooseCreature(Player p) {
 
@@ -127,7 +133,6 @@ public class Abduction implements Card{
             if (target != null) {
                     if(!owner.getCreatures().contains(target)){
                         originalTargetOwner = CardGame.instance.getRival(owner);
-                        System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
                         target.getCreatureDecoratorHead().changeOwner(owner);
                     }
                     target.untap();

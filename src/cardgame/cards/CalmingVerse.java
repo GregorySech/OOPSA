@@ -6,6 +6,7 @@ import cardgame.CardGame;
 import cardgame.Effect;
 import cardgame.Enchantment;
 import cardgame.Player;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class CalmingVerse implements Card{
         }
         @Override
         public void resolve() {
-            List<Enchantment> enchantmentsAdversary = CardGame.instance.getCurrentAdversary().getEnchantments();
+            List<Enchantment> enchantmentsAdversary = new ArrayList(CardGame.instance.getCurrentAdversary().getEnchantments());
             for( Enchantment e : enchantmentsAdversary )
                 e.remove();
         }
