@@ -9,13 +9,16 @@ import cardgame.AbstractCardEffect;
 import cardgame.Card;
 import cardgame.CardGame;
 import cardgame.Creature;
-import cardgame.CreatureDecorator;
+import cardgame.DefaultCombatPhase;
 import cardgame.Effect;
+import cardgame.Phase;
+import cardgame.Phases;
 import cardgame.Player;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
-import java.util.ArrayList;
+import cardgame.combatStrategy.DamageStrategyDecorator;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -25,100 +28,52 @@ public class Darkness implements Card {
 
     private class DarknessEffect extends AbstractCardEffect {
 
-        private final List<DarknessDecorator> decorators;
-        private final ActivateDarknessTriggerAction activator;
-        private final DeactivateDarknessTriggerAction deactivator;
+        DarknessStrategyDecorator dsd;
 
         public DarknessEffect(Player p, Card c) {
             super(p, c);
-            decorators = new ArrayList<>();
-            activator = new ActivateDarknessTriggerAction(decorators);
-            deactivator = new DeactivateDarknessTriggerAction(decorators);
-
         }
 
         @Override
         public void resolve() {
-            Triggers tr = CardGame.instance.getTriggers();
-            tr.register(Triggers.START_DAMAGE_SUBPHASE_FILTER, activator);
-            tr.register(Triggers.END_DAMAGE_SUBPHASE_FILTER, deactivator);
-            tr.register(Triggers.END_FILTER, new ExpireDarknessTriggerAction(activator, deactivator));
-        }
-
-    }
-
-    private class ActivateDarknessTriggerAction implements TriggerAction {
-
-        private final List<DarknessDecorator> l;
-
-        public ActivateDarknessTriggerAction(List<DarknessDecorator> l) {
-            this.l = l;
-        }
-
-        @Override
-        public void execute(Object args) {
-            DarknessDecorator dec;
-            for (Creature c : CardGame.instance.getCurrentPlayer().getCreatures()) {
-                dec = new DarknessDecorator(c);
-                l.add(dec);
-                c.addCreatureDecorator(dec);
-            }
-            for (Creature c : CardGame.instance.getCurrentAdversary().getCreatures()) {
-                dec = new DarknessDecorator(c);
-                l.add(dec);
-                c.addCreatureDecorator(dec);
+            dsd = new DarknessStrategyDecorator();
+            Phase p = CardGame.instance.getCurrentPlayer().getPhase(Phases.COMBAT);
+            if (p instanceof DefaultCombatPhase) {
+                DefaultCombatPhase dcp = (DefaultCombatPhase) p;
+                dcp.getDamageStrategy().decorate(dsd);
+                CardGame.instance.getTriggers().register(Triggers.END_FILTER, new DarknessDeactivator(dsd));
             }
         }
 
     }
 
-    private class DeactivateDarknessTriggerAction implements TriggerAction {
+    private class DarknessDeactivator implements TriggerAction {
 
-        private List<DarknessDecorator> l;
+        DarknessStrategyDecorator dsd;
 
-        public DeactivateDarknessTriggerAction(List<DarknessDecorator> l) {
-            this.l = l;
+        public DarknessDeactivator(DarknessStrategyDecorator dsd) {
+            this.dsd = dsd;
         }
 
         @Override
         public void execute(Object args) {
-            for (DarknessDecorator dd : l) {
-                dd.removeCreatureDecorator(dd);
+            Phase p = CardGame.instance.getCurrentPlayer().getPhase(Phases.COMBAT);
+            if (p instanceof DefaultCombatPhase) {
+                DefaultCombatPhase dcp = (DefaultCombatPhase) p;
+                dcp.getDamageStrategy().removeDecorator(dsd);
             }
-        }
-
-    }
-
-    private class ExpireDarknessTriggerAction implements TriggerAction {
-
-        private final ActivateDarknessTriggerAction activator;
-        private final DeactivateDarknessTriggerAction deactivator;
-
-        public ExpireDarknessTriggerAction(ActivateDarknessTriggerAction ac, DeactivateDarknessTriggerAction dc) {
-            this.activator = ac;
-            this.deactivator = dc;
-        }
-
-        @Override
-        public void execute(Object args) {
-            CardGame.instance.getTriggers().deregister(activator);
-            CardGame.instance.getTriggers().deregister(deactivator);
             CardGame.instance.getTriggers().deregister(this);
         }
 
     }
 
-    private class DarknessDecorator extends CreatureDecorator {
-
-        public DarknessDecorator(Creature decoratedCreature) {
-            super(decoratedCreature);
-        }
+    private class DarknessStrategyDecorator extends DamageStrategyDecorator {
 
         @Override
-        public int getPower() {
-            return 0;
+        public void damageSubPhase(Map<Creature, List<Creature>> battles) {
+            CardGame.instance.getTriggers().trigger(Triggers.START_DAMAGE_SUBPHASE_FILTER);
+            CardGame.instance.getTriggers().trigger(Triggers.END_DAMAGE_SUBPHASE_FILTER);
         }
-
     }
 
     @Override
@@ -150,5 +105,4 @@ public class Darkness implements Card {
     public String toString() {
         return name() + " (" + type() + ") [" + ruleText() + "]";
     }
-
 }
