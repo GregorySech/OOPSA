@@ -213,6 +213,12 @@ public class BenevolentAncestor implements Card {
             return true;
         }
 
+        @Override
+        public boolean isDefender() {
+            return true;
+        }
+
+        
     }
 
     @Override

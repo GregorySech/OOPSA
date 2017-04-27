@@ -20,6 +20,8 @@ public interface Creature extends Permanent {
     void defend(Creature c);
     void inflictDamage(int dmg);
     void resetDamage();
+    int getDamageLeft();
+    void setDamageLeft(int dmg);
     int getPower();
     int getToughness();
     
@@ -35,5 +37,5 @@ public interface Creature extends Permanent {
     Creature getCreatureDecoratorHead();
     void addCreatureDecorator(CreatureDecorator cd);
     void removeCreatureDecorator(CreatureDecorator cd);
-    
+    boolean isDefender();
 }

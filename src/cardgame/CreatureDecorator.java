@@ -127,4 +127,21 @@ public abstract class CreatureDecorator implements Creature {
         return decoratedCreature.toString();
     }
 
+    @Override
+    public boolean isDefender() {
+        return decoratedCreature.isDefender();
+    }
+
+    @Override
+    public int getDamageLeft() {
+        return decoratedCreature.getDamageLeft();
+    }
+
+    @Override
+    public void setDamageLeft(int dmg) {
+        decoratedCreature.setDamageLeft(dmg);
+    }
+    
+    
+
 }

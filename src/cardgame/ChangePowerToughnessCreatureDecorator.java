@@ -9,22 +9,26 @@ package cardgame;
  *
  * @author Elena
  */
-public class ChangePowerToughnessCreatureDecorator extends CreatureDecorator{
-   
+public class ChangePowerToughnessCreatureDecorator extends CreatureDecorator {
+
     private final int powerAdded;
     private final int toughnessAdded;
-    
-    public ChangePowerToughnessCreatureDecorator(Creature decoratore,int powerAdded,int toughnessAdded){
+
+    public ChangePowerToughnessCreatureDecorator(Creature decoratore, int powerAdded, int toughnessAdded) {
         super(decoratore);
-        this.powerAdded=powerAdded;
-        this.toughnessAdded=toughnessAdded;
+        this.powerAdded = powerAdded;
+        this.toughnessAdded = toughnessAdded;
+
     }
-    
+
     @Override
-    public int getPower(){ return decoratedCreature.getPower()+powerAdded; }
-    
+    public int getPower() {
+        return decoratedCreature.getPower() + powerAdded;
+    }
+
     @Override
-    public int getToughness(){ return decoratedCreature.getToughness()+toughnessAdded; }
-    
-    
+    public int getToughness() {
+        return decoratedCreature.getToughness() + toughnessAdded;
+    }
+
 }

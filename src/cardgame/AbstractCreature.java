@@ -70,7 +70,7 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void resetDamage() {
-        damageLeft = getToughness();
+        damageLeft = getCreatureDecoratorHead().getToughness();
     }
 
     @Override
@@ -117,4 +117,21 @@ public abstract class AbstractCreature implements Creature {
         insert();
     }
 
+    @Override
+    public boolean isDefender() {
+        return false;
+    }
+
+    @Override
+    public int getDamageLeft() {
+        return damageLeft;
+    }
+
+    @Override
+    public void setDamageLeft(int dmg) {
+        this.damageLeft = dmg;
+    }
+
+    
+    
 }

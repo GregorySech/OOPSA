@@ -5,8 +5,8 @@
  */
 package cardgame;
 
-import cardgame.damageStrategy.DefaultInflictDamageStrategy;
-import cardgame.damageStrategy.InflictDamageStrategy;
+import cardgame.playerDamageStrategy.DefaultInflictDamageStrategy;
+import cardgame.playerDamageStrategy.InflictDamageStrategy;
 import java.util.Iterator;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
