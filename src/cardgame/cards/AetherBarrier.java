@@ -5,6 +5,7 @@
  */
 package cardgame.cards;
 
+import cardgame.AbstractCreatureCardEffect;
 import cardgame.AbstractEnchantment;
 import cardgame.AbstractEnchantmentCardEffect;
 import cardgame.Card;
@@ -39,14 +40,14 @@ public class AetherBarrier implements Card {
     }
     
     private class AetherBarrierEnchantment extends AbstractEnchantment  {
-       private Permanent target;
+      
        TriggerAction D;
         AetherBarrierEnchantment(Player owner){
             super(owner);
         }
         
         
-       private void choosePermanent(Player p) {
+       private Permanent choosePermanent(Player p) {
             int i = 0, j;
             List<Permanent> plP = new ArrayList();
             List<Creature> c= p.getCreatures();
@@ -59,19 +60,23 @@ public class AetherBarrier implements Card {
                 plP.add(ei);
             }
             
-            do {
-                i = 0;
-                for (Permanent pe : plP) {
-                    System.out.println("[" + (++i) + "]" + c);
-                }
-                System.out.println("[0] to end selection");
-                j = CardGame.instance.getScanner().nextInt();
-                if (j != 0 && j <= plP.size()) {
-                    target = plP.get(j - 1);
-                } else {
-                    target = null;
-                }
-            } while (j < 0 || j > plP.size());
+            if(plP.isEmpty()){
+                return null;
+            }
+            else{
+                do {
+                    i = 0;
+                    for (Permanent pe : plP) {
+                        System.out.println("[" + (++i) + "]" + c);
+                    }
+                    j = CardGame.instance.getScanner().nextInt();
+                    if (j > 0 && j <= plP.size()) {
+                        return plP.get(j - 1);
+                    } else {
+                        return null;
+                    }
+                } while (j < 0 || j > plP.size());
+            }
         }
 
       
@@ -86,11 +91,8 @@ public class AetherBarrier implements Card {
          
             @Override
             public void execute(Object args) {
-                if(args instanceof AbstractEnchantmentCardEffect){
-                      AbstractEnchantmentCardEffect enchantment = (AbstractEnchantmentCardEffect) args;
-                    if (enchantment.getOwner() == p) {
-                        choosePermanent(p);
-                      }
+                if(args instanceof AbstractCreatureCardEffect){
+                      choosePermanent(p).remove();  
                 }
             }
            
