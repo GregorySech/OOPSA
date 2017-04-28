@@ -20,13 +20,13 @@ public class DefaultAttackersStrategy implements AttackersStrategy {
 
     public List<Creature> attackSubPhase() {
         List<Creature> attackers = new LinkedList<>();
-        List<Creature> possible = new ArrayList<>(CardGame.instance.getCurrentPlayer().getCreatures());
+        List<Creature> possible = new ArrayList<>();
         Creature t;
         Scanner reader = CardGame.instance.getScanner();
         int i, lastChoice;
-        for (Creature c : possible) {
-            if (c.getCreatureDecoratorHead().isTapped()) {
-                possible.remove(c);
+        for (Creature c : CardGame.instance.getCurrentPlayer().getCreatures()) {
+            if (!c.getCreatureDecoratorHead().isTapped() && !c.getCreatureDecoratorHead().isDefender()) {
+                possible.add(c);
             }
         }
 
