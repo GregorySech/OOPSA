@@ -5,6 +5,10 @@
  */
 package cardgame;
 
+import cardgame.cards.AggressiveUrge;
+import cardgame.cards.ArgothianEnchantress;
+import cardgame.cards.BronzeSable;
+import cardgame.cards.WorldAtWar;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -27,11 +31,16 @@ public class CardGame {
         ArrayList<Card> deck1 = new ArrayList<>();
         ArrayList<Card> deck2 = new ArrayList<>();
         
-        
-        createDeck(deck1,1);
+        for(int i = 0; i < 5; i++){
+            deck1.add(new WorldAtWar());
+            deck1.add(new BronzeSable());
+            deck1.add(new ArgothianEnchantress());
+            deck1.add(new AggressiveUrge());
+        }
+        //createDeck(deck1,1);
         instance.getPlayer(0).setDeck(deck1.iterator());
-        createDeck(deck2,2);
-        instance.getPlayer(1).setDeck(deck2.iterator());
+        //createDeck(deck2,2);
+        instance.getPlayer(1).setDeck(deck1.iterator());
 
         instance.run();
     }

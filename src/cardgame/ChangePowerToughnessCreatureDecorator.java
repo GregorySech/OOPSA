@@ -18,7 +18,6 @@ public class ChangePowerToughnessCreatureDecorator extends CreatureDecorator {
         super(decoratore);
         this.powerAdded = powerAdded;
         this.toughnessAdded = toughnessAdded;
-
     }
 
     @Override

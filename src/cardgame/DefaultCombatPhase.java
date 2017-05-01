@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @author atorsell
  */
-public class DefaultCombatPhase implements Phase {
+public class DefaultCombatPhase implements CombatPhase {
 
     private DamageStrategy ds;
     private AttackersStrategy as;
@@ -58,15 +58,15 @@ public class DefaultCombatPhase implements Phase {
     protected void damageSubPhase(Map<Creature, List<Creature>> battles) {
         ds.getFirst().damageSubPhase(battles);
     }
-
+    @Override
     public DamageStrategy getDamageStrategy() {
         return ds;
     }
-
+    @Override
     public AttackersStrategy getAttackersStrategy() {
         return as;
     }
-
+    @Override
     public DefendersStrategy getDefendersStrategy() {
         return defs;
     }

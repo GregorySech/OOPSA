@@ -141,7 +141,5 @@ public abstract class CreatureDecorator implements Creature {
     public void setDamageLeft(int dmg) {
         decoratedCreature.setDamageLeft(dmg);
     }
-    
-    
 
 }

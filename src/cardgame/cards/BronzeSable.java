@@ -18,30 +18,35 @@ import java.util.List;
  *
  * @author Elena
  */
-public class BronzeSable implements Card{
-    
-     
-    public class BronzeSableEffect extends AbstractCreatureCardEffect{
-            public BronzeSableEffect(Player p, Card c){super(p,c);}
-            @Override
-            protected Creature createCreature() { return new BronzeSableCreature(owner); }
+public class BronzeSable implements Card {
+
+    public class BronzeSableEffect extends AbstractCreatureCardEffect {
+
+        public BronzeSableEffect(Player p, Card c) {
+            super(p, c);
+        }
+
+        @Override
+        protected Creature createCreature() {
+            Creature basic = new BronzeSableCreature(owner);
+            return basic.getCreatureDecoratorHead();
+        }
     }
-    
 
     @Override
     public Effect getEffect(Player owner) {
-        return new BronzeSableEffect(owner,this);
+        return new BronzeSableEffect(owner, this);
     }
-    
-    private class BronzeSableCreature extends AbstractCreature{
-        
-        ArrayList<Effect> all_effects= new ArrayList<>();
-        ArrayList<Effect> tap_effects= new ArrayList<>();
-        
-        BronzeSableCreature(Player owner){
+
+    private class BronzeSableCreature extends AbstractCreature {
+
+        ArrayList<Effect> all_effects = new ArrayList<>();
+        ArrayList<Effect> tap_effects = new ArrayList<>();
+
+        BronzeSableCreature(Player owner) {
             super(owner);
         }
-        
+
         @Override
         public int getPower() {
             return 2;
@@ -64,14 +69,14 @@ public class BronzeSable implements Card{
 
         @Override
         public String name() {
-            return "Bronze Sable";            
+            return "Bronze Sable";
         }
-    
+
     }
 
     @Override
     public String name() {
-            return "Bronze Sable";            
+        return "Bronze Sable";
     }
 
     @Override
@@ -88,9 +93,10 @@ public class BronzeSable implements Card{
     public boolean isInstant() {
         return false;
     }
-    
-   @Override
-    public String toString() { return name() + " (" + type() + ") [" + ruleText() +"]";}
-   
-    
+
+    @Override
+    public String toString() {
+        return name() + " (" + type() + ") [" + ruleText() + "]";
+    }
+
 }

@@ -29,7 +29,8 @@ public class Reflexologist implements Card {
 
         @Override
         protected Creature createCreature() {
-            return new ReflexologistCreature(owner);
+            Creature basic = new ReflexologistCreature(owner);
+            return basic.getCreatureDecoratorHead();
         }
     }
 

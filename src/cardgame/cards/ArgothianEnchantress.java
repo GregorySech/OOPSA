@@ -32,7 +32,8 @@ public class ArgothianEnchantress implements Card {
 
         @Override
         protected Creature createCreature() {
-            return new ArgothianEnchantressCreature(owner);
+            Creature basicCreature = new ArgothianEnchantressCreature(owner);
+            return basicCreature.getCreatureDecoratorHead();
         }
     }
 
@@ -76,11 +77,9 @@ public class ArgothianEnchantress implements Card {
         @Override
         public void remove() {
             CardGame.instance.getTriggers().deregister(DrawOnEnchantmentCast);
-            super.remove(); 
+            super.remove();
         }
 
-        
-        
         @Override
         public int getPower() {
             return 0;

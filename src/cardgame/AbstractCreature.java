@@ -132,6 +132,4 @@ public abstract class AbstractCreature implements Creature {
         this.damageLeft = dmg;
     }
 
-    
-    
 }

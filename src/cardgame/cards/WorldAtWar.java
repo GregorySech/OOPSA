@@ -8,12 +8,16 @@ package cardgame.cards;
 import cardgame.AbstractCardEffect;
 import cardgame.Card;
 import cardgame.CardGame;
+import cardgame.Creature;
 import cardgame.Effect;
+import cardgame.PhaseManager;
 import cardgame.Phases;
 import cardgame.Player;
-import cardgame.SkipPhase;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 /**
  *
@@ -21,34 +25,79 @@ import cardgame.Triggers;
  */
 public class WorldAtWar implements Card {
 
-    private class WorldAtWarEffect extends AbstractCardEffect {
-        
-        private final TriggerAction trig = new TriggerAction() {
-            @Override
-            public void execute(Object args) {
-                /*SE NON HO CAPITO MALE QUI CI VA LA PARTE IN CUI PRENDO QUELLI CHE HANNO ATTACCATO*/
+    List<Creature> lastAttackers;
+    private final TriggerAction trig = new TriggerAction() {
+        @Override
+        public void execute(Object args) {
+            if (args != null) {
+                if (args instanceof List) {
+                    lastAttackers = (List<Creature>) args;
+                }
             }
-        };
+        }
+    };
 
-        public WorldAtWarEffect(Player p, Card c) {
+    private class WorldAtWarEffect extends AbstractCardEffect {
+
+        List<Creature> attackers;
+
+        public WorldAtWarEffect(Player p, Card c, List<Creature> attackers) {
             super(p, c);
+            this.attackers = attackers;
         }
 
         @Override
         public void resolve() {
-            owner.setPhase(Phases.END, new SkipPhase(Phases.END));
-            owner.setPhase(Phases.NULL, new SkipPhase(Phases.NULL));
-            owner.setPhase(Phases.DRAW, new SkipPhase(Phases.DRAW));
-            owner.setPhase(Phases.UNTAP, new SkipPhase(Phases.UNTAP));
-            Triggers t= CardGame.instance.getTriggers();
-            t.register(Triggers.ATTACKER_FILTER, trig);
-            
+            WorldAtWarManager wawm = new WorldAtWarManager(owner, attackers);
+            owner.setPhaseManager(wawm);
+        }
+    }
+
+    private class WorldAtWarManager implements PhaseManager {
+
+        Deque<Phases> phases;
+        Phases current;
+        Player p;
+        List<Creature> lastAttackers;
+
+        public WorldAtWarManager(Player p, List<Creature> attackers) {
+            phases = new ArrayDeque<>();
+            phases.push(Phases.COMBAT);
+            phases.push(Phases.MAIN);
+            current = Phases.MAIN;
+            this.p = p;
+            this.lastAttackers = attackers;
+        }
+
+        @Override
+        public Phases currentPhase() {
+            return current;
+        }
+
+        @Override
+        public Phases nextPhase() {
+            current = phases.pop();
+            Phases retp = currentPhase();
+            if (retp == Phases.COMBAT && lastAttackers != null) {
+                for (Creature c : lastAttackers) {
+                    c.untap();
+                }
+            }
+            if (phases.isEmpty()) {
+                p.removePhaseManager(this);
+            }
+            return retp;
         }
     }
 
     @Override
     public Effect getEffect(Player owner) {
-        return new WorldAtWarEffect(owner, this);
+        return new WorldAtWarEffect(owner, this, lastAttackers);
+    }
+
+    public WorldAtWar() {
+        super();
+        CardGame.instance.getTriggers().register(Triggers.ATTACKER_FILTER, trig);
     }
 
     @Override

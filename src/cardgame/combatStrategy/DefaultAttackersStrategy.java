@@ -7,6 +7,7 @@ package cardgame.combatStrategy;
 
 import cardgame.CardGame;
 import cardgame.Creature;
+import cardgame.Triggers;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class DefaultAttackersStrategy implements AttackersStrategy {
                 attackers.remove(a);
             }
         }
+        CardGame.instance.getTriggers().trigger(Triggers.ATTACKER_FILTER, attackers);
         return attackers;
     }
 

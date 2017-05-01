@@ -8,8 +8,8 @@ package cardgame.cards;
 import cardgame.AbstractCardEffect;
 import cardgame.Card;
 import cardgame.CardGame;
+import cardgame.CombatPhase;
 import cardgame.Creature;
-import cardgame.DefaultCombatPhase;
 import cardgame.Effect;
 import cardgame.Phase;
 import cardgame.Phases;
@@ -38,8 +38,8 @@ public class Darkness implements Card {
         public void resolve() {
             dsd = new DarknessStrategyDecorator();
             Phase p = CardGame.instance.getCurrentPlayer().getPhase(Phases.COMBAT);
-            if (p instanceof DefaultCombatPhase) {
-                DefaultCombatPhase dcp = (DefaultCombatPhase) p;
+            if (p instanceof CombatPhase) {
+                CombatPhase dcp = (CombatPhase) p;
                 dcp.getDamageStrategy().decorate(dsd);
                 CardGame.instance.getTriggers().register(Triggers.END_FILTER, new DarknessDeactivator(dsd));
             }
@@ -58,8 +58,8 @@ public class Darkness implements Card {
         @Override
         public void execute(Object args) {
             Phase p = CardGame.instance.getCurrentPlayer().getPhase(Phases.COMBAT);
-            if (p instanceof DefaultCombatPhase) {
-                DefaultCombatPhase dcp = (DefaultCombatPhase) p;
+            if (p instanceof CombatPhase) {
+                CombatPhase dcp = (CombatPhase) p;
                 dcp.getDamageStrategy().removeDecorator(dsd);
             }
             CardGame.instance.getTriggers().deregister(this);

@@ -28,7 +28,8 @@ public class NorwoodRanger implements Card {
 
         @Override
         protected Creature createCreature() {
-            return new NorwoodRangerCreature(owner);
+            Creature basicCreature = new NorwoodRangerCreature(owner);
+            return basicCreature.getCreatureDecoratorHead();
         }
     }
 
