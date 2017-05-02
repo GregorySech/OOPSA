@@ -45,6 +45,8 @@ public class AggressiveUrge implements Card {
             if(target!=null){
                 decoratore = new AggressiveUrgeDecorator(target);
                 deactivator = new AggressiveUrgeTriggerAction(decoratore);
+                target.addCreatureDecorator(decoratore);
+                target.setDamageLeft(target.getDamageLeft() + 1);
                 Triggers t= CardGame.instance.getTriggers();
                 t.register(Triggers.END_FILTER, deactivator);
             }

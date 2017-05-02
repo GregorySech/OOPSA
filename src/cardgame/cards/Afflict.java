@@ -18,112 +18,128 @@ import cardgame.Triggers;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author jona
  */
-public class Afflict  implements Card{
-      
-    private class AfflictEffect extends AbstractCardEffect implements SingleTargetEffect{ 
-      
-       private Creature target;
-       private AfflictTriggerAction deactivator;
+public class Afflict implements Card {
+
+    private class AfflictEffect extends AbstractCardEffect implements SingleTargetEffect {
+
+        private Creature target;
+        private AfflictTriggerAction deactivator;
         private AfflictDecorator di;
-       
-       public AfflictEffect(Player p, Card c){
-           super(p,c);
-       }
-       
-      @Override
-       public boolean play(){
-           chooseTarget();
-           return super.play();
-       }
 
-       @Override
-       public void resolve() {
-           if(target != null){
-               di = new AfflictDecorator(target);
-               deactivator = new AfflictTriggerAction(di);
-                Triggers t= CardGame.instance.getTriggers();
+        public AfflictEffect(Player p, Card c) {
+            super(p, c);
+        }
+
+        @Override
+        public boolean play() {
+            chooseTarget();
+            return super.play();
+        }
+
+        @Override
+        public void resolve() {
+            if (target != null) {
+                di = new AfflictDecorator(target);
+                deactivator = new AfflictTriggerAction(di);
+                Triggers t = CardGame.instance.getTriggers();
                 t.register(Triggers.END_FILTER, deactivator);
-           }
-         if(target.getToughness() < 1){
-             target.remove();
-         }
-           
-       }
-       private void chooseCreature(Player p) {
-            int i = 0, j;
-            List<Creature> playercreature = p.getCreatures();
-            List<Creature> plc = new ArrayList(playercreature);
+                target.addCreatureDecorator(di);
+                target.setDamageLeft(target.getDamageLeft() - 1);
+                target.inflictDamage(0);
+            }
+        }
 
-            for (Creature c : playercreature) {
+        private void chooseCreature(Player p) {
+
+            List<Creature> playerCreature = p.getCreatures();
+            List<Creature> plC = new ArrayList();
+
+            for (Creature c : playerCreature) {
                 if (c.targetable()) {
-                    plc.add(c);
+                    plC.add(c);
                 }
             }
+
+            int choose, i;
             do {
                 i = 0;
-                for (Creature c : plc) {
-                    System.out.println("[" + (++i) + "]" + c);
+                for (Creature c : plC) {
+                    System.out.println("[" + (++i) + "]" + c.toString());
                 }
                 System.out.println("[0] to end selection");
-                j = CardGame.instance.getScanner().nextInt();
-                if (j != 0 && j <= plc.size()) {
-                    target = plc.get(j - 1);
+
+                choose = CardGame.instance.getScanner().nextInt();
+                if (choose != 0 && choose <= plC.size()) {
+                    target = plC.get(choose - 1);
                 } else {
                     target = null;
                 }
-            } while (j < 0 || j > plc.size());
+
+            } while (choose < 0 || choose > plC.size());
+
         }
 
-       @Override
-       public void chooseTarget() {
-           int last;
-           do{
-               System.out.println("Whom creature do you want to target :");
-               System.out.println("[1]" + "Player's creatures");
-               System.out.println("[2]" + "Adversary's creatures");
-               last=CardGame.instance.getScanner().nextInt();
-           }while(last <1 || last > 2);
-           if(last==1){
-               chooseCreature(owner);
-           }
-           else{
+        @Override
+        public void chooseTarget() {
+            int choose;
+            System.out.println("Afflict targetting phase : ");
+            do {
+                System.out.println("Whose creature do you want to target?");
+
+                System.out.println("[1]" + owner.name() + "\'s creature :");
+                for (Creature c : (owner).getCreatures()) {
+                    System.out.println("- " + c.toString());
+                }
+
+                System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
+                for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
+                    System.out.println("- " + c.toString());
+                }
+
+                choose = CardGame.instance.getScanner().nextInt();
+            } while (choose != 1 && choose != 2);
+
+            if (choose == 1) {
+                chooseCreature(owner);
+            } else {
                 chooseCreature(CardGame.instance.getRival(owner));
-           }
-       }
-
-       @Override
-       public Object getTarget() {
-           return target;
-       }
-
-     }
-    private class AfflictTriggerAction implements TriggerAction{
-        private AfflictDecorator d ;
-       
-        public AfflictTriggerAction( AfflictDecorator decorator){
-            d=decorator;
+            }
         }
+
+        @Override
+        public Object getTarget() {
+            return target;
+        }
+
+    }
+
+    private class AfflictTriggerAction implements TriggerAction {
+
+        private AfflictDecorator d;
+
+        public AfflictTriggerAction(AfflictDecorator decorator) {
+            d = decorator;
+        }
+
         @Override
         public void execute(Object args) {
-           d.removeCreatureDecorator(d);
+            d.removeCreatureDecorator(d);
         }
-        
+
     }
-    
-    private class AfflictDecorator extends ChangePowerToughnessCreatureDecorator{
-        
+
+    private class AfflictDecorator extends ChangePowerToughnessCreatureDecorator {
+
         public AfflictDecorator(Creature decoratore) {
             super(decoratore, -1, -1);
         }
-        
+
     }
-    
-    
+
     @Override
     public Effect getEffect(Player owner) {
         return new AfflictEffect(owner, this);
@@ -146,12 +162,12 @@ public class Afflict  implements Card{
 
     @Override
     public boolean isInstant() {
-       return true;
+        return true;
     }
-    
+
     @Override
     public String toString() {
         return name() + " (" + type() + ") [" + ruleText() + "]";
     }
-     
+
 }
