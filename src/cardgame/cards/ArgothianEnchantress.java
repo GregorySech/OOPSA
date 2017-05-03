@@ -129,7 +129,7 @@ public class ArgothianEnchantress implements Card {
 
     @Override
     public String ruleText() {
-        return "[Shroud] (This creature can't be the target of spells or abilities.)\n"
+        return "[Shroud] (This creature can't be the target of spells or abilities.) "
                 + "Whenever you cast an enchantment spell, draw a card";
     }
 

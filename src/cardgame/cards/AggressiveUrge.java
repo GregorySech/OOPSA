@@ -1,7 +1,3 @@
-/* MANCA DA GESTIRE / SISTEMARE
- * - IL FATTO DI ESSERE ISTANTANEO 
- * - IL DECORATORE
- */
 package cardgame.cards;
 
 import cardgame.AbstractCardEffect;
@@ -15,7 +11,6 @@ import cardgame.SingleTargetEffect;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -91,12 +86,14 @@ public class AggressiveUrge implements Card {
 
                 System.out.println("[1]" + owner.name() + "\'s creature :");
                 for (Creature c : (owner).getCreatures()) {
-                    System.out.println("- " + c.toString());
+                    if(c.targetable())
+                        System.out.println("- " + c.toString());
                 }
 
                 System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
                 for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
-                    System.out.println("- " + c.toString());
+                    if(c.targetable())
+                        System.out.println("- " + c.toString());
                 }
 
                 choose = CardGame.instance.getScanner().nextInt();

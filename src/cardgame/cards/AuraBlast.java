@@ -12,6 +12,7 @@ import cardgame.Effect;
 import cardgame.Enchantment;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,94 +21,86 @@ import java.util.List;
  */
 public class AuraBlast implements Card {
 
-    private class AuraBlastEffect extends AbstractCardEffect implements SingleTargetEffect{
+    private class AuraBlastEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Enchantment target;
-        public AuraBlastEffect(Player p, Card c){
-            super(p,c);
+
+        public AuraBlastEffect(Player p, Card c) {
+            super(p, c);
         }
+
         @Override
-        public boolean play(){
+        public boolean play() {
             chooseTarget();
             return super.play();
         }
 
         @Override
-        public void resolve(){
-            if(target != null){
-                   (target).remove();
-                    owner.draw();
+        public void resolve() {
+            if (target != null) {
+                target.remove();
             }
-            else {
-                   owner.draw();
-            } 
-            
+
+            owner.draw();
+
+        }
+
+        private void chooseEnchantment(Player p) {
+            List<Enchantment> plE = new ArrayList<>();
+            for (Enchantment e : p.getEnchantments()) {
+                if (e.targetable()) {
+                    plE.add(e);
+                }
+            }
+            target = null;
+            int choose, i;
+            do {
+                i = 0;
+                for (Enchantment e : plE) {
+                    System.out.println("[" + (++i) + "] " + e.toString());
+                }
+                System.out.println("[0] to end selection");
+                choose = CardGame.instance.getScanner().nextInt();
+                if (choose > 0 && choose <= plE.size()) {
+                    target = plE.get(choose - 1);
+                }
+            } while (choose < 0 || choose > plE.size());
         }
 
         @Override
         public void chooseTarget() {
             int last;
             System.out.println("Aura Blast targeting phase : ");
-            do{
-                System.out.println("Choose the owner of the enchantment to target:");
-                System.out.println("[1]" + "Player's enchantment");
-                System.out.println("[2]" +"Adversary's enchantment");
-                last= CardGame.instance.getScanner().nextInt();
-            }while(last<1 || last >2);
-            
-            
-            if(last==1){
-                int i =0,j; 
-                List <Enchantment> playerEnchantment=owner.getEnchantments();
-                do{
-                    System.out.println("Choose the enchantment to target:");
-                    for(Enchantment c: playerEnchantment){
-                        System.out.println(Integer.toString(i + 1) + ") " + playerEnchantment.get(i));
+            do {
+                System.out.println("Whose enchantment do you want to target?");
+                System.out.println("[1]" + owner.name() + "\'s enchantment");
+                for (Enchantment e : (owner.getEnchantments())) {
+                    if (e.targetable()) {
+                        System.out.println("- " + e.toString());
                     }
-                    j=CardGame.instance.getScanner().nextInt();
-                    if(j<= playerEnchantment.size()&& !playerEnchantment.isEmpty()){
-                        if(playerEnchantment.get(j--).targetable()){
-                            target=playerEnchantment.get(j--);}
-                        else{
-                            System.out.println("This enchantment can't be targeted"); 
-                            j=-1;
-                        }
+                }
+                System.out.println("[2]" + CardGame.instance.getRival(owner) + "\'s enchantment");
+                for (Enchantment e : CardGame.instance.getRival(owner).getEnchantments()) {
+                    if (e.targetable()) {
+                        System.out.println("- " + e.toString());
                     }
-                    else 
-                        target=null; 
-                } while(j==-1);
+                }
+                last = CardGame.instance.getScanner().nextInt();
+            } while (last < 1 || last > 2);
+            if (last == 1) {
+                chooseEnchantment(owner);
+            } else {
+                chooseEnchantment(CardGame.instance.getRival(owner));
             }
-            else{
-                int i=0, j;
-                List <Enchantment> adversaryEnchantment=CardGame.instance.getRival(owner).getEnchantments();
-                do{
-                    System.out.println("Choose the enchantment to target:");
-                    for(Enchantment c: adversaryEnchantment){
-                        System.out.println(Integer.toString(i + 1) + ") " + adversaryEnchantment.get(i));
-                    }
-                    j=CardGame.instance.getScanner().nextInt();
-                    if(j<= adversaryEnchantment.size() && !adversaryEnchantment.isEmpty()){
-                        if(adversaryEnchantment.get(j--).targetable()){
-                            target=adversaryEnchantment.get(j--);}
-                        else{
-                            System.out.println("This enchantment can't be targeted"); 
-                            j=-1;
-                        }
-                    }
-                    else {
-                        target=null;}
-                } while(j==-1);
-            }
-                
-            
+
         }
-         
 
         @Override
         public Object getTarget() {
             return target;
         }
     }
+
     @Override
     public Effect getEffect(Player owner) {
         return new AuraBlastEffect(owner, this);
@@ -125,7 +118,7 @@ public class AuraBlast implements Card {
 
     @Override
     public String ruleText() {
-        return "Destroy target enchantment.\n" + "Draw a card.";
+        return "Destroy target enchantment. " + "Draw a card.";
     }
 
     @Override

@@ -78,7 +78,7 @@ public class Cancel implements Card {
 
     @Override
     public String ruleText() {
-        return "Counter target spell.\n";
+        return "Counter target spell.";
     }
 
     @Override

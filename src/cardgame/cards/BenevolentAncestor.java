@@ -228,7 +228,7 @@ public class BenevolentAncestor implements Card {
 
     @Override
     public String ruleText() {
-        return "Defender (This creature can't attack.)\n"
+        return "Defender (This creature can't attack.) "
                 + "Prevent the next 1 damage that would be dealt to target creature or player this turn";
     }
 

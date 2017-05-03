@@ -14,7 +14,6 @@ import cardgame.Player;
 import cardgame.CardGame;
 import cardgame.Creature;
 import cardgame.SingleTargetEffect;
-import cardgame.Triggers;
 import java.util.ArrayList;
 import java.util.List;
 
