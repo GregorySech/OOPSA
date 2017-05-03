@@ -29,7 +29,7 @@ public class NorwoodRanger implements Card {
         @Override
         protected Creature createCreature() {
             Creature basicCreature = new NorwoodRangerCreature(owner);
-            return basicCreature.getCreatureDecoratorHead();
+            return basicCreature;
         }
     }
 

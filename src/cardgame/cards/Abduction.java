@@ -41,7 +41,7 @@ public class Abduction implements Card{
             if (target != null) {
                     if(!owner.getCreatures().contains(target)){
                         System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
-                        target.getCreatureDecoratorHead().changeOwner(owner);
+                        target.changeOwner(owner);
                     }
                     target.untap();
                     System.out.println(target.name()+" is untapped");
@@ -133,7 +133,7 @@ public class Abduction implements Card{
             if (target != null) {
                     if(!owner.getCreatures().contains(target)){
                         originalTargetOwner = CardGame.instance.getRival(owner);
-                        target.getCreatureDecoratorHead().changeOwner(owner);
+                        target.changeOwner(owner);
                     }
                     target.untap();
                     System.out.println(target.name()+" is untapped");
@@ -144,7 +144,7 @@ public class Abduction implements Card{
         @Override
         public void remove(){
             /*creatura target torna nelle mani del suo owner originale*/
-            target.getCreatureDecoratorHead().changeOwner(originalTargetOwner);
+            target.changeOwner(originalTargetOwner);
             super.remove();
         }
         

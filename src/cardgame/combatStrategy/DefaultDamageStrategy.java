@@ -45,35 +45,35 @@ public class DefaultDamageStrategy implements DamageStrategy {
             int damagecreature = 0, attack, damagedefensor = 0;
             Creature mycreature = entry.getKey();
             List<Creature> mylist = entry.getValue();
-            attack = mycreature.getCreatureDecoratorHead().getPower();
+            attack = mycreature.getPower();
             //adv damage
             if (mylist.isEmpty()) {
                 Player adversary = CardGame.instance.getCurrentAdversary();
-                adversary.inflictDamage(mycreature.getCreatureDecoratorHead().getPower());
+                adversary.inflictDamage(mycreature.getPower());
                 System.out.println("Inflicting damage to adversary (life left : " + adversary.getLife() + ")");
             }
             //creature damage
             for (Creature c : mylist) {
-                damagecreature = damagecreature + c.getCreatureDecoratorHead().getPower();
-                System.out.println("Statistics : [" + c.getCreatureDecoratorHead().getPower() + "/" + c.getCreatureDecoratorHead().getToughness() + "]");
+                damagecreature = damagecreature + c.getPower();
+                System.out.println("Statistics : [" + c.getPower() + "/" + c.getToughness() + "]");
                 System.out.println("Damage creature:" + damagecreature);
-                System.out.println("Toughness creature:" + (mycreature.getCreatureDecoratorHead().getToughness() - damagecreature));
+                System.out.println("Toughness creature:" + (mycreature.getToughness() - damagecreature));
             }
             damage.put(mycreature, damagecreature);
 
             //defensor damage
             Iterator<Creature> c = mylist.iterator();
             Creature d;
-            while (c.hasNext() && mycreature.getCreatureDecoratorHead().getPower() > 0) {
+            while (c.hasNext() && mycreature.getPower() > 0) {
                 d = c.next();
-                if (mycreature.getCreatureDecoratorHead().getPower() > d.getCreatureDecoratorHead().getToughness()) {
-                    damagedefensor = damagedefensor + mycreature.getCreatureDecoratorHead().getPower();
+                if (mycreature.getPower() > d.getToughness()) {
+                    damagedefensor = damagedefensor + mycreature.getPower();
                     /* aggiornare l'attack della creatura mycreature*/
-                    attack = attack - d.getCreatureDecoratorHead().getToughness();
+                    attack = attack - d.getToughness();
                 } else {
-                    damagedefensor = damagedefensor + mycreature.getCreatureDecoratorHead().getPower() - d.getCreatureDecoratorHead().getToughness();
+                    damagedefensor = damagedefensor + mycreature.getPower() - d.getToughness();
                     /*aggiornare l'attack della creatura*/
-                    attack = attack - d.getCreatureDecoratorHead().getToughness();
+                    attack = attack - d.getToughness();
                 }
                 damage.put(d, damagedefensor);
             }
@@ -81,7 +81,7 @@ public class DefaultDamageStrategy implements DamageStrategy {
         for (Map.Entry<Creature, Integer> e : damage.entrySet()) {
             Creature a = e.getKey();
             Integer d = e.getValue();
-            a.getCreatureDecoratorHead().inflictDamage(d);
+            a.inflictDamage(d);
         }
         CardGame.instance.getTriggers().trigger(Triggers.END_DAMAGE_SUBPHASE_FILTER);
     }

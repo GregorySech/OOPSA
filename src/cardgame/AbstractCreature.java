@@ -75,14 +75,14 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void insert() {
-        owner.getCreatures().add(this);
-        CardGame.instance.getTriggers().trigger(Triggers.ENTER_CREATURE_FILTER, this);
+        owner.getCreatures().add(headDecorator);
+        CardGame.instance.getTriggers().trigger(Triggers.ENTER_CREATURE_FILTER, headDecorator);
     }
 
     @Override
     public void remove() {
-        owner.getCreatures().remove(this);
-        CardGame.instance.getTriggers().trigger(Triggers.EXIT_CREATURE_FILTER, this);
+        owner.getCreatures().remove(headDecorator);
+        CardGame.instance.getTriggers().trigger(Triggers.EXIT_CREATURE_FILTER, headDecorator);
     }
 
     @Override
@@ -91,13 +91,13 @@ public abstract class AbstractCreature implements Creature {
     }
 
     @Override
-    public void removeCreatureDecorator(CreatureDecorator cd) {
-        getCreatureDecoratorHead().removeCreatureDecorator(cd);
+    public Creature removeCreatureDecorator(CreatureDecorator cd) {
+       return headDecorator.removeCreatureDecorator(cd);
     }
 
     @Override
     public void addCreatureDecorator(CreatureDecorator cd) {
-        getCreatureDecoratorHead().addCreatureDecorator(cd);
+        headDecorator.addCreatureDecorator(cd);
     }
 
     @Override

@@ -32,20 +32,20 @@ public class DefaultDefendersStrategy implements DefendersStrategy{
         Scanner reader = CardGame.instance.getScanner();
 
         for (Creature a : attackers) {
-            System.out.println("Attacker : " + a.getCreatureDecoratorHead().name());
+            System.out.println("Attacker : " + a.name());
             int idx;
             do {
                 System.out.println(adversaryPlayer.name() + " Choose a card or press 0");
 
                 for (int i = 0; i != field.size(); ++i) {
-                    System.out.println(Integer.toString(i + 1) + ") " + field.get(i).getCreatureDecoratorHead());
+                    System.out.println(Integer.toString(i + 1) + ") " + field.get(i));
                 }
                 idx = reader.nextInt();
 
                 if (idx > 0 && idx <= field.size()) {
                     t = field.remove(idx - 1);
                     def.add(t);
-                    t.getCreatureDecoratorHead().defend(a);
+                    t.defend(a);
                 }
             } while (idx != 0);
             atkDef.put(a, def);

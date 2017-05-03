@@ -26,7 +26,7 @@ public class DefaultAttackersStrategy implements AttackersStrategy {
         Scanner reader = CardGame.instance.getScanner();
         int i, lastChoice;
         for (Creature c : CardGame.instance.getCurrentPlayer().getCreatures()) {
-            if (!c.getCreatureDecoratorHead().isTapped() && !c.getCreatureDecoratorHead().isDefender()) {
+            if (!c.isTapped() && !c.isDefender()) {
                 possible.add(c);
             }
         }
@@ -36,13 +36,13 @@ public class DefaultAttackersStrategy implements AttackersStrategy {
             do {
                 i = 0;
                 for (Creature c : possible) {
-                    System.out.println("[" + (++i) + "]" + c.getCreatureDecoratorHead());
+                    System.out.println("[" + (++i) + "]" + c);
                 }
                 System.out.println("[0] to end selection");
                 lastChoice = reader.nextInt();
                 if (lastChoice != 0 && lastChoice <= possible.size()) {
                     t = possible.remove(lastChoice - 1);
-                    t.getCreatureDecoratorHead().attack();
+                    t.attack();
                     attackers.add(t);
                 }
             } while (lastChoice != 0);

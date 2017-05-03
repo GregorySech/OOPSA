@@ -92,8 +92,7 @@ public class AggressiveUrge implements Card {
 
                 System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
                 for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
-                    if(c.targetable())
-                        System.out.println("- " + c.toString());
+                    if(c.targetable())System.out.println("- " + c.toString());
                 }
 
                 choose = CardGame.instance.getScanner().nextInt();

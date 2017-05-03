@@ -9,6 +9,7 @@ import cardgame.AbstractCreature;
 import cardgame.AbstractCreatureCardEffect;
 import cardgame.Card;
 import cardgame.Creature;
+import cardgame.CreatureDecorator;
 import cardgame.Effect;
 import cardgame.Player;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class BronzeSable implements Card {
         @Override
         protected Creature createCreature() {
             Creature basic = new BronzeSableCreature(owner);
-            return basic.getCreatureDecoratorHead();
+            return basic;
         }
     }
 
@@ -70,6 +71,11 @@ public class BronzeSable implements Card {
         @Override
         public String name() {
             return "Bronze Sable";
+        }
+
+        @Override
+        public Creature removeCreatureDecorator(CreatureDecorator cd) {
+            return getCreatureDecoratorHead().removeCreatureDecorator(cd);
         }
 
     }

@@ -49,7 +49,7 @@ public interface Creature extends Permanent {
 
     void addCreatureDecorator(CreatureDecorator cd);
 
-    void removeCreatureDecorator(CreatureDecorator cd);
+    Creature removeCreatureDecorator(CreatureDecorator cd);
 
     boolean isDefender();
 

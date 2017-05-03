@@ -33,7 +33,7 @@ public class ArgothianEnchantress implements Card {
         @Override
         protected Creature createCreature() {
             Creature basicCreature = new ArgothianEnchantressCreature(owner);
-            return basicCreature.getCreatureDecoratorHead();
+            return basicCreature;
         }
     }
 

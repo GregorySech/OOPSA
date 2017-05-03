@@ -28,10 +28,10 @@ public class BoilingEarth implements Card {
             List<Creature> creaturesAdversary = new ArrayList(CardGame.instance.getCurrentAdversary().getCreatures());
             
             for(Creature c : creaturesPlayer)
-                c.getCreatureDecoratorHead().inflictDamage(1);
+                c.inflictDamage(1);
             
             for(Creature c: creaturesAdversary)
-                c.getCreatureDecoratorHead().inflictDamage(1);
+                c.inflictDamage(1);
             
             
         }

@@ -91,17 +91,21 @@ public abstract class CreatureDecorator implements Creature {
 
     @Override
     public void addCreatureDecorator(CreatureDecorator cd) {
-        decoratedCreature.getCreatureDecoratorHead().addCreatureDecorator(cd);
+        decoratedCreature.addCreatureDecorator(cd);
     }
 
     @Override
     public Creature getCreatureDecoratorHead() {
-        return decoratedCreature.getCreatureDecoratorHead();
+        return decoratedCreature;
     }
 
     @Override
-    public void removeCreatureDecorator(CreatureDecorator cd) {
-        decoratedCreature.getCreatureDecoratorHead().removeCreatureDecorator(cd);
+    public Creature removeCreatureDecorator(CreatureDecorator cd) {
+        if(this == cd)
+            return decoratedCreature;
+        else if (decoratedCreature instanceof CreatureDecorator)
+            decoratedCreature = decoratedCreature.removeCreatureDecorator(cd);
+        return decoratedCreature;
     }
 
     public Creature getDecoratedCreature() {

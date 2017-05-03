@@ -21,39 +21,19 @@ public class HeadCreatureDecorator extends CreatureDecorator {
     }
 
     @Override
-    public void addCreatureDecorator(CreatureDecorator cd) {
-        cd.setDecoratedCreature(this.getDecoratedCreature());
-        this.setDecoratedCreature(cd);
-    }
-
-    @Override
-    public void removeCreatureDecorator(CreatureDecorator cd) {
-        Creature next = this.getDecoratedCreature();
-        CreatureDecorator prec = this;
-        boolean flag = false;
-        boolean found = false;
-        while (!flag && !found) {
-            if (next instanceof CreatureDecorator) {
-                if (next == cd) {
-                    found = true;
-                } else {
-                    prec = ((CreatureDecorator) next);
-                    next = ((CreatureDecorator) next).getDecoratedCreature();
-                }
-            } else {
-                flag = true;
-            }
-        }
-        if (found) {
-            prec.setDecoratedCreature(((CreatureDecorator) next).getDecoratedCreature());
-            ((CreatureDecorator) next).setDecoratedCreature(null);
-        }
-    }
-
-    @Override
     public int getPower() {
         return decoratedCreature.getPower() < 0 ? 0 : decoratedCreature.getPower();
     }
 
-    
+    @Override
+    public void addCreatureDecorator(CreatureDecorator cd) {
+        cd.decoratedCreature = this.decoratedCreature;
+        this.decoratedCreature = cd;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

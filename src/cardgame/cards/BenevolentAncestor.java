@@ -42,7 +42,7 @@ public class BenevolentAncestor implements Card {
         @Override
         protected Creature createCreature() {
             Creature basicCreature = new BenevolentAncestorCreature(owner);
-            return basicCreature.getCreatureDecoratorHead();
+            return basicCreature;
         }
     }
 
