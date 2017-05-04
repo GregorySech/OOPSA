@@ -7,6 +7,8 @@ package cardgame;
 
 import cardgame.playerDamageStrategy.DefaultInflictDamageStrategy;
 import cardgame.playerDamageStrategy.InflictDamageStrategy;
+import cardgame.visitor.Visitable;
+import cardgame.visitor.Visitor;
 import java.util.Iterator;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.Scanner;
  *
  * @author atorsell
  */
-public class Player {
+public class Player implements Visitable {
 
     // basic properties: name, library, deck, and life
     private String name;
@@ -232,4 +234,10 @@ public class Player {
     public void destroy(Enchantment c) {
         c.remove();
     }
+
+    @Override
+    public void accept(Visitor cpv) {
+        cpv.visit(this);
+    }
+
 }

@@ -5,6 +5,8 @@
  */
 package cardgame;
 
+import cardgame.visitor.Visitor;
+
 /**
  *
  * @author atorsell
@@ -92,7 +94,7 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public Creature removeCreatureDecorator(CreatureDecorator cd) {
-       return headDecorator.removeCreatureDecorator(cd);
+        return headDecorator.removeCreatureDecorator(cd);
     }
 
     @Override
@@ -130,6 +132,11 @@ public abstract class AbstractCreature implements Creature {
     @Override
     public void setDamageLeft(int dmg) {
         this.damageLeft = dmg;
+    }
+
+    @Override
+    public void accept(Visitor cpv) {
+        cpv.visit(this);
     }
 
 }

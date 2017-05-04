@@ -5,14 +5,21 @@
  */
 package cardgame;
 
+import cardgame.visitor.Visitable;
+
 /**
  *
  * @author atorsell
  */
-public interface Permanent {
+public interface Permanent extends Visitable {
+
     String name();
+
     void insert();
-    void remove();    
+
+    void remove();
+
     boolean targetable();
+
     void changeOwner(Player p);
 }
