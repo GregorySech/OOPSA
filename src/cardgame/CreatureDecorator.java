@@ -5,6 +5,7 @@
  */
 package cardgame;
 
+import cardgame.visitor.Visitor;
 import java.util.List;
 
 /**
@@ -146,4 +147,9 @@ public abstract class CreatureDecorator implements Creature {
         decoratedCreature.setDamageLeft(dmg);
     }
 
+    @Override
+    public void accept(Visitor cpv) {
+        decoratedCreature.accept(cpv);
+    }
+    
 }

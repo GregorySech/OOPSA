@@ -5,6 +5,8 @@
  */
 package cardgame;
 
+import cardgame.visitor.Visitor;
+
 /**
  *
  * @author Elena
@@ -36,4 +38,9 @@ public class HeadCreatureDecorator extends CreatureDecorator {
         return super.toString(); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void accept(Visitor cpv) {
+        cpv.visit(this);
+    }
+    
 }

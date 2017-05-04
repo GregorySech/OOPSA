@@ -136,7 +136,7 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void accept(Visitor cpv) {
-        cpv.visit(this);
+        headDecorator.accept(cpv);
     }
 
 }
