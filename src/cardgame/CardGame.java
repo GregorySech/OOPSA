@@ -37,7 +37,7 @@ public class CardGame {
         DeckFactory.createDeck(deck1,1);
         instance.getPlayer(0).setDeck(deck1.iterator());
         DeckFactory.createDeck(deck2,2);
-        instance.getPlayer(1).setDeck(deck1.iterator());
+        instance.getPlayer(1).setDeck(deck2.iterator());
 
         instance.run();
     }
