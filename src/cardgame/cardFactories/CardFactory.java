@@ -6,6 +6,7 @@
 package cardgame.cardFactories;
 
 import cardgame.Card;
+import java.util.List;
 
 /**
  *
@@ -14,5 +15,6 @@ import cardgame.Card;
 public interface CardFactory {
     
     public Card getCard(String card);
+    public List<String> getAvaibleCards();
     
 }

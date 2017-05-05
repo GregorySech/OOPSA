@@ -14,12 +14,35 @@ import cardgame.cards.Fatigue;
 import cardgame.cards.SavorTheMoment;
 import cardgame.cards.VolcanicHammer;
 import cardgame.cards.WorldAtWar;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Elena
  */
 public class SorceryFactory implements CardFactory{
+    
+    private List<String> sorceries;
+    
+    public SorceryFactory(){
+        sorceries = new ArrayList<>();
+        sorceries.add(0,"Boiling Earth");
+        sorceries.add(1,"Calming Verse");
+        sorceries.add(2,"Day of Judgment");
+        sorceries.add(3,"False Peace");
+        sorceries.add(4,"Fatigue");
+        sorceries.add(5,"Savor the Moment");
+        sorceries.add(6,"Volcanic Hammer");
+        sorceries.add(7,"World at War");
+        
+    }
+    
+    @Override
+    public List<String> getAvaibleCards() {
+        return sorceries;
+    }
+    
     
     @Override
     public Card getCard(String sorcery){
