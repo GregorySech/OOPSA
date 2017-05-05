@@ -57,9 +57,10 @@ public class BenevolentAncestor implements Card {
         private Visitable t;
         private Player owner;
         private Visitor vis;
-
-        public BenevolentAncestorActiveEffect(Player p) {
+        private Creature ancestor;
+        public BenevolentAncestorActiveEffect(Player p, Creature ancestor) {
             owner = p;
+            this.ancestor = ancestor;
             vis = new Visitor() {
                 @Override
                 public void visit(Creature c) {
@@ -110,14 +111,14 @@ public class BenevolentAncestor implements Card {
                             super.inflictDamage(dmg);
                         }
                     };
-                    str.decorateStrategy(preventDec);
+                    str.getHeadStrategy().decorateStrategy(preventDec);
                     CardGame.instance.getTriggers().register(Triggers.END_FILTER, new TriggerAction() {
                         InflictDamageStrategy s;
                         StrategyDecorator strDec;
 
                         @Override
                         public void execute(Object args) {
-                            s.removeDecoratorStrategy(strDec);
+                            s.getHeadStrategy().removeDecoratorStrategy(strDec);
                             CardGame.instance.getTriggers().deregister(this);
                         }
 
@@ -135,8 +136,15 @@ public class BenevolentAncestor implements Card {
                     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             };
+            
+            
         }
 
+        @Override
+        public String toString() {
+            return "tap : Prevent 1 damage to a target creature or player.";
+        }
+        
         @Override
         public Object getTarget() {
             return t;
@@ -145,12 +153,16 @@ public class BenevolentAncestor implements Card {
         @Override
         public boolean play() {
             chooseTarget();
+            ancestor.tap();
             return super.play();
+
         }
 
         @Override
         public void resolve() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (t != null) {
+                t.accept(vis);
+            }
         }
 
         @Override
@@ -166,8 +178,8 @@ public class BenevolentAncestor implements Card {
             if (last == 1) {
                 do {
                     System.out.println("Choose the target :");
-                    System.out.println("[1] Current player" + owner.name());
-                    System.out.println("[2] Adversary player" + CardGame.instance.getRival(owner).name());
+                    System.out.println("[1]" + owner.name());
+                    System.out.println("[2]" + CardGame.instance.getRival(owner).name());
                     last = CardGame.instance.getScanner().nextInt();
                 } while (last < 1 || last > 2);
                 if (last == 1) {
@@ -178,8 +190,8 @@ public class BenevolentAncestor implements Card {
             } else {
                 System.out.println("Choose the owner of the creature you want to target:");
                 do {
-                    System.out.println("[1]" + "Player's creatures");
-                    System.out.println("[2]" + "Adversary's creature");
+                    System.out.println("[1]" + owner + "'s creatures");
+                    System.out.println("[2]" + CardGame.instance.getRival(owner) + "'s creature");
                     last = CardGame.instance.getScanner().nextInt();
                 } while (last < 1 || last > 2);
                 if (last == 1) {
@@ -215,7 +227,7 @@ public class BenevolentAncestor implements Card {
 
         BenevolentAncestorCreature(Player owner) {
             super(owner);
-            effects.add(new BenevolentAncestorActiveEffect(owner));
+            effects.add(new BenevolentAncestorActiveEffect(owner, this));
         }
 
         @Override
@@ -257,7 +269,7 @@ public class BenevolentAncestor implements Card {
 
         @Override
         public List<Effect> avaliableEffects() {
-            return effects;
+            return isTapped() ? new ArrayList<Effect>() : effects;
         }
 
         @Override

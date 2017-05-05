@@ -75,7 +75,7 @@ public class BronzeSable implements Card {
 
         @Override
         public Creature removeCreatureDecorator(CreatureDecorator cd) {
-            return getCreatureDecoratorHead().removeCreatureDecorator(cd);
+            return polymorph().removeCreatureDecorator(cd);
         }
 
     }

@@ -96,7 +96,7 @@ public abstract class CreatureDecorator implements Creature {
     }
 
     @Override
-    public Creature getCreatureDecoratorHead() {
+    public Creature polymorph() {
         return decoratedCreature;
     }
 

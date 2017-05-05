@@ -18,7 +18,7 @@ public class HeadCreatureDecorator extends CreatureDecorator {
     }
 
     @Override
-    public Creature getCreatureDecoratorHead() {
+    public Creature polymorph() {
         return this;
     }
 

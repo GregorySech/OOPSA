@@ -45,7 +45,7 @@ public interface Creature extends Permanent {
     /*Comportamenti aggiunti necessari per l'implementazione delle carte*/
  /*Ritorna il primo decoratore (sempre presente). Necessario per assicurare comportamento
     polimorfico*/
-    Creature getCreatureDecoratorHead();
+    Creature polymorph();
 
     void addCreatureDecorator(CreatureDecorator cd);
 

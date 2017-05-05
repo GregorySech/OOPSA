@@ -72,7 +72,7 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void resetDamage() {
-        damageLeft = getCreatureDecoratorHead().getToughness();
+        damageLeft = polymorph().getToughness();
     }
 
     @Override
@@ -103,7 +103,7 @@ public abstract class AbstractCreature implements Creature {
     }
 
     @Override
-    public Creature getCreatureDecoratorHead() {
+    public Creature polymorph() {
         return headDecorator;
     }
 
