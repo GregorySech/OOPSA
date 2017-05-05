@@ -128,7 +128,7 @@ public class BenevolentAncestor implements Card {
                             this.strDec = sdec;
                             return this;
                         }
-                    });
+                    }.init(str, preventDec));
 
                 }
 
