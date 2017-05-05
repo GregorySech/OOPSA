@@ -8,13 +8,11 @@ package cardgame.cards;
 import cardgame.AbstractCardEffect;
 import cardgame.Card;
 import cardgame.CardGame;
-import cardgame.CardStack;
 import cardgame.Effect;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  *
@@ -45,32 +43,25 @@ public class Deflection implements Card {
 
         @Override
         public void chooseTarget() {
-            int i = 0, j;
-            SingleTargetEffect d;
-            CardStack StackEffetti = CardGame.instance.getStack();
-
-            //effectT will contain the effect that are SingleTargetEffect
-            List<Effect> effectT = new ArrayList();
-            Iterator it = StackEffetti.iterator();
-            while (it.hasNext()) {
-                d = (SingleTargetEffect) (Effect) it.next();
-                if (d instanceof SingleTargetEffect) {
-                    effectT.add(d);
+            System.out.println("Deflection targetting phase: [0] to skip");
+            ArrayList<SingleTargetEffect> list = new ArrayList<>();
+            Effect e;
+            for(Iterator<Effect> iter = CardGame.instance.getStack().iterator(); iter.hasNext(); ){
+                e = iter.next();
+                if(e instanceof SingleTargetEffect)
+                list.add((SingleTargetEffect) e);
+            }
+            int i, choice;
+            do{
+                i = 0;
+                for(SingleTargetEffect ste : list){
+                    System.out.println("["+(++i)+"]"+ste);
                 }
-            }
-
-            Iterator iter = effectT.iterator();
-            while (iter.hasNext()) {
-                System.out.println(Integer.toString(i + 1) + ") " + iter.next());
-            }
-            j = CardGame.instance.getScanner().nextInt();
-            iter = effectT.iterator();
-            for (i = 0; i < j - 1; i++) {
-                iter.next();
-            }
-            target = (SingleTargetEffect) iter.next();
+                choice = CardGame.instance.getScanner().nextInt();
+            }while(i<0 || i > list.size());
+            if(i > 0)
+            target = list.get(i-1);
         }
-
     }
 
     @Override
