@@ -107,13 +107,23 @@ public class VolcanicHammer implements Card {
                     System.out.println("Whose creature do you want to target:");
                     do {
                         System.out.println("[1]" + owner.name() + "\'s creature");
+                        for (Creature c : owner.getCreatures()) {
+                            if (c.targetable()) {
+                                System.out.println(" -" + c);
+                            }
+                        }
                         System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature");
+                        for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
+                            if (c.targetable()) {
+                                System.out.println(" -" + c);
+                            }
+                        }
                         last = CardGame.instance.getScanner().nextInt();
                     } while (last < 1 || last > 2);
                     if (last == 1) {
-                        chooseCreature(owner);
+                        target = owner.targetCreature();
                     } else {
-                        chooseCreature(CardGame.instance.getRival(owner));
+                        target = CardGame.instance.getRival(owner).targetCreature();
                     }
                 }
 
