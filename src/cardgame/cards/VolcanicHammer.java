@@ -84,21 +84,21 @@ public class VolcanicHammer implements Card {
                 last = CardGame.instance.getScanner().nextInt();
                 if (last == 1) {
                     do {
-                        
+
                         System.out.println("[1]" + owner.name());
                         System.out.println("[2]" + CardGame.instance.getRival(owner).name());
                         last = CardGame.instance.getScanner().nextInt();
                     } while (last < 1 || last > 2);
                     if (last == 1) {
-                        target = owner; 
+                        target = owner;
                     } else {
                         target = CardGame.instance.getRival(owner);
                     }
                 } else {
                     System.out.println("Whom creature do you want to target:");
                     do {
-                        System.out.println("[1]" + owner.name() +"\'s creature");
-                        System.out.println("[2]" + CardGame.instance.getRival(owner).name() +"\'s creature");
+                        System.out.println("[1]" + owner.name() + "\'s creature");
+                        System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature");
                         last = CardGame.instance.getScanner().nextInt();
                     } while (last < 1 || last > 2);
                     if (last == 1) {

@@ -7,15 +7,21 @@ package cardgame.cards;
 
 import cardgame.AbstractCreature;
 import cardgame.AbstractCreatureCardEffect;
+import cardgame.AbstractEffect;
 import cardgame.Card;
 import cardgame.CardGame;
-import cardgame.ChangePowerToughnessCreatureDecorator;
 import cardgame.Creature;
+import cardgame.CreatureDecorator;
 import cardgame.Effect;
+import cardgame.Enchantment;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
+import cardgame.playerDamageStrategy.InflictDamageStrategy;
+import cardgame.playerDamageStrategy.StrategyDecorator;
+import cardgame.visitor.Visitable;
+import cardgame.visitor.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,23 +52,105 @@ public class BenevolentAncestor implements Card {
         }
     }
 
-    private class BenevolentAncestorCreature extends AbstractCreature implements SingleTargetEffect {
+    private class BenevolentAncestorActiveEffect extends AbstractEffect implements SingleTargetEffect {
 
-        private Creature target = null;
-        private Player targetp = null;
+        private Visitable t;
+        private Player owner;
+        private Visitor vis;
 
-        ArrayList<Effect> effects = new ArrayList<>();
+        public BenevolentAncestorActiveEffect(Player p) {
+            owner = p;
+            vis = new Visitor() {
+                @Override
+                public void visit(Creature c) {
+                    CreatureDecorator preventDec = new CreatureDecorator(c) {
+                        int danni = 1;
 
-        TriggerAction ProtectFromOneDamage;
+                        @Override
+                        public void inflictDamage(int dmg) {
+                            if (dmg > 0 && danni > 0) {
+                                danni = 0;
+                                dmg--;
+                            }
+                            super.inflictDamage(dmg);
+                        }
+                    };
+                    c.addCreatureDecorator(preventDec);
+                    CardGame.instance.getTriggers().register(Triggers.END_FILTER, new TriggerAction() {
+                        CreatureDecorator decoratore;
+                        Creature myC;
 
-        BenevolentAncestorCreature(Player owner) {
-            super(owner);
+                        @Override
+                        public void execute(Object args) {
+                            myC.removeCreatureDecorator(decoratore);
+                            CardGame.instance.getTriggers().deregister(this);
+                        }
+
+                        public TriggerAction init(Creature c, CreatureDecorator dec) {
+                            this.myC = c;
+                            this.decoratore = dec;
+                            return this;
+                        }
+                    }.init(c, preventDec));
+                }
+
+                @Override
+                public void visit(Player p) {
+                    InflictDamageStrategy str;
+                    str = p.getInflictDamageStrategy();
+                    StrategyDecorator preventDec = new StrategyDecorator(str) {
+                        int danni = 1;
+
+                        @Override
+                        public void inflictDamage(int dmg) {
+                            if (dmg > 0 && danni > 0) {
+                                danni = 0;
+                                dmg--;
+                            }
+                            super.inflictDamage(dmg);
+                        }
+                    };
+                    str.decorateStrategy(preventDec);
+                    CardGame.instance.getTriggers().register(Triggers.END_FILTER, new TriggerAction() {
+                        InflictDamageStrategy s;
+                        StrategyDecorator strDec;
+
+                        @Override
+                        public void execute(Object args) {
+                            s.removeDecoratorStrategy(strDec);
+                            CardGame.instance.getTriggers().deregister(this);
+                        }
+
+                        TriggerAction init(InflictDamageStrategy strat, StrategyDecorator sdec) {
+                            this.s = strat;
+                            this.strDec = sdec;
+                            return this;
+                        }
+                    });
+
+                }
+
+                @Override
+                public void visit(Enchantment e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
         }
 
         @Override
-        public void attack() {
-            /*throw new UnsupportedOperationException("This creature can't attack");*/
-            System.out.println("This creature can't attack");
+        public Object getTarget() {
+            return t;
+        }
+
+        @Override
+        public boolean play() {
+            chooseTarget();
+            return super.play();
+        }
+
+        @Override
+        public void resolve() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
@@ -83,9 +171,9 @@ public class BenevolentAncestor implements Card {
                     last = CardGame.instance.getScanner().nextInt();
                 } while (last < 1 || last > 2);
                 if (last == 1) {
-                    targetp = owner;
+                    t = owner;
                 } else {
-                    targetp = CardGame.instance.getRival(owner);
+                    t = CardGame.instance.getRival(owner);
                 }
             } else {
                 System.out.println("Choose the owner of the creature you want to target:");
@@ -102,9 +190,7 @@ public class BenevolentAncestor implements Card {
                     }
                     j = CardGame.instance.getScanner().nextInt();
                     if (j <= playercreature.size() && !playercreature.isEmpty()) {
-                        target = playercreature.get(j - 1);
-                    } else {
-                        target = null;
+                        t = playercreature.get(j - 1);
                     }
                 } else {
                     int i = 0, j;
@@ -114,33 +200,31 @@ public class BenevolentAncestor implements Card {
                     }
                     j = CardGame.instance.getScanner().nextInt();
                     if (j <= adversarycreature.size() && !adversarycreature.isEmpty()) {
-                        target = adversarycreature.get(j - 1);
-                    } else {
-                        target = null;
+                        t = adversarycreature.get(j - 1);
                     }
                 }
             }
         }
+    }
 
-        @Override
-        public Object getTarget() {
-            return target;
+    private class BenevolentAncestorCreature extends AbstractCreature {
+
+        ArrayList<Effect> effects = new ArrayList<>();
+
+        TriggerAction ProtectFromOneDamage;
+
+        BenevolentAncestorCreature(Player owner) {
+            super(owner);
+            effects.add(new BenevolentAncestorActiveEffect(owner));
         }
 
         @Override
-        public boolean play() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public void attack() {
+            /*throw new UnsupportedOperationException("This creature can't attack");*/
+            System.out.println("This creature can't attack");
         }
 
         /*NON SO*/
-
-        @Override
-        public void resolve() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        /*NON SO*/
-
         private class BenevolentAncestorTrigger implements TriggerAction {
 
             Player designatedCaster;
@@ -151,27 +235,9 @@ public class BenevolentAncestor implements Card {
 
             @Override
             public void execute(Object args) {
-                if (targetp == null && target != null) {
-                    target.addCreatureDecorator(new ChangePowerToughnessCreatureDecorator(target, 0, 1));
-                } /*andra' via alla fine del turno? e se viene danneggiato alla fine del turno non devo togliere nulla?*/ else if (targetp != null && target == null) /*non esistono decoratori per player vero?*/ {
-                    targetp.heal(1);
-                }
-                /*se prende danno non devo fare target.damage(1), ma se non prende danno allora si*/
+
             }
 
-        }
-
-        @Override
-        public void insert() {
-            ProtectFromOneDamage = new BenevolentAncestorTrigger(owner);
-            CardGame.instance.getTriggers().register(Triggers.EFFECT_CASTED, ProtectFromOneDamage);
-            super.insert();
-        }
-
-        @Override
-        public void remove() {
-            CardGame.instance.getTriggers().deregister(ProtectFromOneDamage);
-            super.remove();
         }
 
         @Override
