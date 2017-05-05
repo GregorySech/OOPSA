@@ -16,7 +16,6 @@ import cardgame.SingleTargetEffect;
 import cardgame.visitor.Visitable;
 import cardgame.visitor.Visitor;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,7 +54,7 @@ public class VolcanicHammer implements Card {
 
                     @Override
                     public void visit(Enchantment e) {
-                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        throw new UnsupportedOperationException("Not supported yet.");
                     }
                 });
             }

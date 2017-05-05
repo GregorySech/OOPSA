@@ -45,28 +45,6 @@ public class AuraBlast implements Card {
 
         }
 
-        private void chooseEnchantment(Player p) {
-            List<Enchantment> plE = new ArrayList<>();
-            for (Enchantment e : p.getEnchantments()) {
-                if (e.targetable()) {
-                    plE.add(e);
-                }
-            }
-            target = null;
-            int choose, i;
-            do {
-                i = 0;
-                for (Enchantment e : plE) {
-                    System.out.println("[" + (++i) + "] " + e.toString());
-                }
-                System.out.println("[0] to end selection");
-                choose = CardGame.instance.getScanner().nextInt();
-                if (choose > 0 && choose <= plE.size()) {
-                    target = plE.get(choose - 1);
-                }
-            } while (choose < 0 || choose > plE.size());
-        }
-
         @Override
         public void chooseTarget() {
             int last;
@@ -88,9 +66,9 @@ public class AuraBlast implements Card {
                 last = CardGame.instance.getScanner().nextInt();
             } while (last < 1 || last > 2);
             if (last == 1) {
-                chooseEnchantment(owner);
+                target = (owner).targetEnchantment();
             } else {
-                chooseEnchantment(CardGame.instance.getRival(owner));
+                target = (CardGame.instance.getRival(owner)).targetEnchantment();
             }
 
         }

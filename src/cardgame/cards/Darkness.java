@@ -38,7 +38,7 @@ public class Darkness implements Card {
         public void resolve() {
             dsd = new DarknessStrategyDecorator();
             Phase p = CardGame.instance.getCurrentPlayer().getPhase(Phases.COMBAT);
-            if (p instanceof CombatPhase) {
+            if (p instanceof CombatPhase) {//Solo le combat hanno le strategy della combat.
                 CombatPhase dcp = (CombatPhase) p;
                 dcp.getDamageStrategy().decorate(dsd);
                 CardGame.instance.getTriggers().register(Triggers.END_FILTER, new DarknessDeactivator(dsd));
@@ -48,6 +48,9 @@ public class Darkness implements Card {
     }
 
     private class DarknessDeactivator implements TriggerAction {
+        /*
+        Alla fine del turno devo rimuovere la decorazione alla combat
+        */
 
         DarknessStrategyDecorator dsd;
 
@@ -62,7 +65,7 @@ public class Darkness implements Card {
                 CombatPhase dcp = (CombatPhase) p;
                 dcp.getDamageStrategy().removeDecorator(dsd);
             }
-            CardGame.instance.getTriggers().deregister(this);
+            CardGame.instance.getTriggers().deregister(this);//Usa e getta
         }
 
     }

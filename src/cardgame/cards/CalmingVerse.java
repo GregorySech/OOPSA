@@ -13,17 +13,24 @@ import java.util.List;
  *
  * @author Elena
  */
-public class CalmingVerse implements Card{
+public class CalmingVerse implements Card {
 
-    private class CalmingVerseEffect extends AbstractCardEffect{
-        public CalmingVerseEffect(Player p, Card c){
-            super(p,c);
+    private class CalmingVerseEffect extends AbstractCardEffect {
+
+        public CalmingVerseEffect(Player p, Card c) {
+            super(p, c);
         }
+
         @Override
         public void resolve() {
-            List<Enchantment> enchantmentsAdversary = new ArrayList(CardGame.instance.getCurrentAdversary().getEnchantments());
-            for( Enchantment e : enchantmentsAdversary )
+            List<Enchantment> enchantments = new ArrayList(CardGame.instance.getRival(owner).getEnchantments());
+            for (Enchantment e : enchantments) {
                 e.remove();
+            }
+            enchantments = new ArrayList<>(owner.getEnchantments());
+            for (Enchantment e : enchantments) {
+                e.remove();
+            }
         }
     }
 
@@ -44,18 +51,17 @@ public class CalmingVerse implements Card{
 
     @Override
     public String ruleText() {
-        return "Destroy all enchantments you don't control";
+        return "Destroy all enchantments";
     }
 
     @Override
     public boolean isInstant() {
         return false;
     }
-    
-    @Override 
-    public String toString() { 
-        return name() + " (" + type() + ") [" + ruleText() +"]";
+
+    @Override
+    public String toString() {
+        return name() + " (" + type() + ") [" + ruleText() + "]";
     }
 
-    
 }

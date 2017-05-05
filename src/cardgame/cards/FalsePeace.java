@@ -36,7 +36,7 @@ public class FalsePeace implements Card {
 
         @Override
         public void resolve() {
-            target.setPhase(Phases.COMBAT, new SkipPhase(Phases.COMBAT));
+            target.setPhase(Phases.COMBAT, new SkipPhase(Phases.COMBAT));//Target player salta la sua prossima combat
         }
 
         @Override

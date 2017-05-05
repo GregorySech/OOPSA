@@ -36,11 +36,14 @@ public class Cancel implements Card {
 
         @Override
         public void resolve() {
-            CardGame.instance.getStack().remove(target);
+            if (target != null) {
+                CardGame.instance.getStack().remove(target);
+            }
         }
 
         @Override
         public void chooseTarget() {
+
             int i = 0, j;
             System.out.println("Cancel targeting phase :");
             System.out.println("Choose the target :");

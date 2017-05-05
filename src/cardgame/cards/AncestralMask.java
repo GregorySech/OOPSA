@@ -17,8 +17,6 @@ import cardgame.CreatureDecorator;
 import cardgame.SingleTargetEffect;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -45,14 +43,23 @@ public class AncestralMask implements Card {
             return super.play();
         }
 
-
         @Override
         public void chooseTarget() {
             int last;
             do {
-                System.out.println("What creature do you want to target :");
+                System.out.println("Whose creature do you want to target :");
                 System.out.println("[1]" + "Player creatures");
+                for (Creature c : owner.getCreatures()) {
+                    if (c.targetable()) {
+                        System.out.println(" -" + c.toString());
+                    }
+                }
                 System.out.println("[2]" + "Adversary creatures");
+                for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
+                    if (c.targetable()) {
+                        System.out.println(" -" + c.toString());
+                    }
+                }
                 last = CardGame.instance.getScanner().nextInt();
             } while (last < 1 || last > 2);
             if (last == 1) {
@@ -74,7 +81,7 @@ public class AncestralMask implements Card {
             super(decoratedCreature);
 
             counterEnchantment = CardGame.instance.getCurrentPlayer().getEnchantments().size()
-                    + CardGame.instance.getCurrentAdversary().getEnchantments().size() - 2;
+                    + CardGame.instance.getCurrentAdversary().getEnchantments().size() - 2; //conta se stesso 2 volte (1 in più all'inserimento)
 
             plus = new TriggerAction() {
                 @Override
@@ -141,7 +148,6 @@ public class AncestralMask implements Card {
             super.remove();
         }
 
-        /*devo usare i triggers la creatura target prende (+2/+2)*numero incantesimi in gioco */
         @Override
         public String name() {
             return "Ancestral Mask";

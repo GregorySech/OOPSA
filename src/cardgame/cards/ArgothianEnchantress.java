@@ -41,7 +41,7 @@ public class ArgothianEnchantress implements Card {
 
         ArrayList<Effect> effects = new ArrayList<>();
 
-        TriggerAction DrawOnEnchantmentCast;
+        TriggerAction drawOnEnchantmentCast;
 
         ArgothianEnchantressCreature(Player owner) {
             super(owner);
@@ -49,19 +49,15 @@ public class ArgothianEnchantress implements Card {
 
         private class ArgothianTrigger implements TriggerAction {
 
-            Player designatedCaster;
-
-            private ArgothianTrigger(Player owner) {
-                designatedCaster = owner;
-            }
+            
 
             @Override
             public void execute(Object args) {
-                if (args instanceof AbstractEnchantmentCardEffect) {
+                if (args != null && args instanceof AbstractEnchantmentCardEffect) {//se l'effetto lanciato è effettivamente un effetto (eheh)
                     AbstractEnchantmentCardEffect enchantment = (AbstractEnchantmentCardEffect) args;
-                    if (enchantment.getOwner() == designatedCaster) {
+                    if (enchantment.getOwner() == owner) {//se il controllore di questa carta ha lanciato l'effetto
                         System.out.println("ArgothianEnchantress : you've casted an enchantment, draw a card!");
-                        designatedCaster.draw();
+                        owner.draw();
                     }
                 }
             }
@@ -69,14 +65,14 @@ public class ArgothianEnchantress implements Card {
 
         @Override
         public void insert() {
-            DrawOnEnchantmentCast = new ArgothianTrigger(owner);
-            CardGame.instance.getTriggers().register(Triggers.EFFECT_CASTED, DrawOnEnchantmentCast);
+            drawOnEnchantmentCast = new ArgothianTrigger();
+            CardGame.instance.getTriggers().register(Triggers.EFFECT_CASTED, drawOnEnchantmentCast);
             super.insert();
         }
 
         @Override
         public void remove() {
-            CardGame.instance.getTriggers().deregister(DrawOnEnchantmentCast);
+            CardGame.instance.getTriggers().deregister(drawOnEnchantmentCast);
             super.remove();
         }
 
@@ -106,7 +102,7 @@ public class ArgothianEnchantress implements Card {
         }
 
         @Override
-        public boolean targetable() {
+        public boolean targetable() {//shroud: non può essere bersaglio di magie o abilità
             return false;
         }
 
