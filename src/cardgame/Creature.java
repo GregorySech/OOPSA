@@ -47,11 +47,29 @@ public interface Creature extends Permanent {
     polimorfico*/
     Creature polymorph();
 
+    /**
+     *
+     * @param cd Decoratore da aggiungere a questa creatura.
+     */
     void addCreatureDecorator(CreatureDecorator cd);
 
+    /**
+     *
+     * @param cd Decoratore da rimuovere.
+     * @return Resto della catena di decorazione
+     */
     Creature removeCreatureDecorator(CreatureDecorator cd);
 
+    /**
+     *
+     * @return true se la creatura è un difensore, false altrimenti.
+     */
     boolean isDefender();
 
+    /**
+     *
+     * @return true se la creatura può essere BERSAGLIO di magie o abilità,
+     * false altrimenti
+     */
     boolean targetable();
 }

@@ -11,7 +11,7 @@ import cardgame.visitor.Visitable;
  *
  * @author atorsell
  */
-public interface Permanent extends Visitable {
+public interface Permanent extends Visitable {//Aggiunta interfaccia Visitable per pattern Visitor.
 
     String name();
 
@@ -19,7 +19,15 @@ public interface Permanent extends Visitable {
 
     void remove();
 
+    /**
+     * 
+     * @return true se il permanente è bersagliabile, false altrimenti.
+     */
     boolean targetable();
 
+    /**
+     * 
+     * @param p fa passare il permanente dal proprietario al giocatore p.
+     */
     void changeOwner(Player p);
 }

@@ -7,7 +7,10 @@ package cardgame;
 
 /**
  *
- * @author Elena
+ * @author Elena 
+ * Decoratore generico per la modifica statica di power e
+ * toughness di una Creature.NON va ad influire sui danni che rimangono per
+ * distruggere la creatura quando viene aggiunto alla creatura.
  */
 public class ChangePowerToughnessCreatureDecorator extends CreatureDecorator {
 

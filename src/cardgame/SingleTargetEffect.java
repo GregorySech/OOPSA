@@ -6,6 +6,8 @@
 package cardgame;
 
 /**
+ * Interfaccia per modellare effetti con un singolo bersaglio. Molto utile per
+ * Deflection.
  *
  * @author gsech
  */

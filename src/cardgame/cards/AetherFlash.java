@@ -40,12 +40,12 @@ public class AetherFlash implements Card {
             super(owner);
         }
 
-        private final TriggerAction damageAction = new TriggerAction() {
+        private final TriggerAction damageAction = new TriggerAction() {//Classe anonima con la logica dell'effetto di Aether Flash
             @Override
             public void execute(Object args) {
                 if (args != null && args instanceof Creature) {
                     Creature c = (Creature) args;
-                    System.out.println("AetherFlash: 2 damages to the fresh summoned creature "+c.name());
+                    System.out.println("AetherFlash: 2 damages to the freshly summoned creature " + c.name());
                     c.inflictDamage(2);
                 }
             }
@@ -53,14 +53,15 @@ public class AetherFlash implements Card {
 
         @Override
         public void insert() {
-            super.insert();
             CardGame.instance.getTriggers().register(Triggers.ENTER_CREATURE_FILTER, damageAction);
+
+            super.insert();
         }
 
         @Override
         public void remove() {
-            super.remove();
             CardGame.instance.getTriggers().deregister(damageAction);
+            super.remove();
         }
 
         @Override

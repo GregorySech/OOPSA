@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cardgame;
 
 import cardgame.visitor.Visitor;
@@ -11,10 +6,15 @@ import java.util.List;
 /**
  *
  * @author Elena
+ * 
+ * Implementazione del pattern decorator per Creature.
+ * Un decoratore generalmente se non modifica il comportamento
+ * di un oggetto rispetto ad un suo metodo non fa altro che 
+ * demandare il comportamento a ciò che decora.
  */
 public abstract class CreatureDecorator implements Creature {
 
-    protected Creature decoratedCreature;
+    protected Creature decoratedCreature; //Riferimento alla creatura decorata.
 
     public CreatureDecorator(Creature decoratedCreature) {
         this.decoratedCreature = decoratedCreature;

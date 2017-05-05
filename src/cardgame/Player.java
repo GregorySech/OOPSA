@@ -236,8 +236,102 @@ public class Player implements Visitable {
     }
 
     @Override
-    public void accept(Visitor cpv) {
-        cpv.visit(this);
+    public void accept(Visitor cpv) { //Doppio messaggio di Visitor.
+        cpv.visit(this);//solo io conosco il mio vero tipo.
     }
 
+    /**
+     *
+     * @return Un permanente scelto dal giocatore tra quelli bersagliabili che
+     * controlla.
+     */
+    public Permanent targetPermanent() {
+        ArrayList<Permanent> alp = new ArrayList<>();
+        for (Creature c : creatures) {
+            if (c.targetable()) {
+                alp.add(c);
+            }
+        }
+        for (Enchantment e : enchantments) {
+            if (e.targetable()) {
+                alp.add(e);
+            }
+        }
+        System.out.println("Permanent to target [0 to skip selection]:");
+        int i = 0;
+        int choice;
+        do {
+            i = 0;
+            choice = 0;
+            for (Permanent p : alp) {
+                System.out.println("[" + (++i) + "]" + p.toString());
+            }
+            choice = CardGame.instance.getScanner().nextInt();
+        } while (choice < 0 || choice > alp.size());
+        if (choice == 0) {
+            return null;
+        } else {
+            return alp.get(choice - 1);
+        }
+    }
+
+    /**
+     *
+     * @return Una Creature scelta dal giocatore tra quelle bersagliabili che
+     * controlla.
+     */
+    public Creature targetCreature() {
+        ArrayList<Creature> alp = new ArrayList<>();
+        for (Creature c : creatures) {
+            if (c.targetable()) {
+                alp.add(c);
+            }
+        }
+        System.out.println("Creature to target [0 to skip selection]:");
+        int i = 0;
+        int choice;
+        do {
+            i = 0;
+            choice = 0;
+            for (Permanent p : alp) {
+                System.out.println("[" + (++i) + "]" + p.toString());
+            }
+            choice = CardGame.instance.getScanner().nextInt();
+        } while (choice < 0 || choice > alp.size());
+        if (choice == 0) {
+            return null;
+        } else {
+            return alp.get(choice - 1);
+        }
+    }
+
+    /**
+     *
+     * @return Un Enchantment scelto dal giocatore tra quelli bersagliabili che
+     * controlla.
+     */
+    public Enchantment targetEnchantment() {
+        ArrayList<Enchantment> alp = new ArrayList<>();
+        for (Enchantment e : enchantments) {
+            if (e.targetable()) {
+                alp.add(e);
+            }
+        }
+        System.out.println("Enchantment to target [0 to skip selection]:");
+        int i = 0;
+        int choice;
+        do {
+            i = 0;
+            choice = 0;
+            for (Permanent p : alp) {
+                System.out.println("[" + (++i) + "]" + p.toString());
+            }
+            choice = CardGame.instance.getScanner().nextInt();
+        } while (choice < 0 || choice > alp.size());
+        if (choice == 0) {
+            return null;
+        } else {
+            return alp.get(choice - 1);
+        }
+    }
 }

@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class AncestralMask implements Card {
 
-    private class AncestralMaskEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect {
+    private class AncestralMaskEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect { //L'effetto della carta è a bersaglio singolo.
 
         private Creature target;
 
@@ -45,27 +45,6 @@ public class AncestralMask implements Card {
             return super.play();
         }
 
-        private void chooseCreature(Player p) {
-            int i = 0, j;
-            List<Creature> playercreature = p.getCreatures();
-            List<Creature> plc = new ArrayList(playercreature);
-            for (Creature c : plc) {
-                if (!(c.targetable())) {
-                    c.remove();
-                }
-            }
-            do {
-                i = 0;
-                for (Creature c : plc) {
-                    System.out.println("[" + (++i) + "]" + c);
-                }
-                System.out.println("[0] to end selection");
-                j = CardGame.instance.getScanner().nextInt();
-                if (j != 0 && j <= plc.size() && !plc.isEmpty()) {
-                    target = plc.get(j - 1);
-                }
-            } while (j != 0);
-        }
 
         @Override
         public void chooseTarget() {
@@ -77,9 +56,9 @@ public class AncestralMask implements Card {
                 last = CardGame.instance.getScanner().nextInt();
             } while (last < 1 || last > 2);
             if (last == 1) {
-                chooseCreature(owner);
+                target = owner.targetCreature();
             } else {
-                chooseCreature(CardGame.instance.getRival(owner));
+                target = (CardGame.instance.getRival(owner)).targetCreature();
             }
         }
 
@@ -101,7 +80,6 @@ public class AncestralMask implements Card {
                 @Override
                 public void execute(Object args) {
                     counterEnchantment++;
-                    System.out.println("ANCHESTRAL MASCK : plus : " + counterEnchantment);
                 }
             };
 
@@ -109,7 +87,6 @@ public class AncestralMask implements Card {
                 @Override
                 public void execute(Object args) {
                     counterEnchantment--;
-                    System.out.println("ANCHESTRAL MASCK : minus : " + counterEnchantment);
                 }
             };
 

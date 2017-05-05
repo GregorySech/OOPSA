@@ -33,36 +33,8 @@ public class Abduction implements Card {
 
         @Override
         public boolean play() {
-            chooseTarget();
+            chooseTarget(); // scelta target prima del caricamento nello stack.
             return super.play();
-        }
-
-        private void chooseCreature(Player p) {
-
-            List<Creature> plC = new ArrayList();
-
-            for (Creature c : p.getCreatures()) {
-                if (c.targetable()) {
-                    plC.add(c);
-                }
-            }
-            int choose, i;
-            do {
-                i = 0;
-                for (Creature c : plC) {
-                    System.out.println("[" + (++i) + "]" + c.toString());
-                }
-                System.out.println("[0] to end selection");
-
-                choose = CardGame.instance.getScanner().nextInt();
-                if (choose != 0 && choose <= plC.size()) {
-                    target = plC.get(choose - 1);
-                } else {
-                    target = null;
-                }
-
-            } while (choose < 0 || choose > plC.size());
-
         }
 
         @Override
@@ -74,21 +46,25 @@ public class Abduction implements Card {
 
                 System.out.println("[1]" + owner.name() + "\'s creature :");
                 for (Creature c : (owner).getCreatures()) {
-                    System.out.println("- " + c.toString());
+                    if (c.targetable()) {
+                        System.out.println("- " + c.toString());
+                    }
                 }
 
                 System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
                 for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
-                    System.out.println("- " + c.toString());
+                    if (c.targetable()) {
+                        System.out.println("- " + c.toString());
+                    }
                 }
 
                 choose = CardGame.instance.getScanner().nextInt();
             } while (choose != 1 && choose != 2);
 
             if (choose == 1) {
-                chooseCreature(owner);
+                target = owner.targetCreature();
             } else {
-                chooseCreature(CardGame.instance.getRival(owner));
+                target = CardGame.instance.getRival(owner).targetCreature();
             }
         }
 
@@ -104,12 +80,12 @@ public class Abduction implements Card {
 
         @Override
         public void insert() {
-            if (target != null) {
-                if (!owner.getCreatures().contains(target)) {
+            if (target != null) {//se il bersaglio è accettabile
+                if (!owner.getCreatures().contains(target)) {//se non lo controllo ne cambio il bersaglio
                     originalTargetOwner = CardGame.instance.getRival(owner);
                     target.changeOwner(owner);
                 }
-                target.untap();
+                target.untap(); //Abduction dice che va stappata.
                 System.out.println(target.name() + " is untapped");
             }
             super.insert();
