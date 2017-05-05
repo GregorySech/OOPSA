@@ -62,8 +62,8 @@ public class WorldAtWar implements Card {
 
         public WorldAtWarManager(Player p, List<Creature> attackers) {
             phases = new ArrayDeque<>();
-            phases.push(Phases.COMBAT);
             phases.push(Phases.MAIN);
+            phases.push(Phases.COMBAT);
             current = Phases.MAIN;
             this.p = p;
             this.lastAttackers = attackers;
