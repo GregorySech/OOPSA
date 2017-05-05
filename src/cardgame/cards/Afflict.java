@@ -43,44 +43,16 @@ public class Afflict implements Card {
         @Override
         public void resolve() {
             if (target != null) {
+                //setup del decoratore.
                 di = new AfflictDecorator(target);
                 deactivator = new AfflictTriggerAction(di);
                 Triggers t = CardGame.instance.getTriggers();
                 t.register(Triggers.END_FILTER, deactivator);
+                //aggiunta del decoratore e adattamento "danni" rimasti
                 target.addCreatureDecorator(di);
                 target.setDamageLeft(target.getDamageLeft() - 1);
                 target.inflictDamage(0);
             }
-        }
-
-        private void chooseCreature(Player p) {
-
-            List<Creature> playerCreature = p.getCreatures();
-            List<Creature> plC = new ArrayList();
-
-            for (Creature c : playerCreature) {
-                if (c.targetable()) {
-                    plC.add(c);
-                }
-            }
-
-            int choose, i;
-            do {
-                i = 0;
-                for (Creature c : plC) {
-                    System.out.println("[" + (++i) + "]" + c.toString());
-                }
-                System.out.println("[0] to end selection");
-
-                choose = CardGame.instance.getScanner().nextInt();
-                if (choose != 0 && choose <= plC.size()) {
-                    target = plC.get(choose - 1);
-                } else {
-                    target = null;
-                }
-
-            } while (choose < 0 || choose > plC.size());
-
         }
 
         @Override
@@ -92,21 +64,25 @@ public class Afflict implements Card {
 
                 System.out.println("[1]" + owner.name() + "\'s creature :");
                 for (Creature c : (owner).getCreatures()) {
-                    System.out.println("- " + c.toString());
+                    if (c.targetable()) {
+                        System.out.println("- " + c.toString());
+                    }
                 }
 
                 System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
                 for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
-                    System.out.println("- " + c.toString());
+                    if (c.targetable()) {
+                        System.out.println("- " + c.toString());
+                    }
                 }
 
                 choose = CardGame.instance.getScanner().nextInt();
             } while (choose != 1 && choose != 2);
 
             if (choose == 1) {
-                chooseCreature(owner);
+                target = owner.targetCreature();
             } else {
-                chooseCreature(CardGame.instance.getRival(owner));
+                target = CardGame.instance.getRival(owner).targetCreature();
             }
         }
 

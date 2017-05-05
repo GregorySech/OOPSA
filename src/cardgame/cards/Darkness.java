@@ -71,8 +71,7 @@ public class Darkness implements Card {
 
         @Override
         public void damageSubPhase(Map<Creature, List<Creature>> battles) {
-            CardGame.instance.getTriggers().trigger(Triggers.START_DAMAGE_SUBPHASE_FILTER);
-            CardGame.instance.getTriggers().trigger(Triggers.END_DAMAGE_SUBPHASE_FILTER);
+            System.out.println("DARKNESS : No combat damages!");
         }
     }
 

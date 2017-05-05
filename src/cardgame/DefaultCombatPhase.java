@@ -13,12 +13,16 @@ import cardgame.combatStrategy.DefaultDefendersStrategy;
 import cardgame.combatStrategy.DefendersStrategy;
 import java.util.List;
 import java.util.Map;
+
 /**
  *
  * @author atorsell
  */
 public class DefaultCombatPhase implements CombatPhase {
 
+    /*
+        Pattern strategy per DefaultCombatPhase
+     */
     private DamageStrategy ds;
     private AttackersStrategy as;
     private DefendersStrategy defs;
@@ -28,7 +32,7 @@ public class DefaultCombatPhase implements CombatPhase {
         as = new DefaultAttackersStrategy();
         defs = new DefaultDefendersStrategy();
     }
-    
+
     /**
      * Asks the CurrentPlayer which creature will start the attack. Next there
      * is a stack fill started by the enemy of CurrentPlayer.
@@ -58,20 +62,22 @@ public class DefaultCombatPhase implements CombatPhase {
     protected void damageSubPhase(Map<Creature, List<Creature>> battles) {
         ds.getFirst().damageSubPhase(battles);
     }
+
     @Override
     public DamageStrategy getDamageStrategy() {
         return ds;
     }
+
     @Override
     public AttackersStrategy getAttackersStrategy() {
         return as;
     }
+
     @Override
     public DefendersStrategy getDefendersStrategy() {
         return defs;
     }
 
-    
     @Override
     public void execute() {
         Player currentPlayer = CardGame.instance.getCurrentPlayer();
@@ -80,5 +86,20 @@ public class DefaultCombatPhase implements CombatPhase {
 
         CardGame.instance.getTriggers().trigger(Triggers.COMBAT_FILTER);
         damageSubPhase(defenceSubPhase(attackSubPhase()));
+    }
+
+    @Override
+    public void setDamageStrategy(DamageStrategy s) {
+        this.ds = s;
+    }
+
+    @Override
+    public void setAttackersStrategy(AttackersStrategy as) {
+        this.as = as;
+    }
+
+    @Override
+    public void setDefendersStrategy(DefendersStrategy ds) {
+        this.defs = ds;
     }
 }

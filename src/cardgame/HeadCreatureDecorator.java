@@ -8,6 +8,7 @@ package cardgame;
 import cardgame.visitor.Visitor;
 
 /**
+ * "dummy" decorator per le creature. Fa anche da relu per l'attacco delle creature.
  *
  * @author Elena
  */
@@ -35,12 +36,12 @@ public class HeadCreatureDecorator extends CreatureDecorator {
 
     @Override
     public String toString() {
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+        return super.toString(); 
     }
 
     @Override
     public void accept(Visitor cpv) {
         cpv.visit(this);
     }
-    
+
 }

@@ -10,8 +10,6 @@ import cardgame.Player;
 import cardgame.SingleTargetEffect;
 import cardgame.TriggerAction;
 import cardgame.Triggers;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -47,35 +45,7 @@ public class AggressiveUrge implements Card {
             }
         }
 
-        private void chooseCreature(Player p) {
-
-            List<Creature> playerCreature = p.getCreatures();
-            List<Creature> plC = new ArrayList();
-
-            for (Creature c : playerCreature) {
-                if (c.targetable()) {
-                    plC.add(c);
-                }
-            }
-
-            int choose, i;
-            do {
-                i = 0;
-                for (Creature c : plC) {
-                    System.out.println("[" + (++i) + "]" + c.toString());
-                }
-                System.out.println("[0] to end selection");
-
-                choose = CardGame.instance.getScanner().nextInt();
-                if (choose != 0 && choose <= plC.size()) {
-                    target = plC.get(choose - 1);
-                } else {
-                    target = null;
-                }
-
-            } while (choose < 0 || choose > plC.size());
-
-        }
+  
 
         @Override
         public void chooseTarget() {
@@ -102,9 +72,9 @@ public class AggressiveUrge implements Card {
             } while (choose != 1 && choose != 2);
 
             if (choose == 1) {
-                chooseCreature(owner);
+                target = owner.targetCreature();
             } else {
-                chooseCreature(CardGame.instance.getRival(owner));
+               target = (CardGame.instance.getRival(owner)).targetCreature();
             }
         }
 

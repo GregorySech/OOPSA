@@ -16,7 +16,10 @@ public abstract class AbstractCreature implements Creature {
     protected Player owner;
     protected boolean isTapped = false;
     protected int damageLeft = getToughness();
-
+    /*
+    Dummy decorator per non compromettere polimorfismo all'aggiunta e rimozione
+    di decoratori.
+     */
     private final CreatureDecorator headDecorator;
 
     protected AbstractCreature(Player owner) {
@@ -72,9 +75,16 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void resetDamage() {
-        damageLeft = polymorph().getToughness();
+        damageLeft = polymorph().getToughness(); //necessito delle statistice complete
     }
 
+    /*
+    Per rendere più "semplice" l'accesso al polimorfismo riempio il campo con
+    i dummy decorator. polimorph() servirà principalmente alle creature e 
+    in casi particolari quando non possiedo il riferimento alla testa
+    della catena di decorazione.
+    */
+    
     @Override
     public void insert() {
         owner.getCreatures().add(headDecorator);
@@ -114,9 +124,9 @@ public abstract class AbstractCreature implements Creature {
 
     @Override
     public void changeOwner(Player p) {
-        remove();
+        owner.getCreatures().remove(headDecorator);
         owner = p;
-        insert();
+        p.getCreatures().add(headDecorator);
     }
 
     @Override
@@ -134,6 +144,10 @@ public abstract class AbstractCreature implements Creature {
         this.damageLeft = dmg;
     }
 
+    /**
+     * 
+     * @param cpv Visitor da accettare, "overloading" dinamico.
+     */
     @Override
     public void accept(Visitor cpv) {
         headDecorator.accept(cpv);

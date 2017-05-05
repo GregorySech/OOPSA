@@ -39,7 +39,6 @@ public class DefaultDamageStrategy implements DamageStrategy {
 
     public void damageSubPhase(Map<Creature, List<Creature>> battles) {
         Map<Creature, Integer> damage = new HashMap<>();
-        CardGame.instance.getTriggers().trigger(Triggers.START_DAMAGE_SUBPHASE_FILTER);
 
         for (Map.Entry<Creature, List<Creature>> entry : battles.entrySet()) {
             int damagecreature = 0, attack, damagedefensor = 0;
@@ -83,7 +82,6 @@ public class DefaultDamageStrategy implements DamageStrategy {
             Integer d = e.getValue();
             a.inflictDamage(d);
         }
-        CardGame.instance.getTriggers().trigger(Triggers.END_DAMAGE_SUBPHASE_FILTER);
     }
 
     @Override
