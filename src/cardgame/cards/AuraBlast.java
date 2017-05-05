@@ -95,10 +95,6 @@ public class AuraBlast implements Card {
 
         }
 
-        @Override
-        public Object getTarget() {
-            return target;
-        }
     }
 
     @Override

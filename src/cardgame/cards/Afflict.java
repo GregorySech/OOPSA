@@ -110,11 +110,6 @@ public class Afflict implements Card {
             }
         }
 
-        @Override
-        public Object getTarget() {
-            return target;
-        }
-
     }
 
     private class AfflictTriggerAction implements TriggerAction {

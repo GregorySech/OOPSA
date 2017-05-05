@@ -58,6 +58,7 @@ public class BenevolentAncestor implements Card {
         private Player owner;
         private Visitor vis;
         private Creature ancestor;
+
         public BenevolentAncestorActiveEffect(Player p, Creature ancestor) {
             owner = p;
             this.ancestor = ancestor;
@@ -136,18 +137,12 @@ public class BenevolentAncestor implements Card {
                     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             };
-            
-            
+
         }
 
         @Override
         public String toString() {
             return "tap : Prevent 1 damage to a target creature or player.";
-        }
-        
-        @Override
-        public Object getTarget() {
-            return t;
         }
 
         @Override

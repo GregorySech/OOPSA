@@ -1,7 +1,5 @@
 package cardgame.cards;
 
-/* NON FUUNZIONA IL QUANDO MUORE */
-
 import cardgame.AbstractEnchantment;
 import cardgame.AbstractEnchantmentCardEffect;
 import cardgame.Card;
@@ -12,63 +10,42 @@ import cardgame.Enchantment;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  *
  * @author Elena
  */
-public class Abduction implements Card{
-        
-        private Creature target;
-        
-    private class AbductionEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect{
-        
-        
-        
-        public AbductionEffect(Player p, Card c){
-            super(p,c);
+public class Abduction implements Card {
+
+    private Creature target;
+
+    private class AbductionEffect extends AbstractEnchantmentCardEffect implements SingleTargetEffect {
+
+        public AbductionEffect(Player p, Card c) {
+            super(p, c);
         }
 
         @Override
         protected Enchantment createEnchantment() {
             return new AbductionEnchantment(owner);
         }
-        
-        /*@Override
-        public void resolve() {
-            if (target != null) {
-                    if(!owner.getCreatures().contains(target)){
-                        System.out.println("Abduction: "+owner.name()+" controls adversary's enchanted creature "+target.name());
-                        target.changeOwner(owner);
-                    }
-                    target.untap();
-                    System.out.println(target.name()+" is untapped");
-            }
-            
-            super.resolve();
-            
-        }*/
-        
+
         @Override
-        public boolean play(){
+        public boolean play() {
             chooseTarget();
             return super.play();
         }
 
         private void chooseCreature(Player p) {
 
-            List<Creature> playerCreature = p.getCreatures();
-            List<Creature> plC = new ArrayList(playerCreature);
+            List<Creature> plC = new ArrayList();
 
-            for (Iterator<Creature> c = plC.iterator(); c.hasNext();) {
-                Creature cr = c.next();
-                if (!cr.targetable()) {
-                    c.remove();
+            for (Creature c : p.getCreatures()) {
+                if (c.targetable()) {
+                    plC.add(c);
                 }
             }
-
             int choose, i;
             do {
                 i = 0;
@@ -87,7 +64,7 @@ public class Abduction implements Card{
             } while (choose < 0 || choose > plC.size());
 
         }
-        
+
         @Override
         public void chooseTarget() {
             int choose;
@@ -115,39 +92,37 @@ public class Abduction implements Card{
             }
         }
 
-        @Override
-        public Object getTarget() {
-            return target;
-        }
     }
-    
-    private class AbductionEnchantment extends AbstractEnchantment{
+
+    private class AbductionEnchantment extends AbstractEnchantment {
 
         private Player originalTargetOwner = owner;
-        public AbductionEnchantment(Player owner){
+
+        public AbductionEnchantment(Player owner) {
             super(owner);
         }
-        
+
         @Override
         public void insert() {
             if (target != null) {
-                    if(!owner.getCreatures().contains(target)){
-                        originalTargetOwner = CardGame.instance.getRival(owner);
-                        target.changeOwner(owner);
-                    }
-                    target.untap();
-                    System.out.println(target.name()+" is untapped");
+                if (!owner.getCreatures().contains(target)) {
+                    originalTargetOwner = CardGame.instance.getRival(owner);
+                    target.changeOwner(owner);
+                }
+                target.untap();
+                System.out.println(target.name() + " is untapped");
             }
             super.insert();
         }
-        
+
         @Override
-        public void remove(){
-            /*creatura target torna nelle mani del suo owner originale*/
+        public void remove() {
+            /*creatura target torna del suo owner originale*/
+            target.resetDamage();
             target.changeOwner(originalTargetOwner);
             super.remove();
         }
-        
+
         @Override
         public String name() {
             return "Abduction";
@@ -156,7 +131,7 @@ public class Abduction implements Card{
 
     @Override
     public Effect getEffect(Player owner) {
-        return new AbductionEffect(owner,this);
+        return new AbductionEffect(owner, this);
     }
 
     @Override
@@ -171,14 +146,14 @@ public class Abduction implements Card{
 
     @Override
     public String ruleText() {
-        return "When Abduction comes into play, untap enchanted creature. You control enchanted creature.";
+        return "When Abduction comes into play, untap enchanted creature. You control enchanted creature. When enchanted creature i put into a graveyard, return that creature to play under it's owner's control";
     }
 
     @Override
     public boolean isInstant() {
         return false;
     }
-    
+
     @Override
     public String toString() {
         return name() + " (" + type() + ") [" + ruleText() + "]";

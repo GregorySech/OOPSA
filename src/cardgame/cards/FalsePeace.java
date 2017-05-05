@@ -45,20 +45,15 @@ public class FalsePeace implements Card {
             System.out.println("False Peace targetting phase :");
             do {
                 System.out.println("Choose the target :");
-                System.out.println("[1] " + CardGame.instance.getCurrentPlayer().name());
-                System.out.println("[2] " + CardGame.instance.getCurrentAdversary().name());
+                System.out.println("[1] " + owner.name());
+                System.out.println("[2] " + CardGame.instance.getRival(owner).name());
                 last = CardGame.instance.getScanner().nextInt();
             } while (last < 1 || last > 2);
-            if(last == 1){
-                target = CardGame.instance.getCurrentPlayer();
-            }else{
-                target = CardGame.instance.getCurrentAdversary();
+            if (last == 1) {
+                target = owner;
+            } else {
+                target = CardGame.instance.getRival(owner);
             }
-        }
-
-        @Override
-        public Object getTarget() {
-            return target;
         }
 
     }

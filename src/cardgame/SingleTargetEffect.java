@@ -10,8 +10,7 @@ package cardgame;
  * @author gsech
  */
 public interface SingleTargetEffect extends Effect {
-    
+
     void chooseTarget();
-    Object getTarget();
-    
+
 }

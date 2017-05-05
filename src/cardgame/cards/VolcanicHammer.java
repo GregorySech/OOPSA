@@ -10,8 +10,11 @@ import cardgame.Card;
 import cardgame.CardGame;
 import cardgame.Creature;
 import cardgame.Effect;
+import cardgame.Enchantment;
 import cardgame.Player;
 import cardgame.SingleTargetEffect;
+import cardgame.visitor.Visitable;
+import cardgame.visitor.Visitor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +27,7 @@ public class VolcanicHammer implements Card {
 
     private class VolcanicHammerEffect extends AbstractCardEffect implements SingleTargetEffect {
 
-        private Object target;
+        private Visitable target;
 
         public VolcanicHammerEffect(Player p, Card c) {
             super(p, c);
@@ -39,23 +42,32 @@ public class VolcanicHammer implements Card {
         @Override
         public void resolve() {
             if (target != null) {
-                if (target instanceof Player) {
-                    ((Player) target).inflictDamage(3);
-                } else {
-                    ((Creature) target).inflictDamage(3);
-                }
+                target.accept(new Visitor() {
+                    @Override
+                    public void visit(Creature c) {
+                        c.inflictDamage(3);
+                    }
+
+                    @Override
+                    public void visit(Player p) {
+                        p.inflictDamage(3);
+                    }
+
+                    @Override
+                    public void visit(Enchantment e) {
+                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
+                });
             }
         }
 
         private void chooseCreature(Player p) {
             int i = 0, j;
-            List<Creature> playercreature = p.getCreatures();
-            List<Creature> plc = new ArrayList(playercreature);
-            Creature cr = null;
-            for (Iterator<Creature> it = plc.iterator(); it.hasNext();) {
-                cr = it.next();
-                if (!(cr.targetable())) {
-                    it.remove();
+            List<Creature> plc = new ArrayList();
+
+            for (Creature c : p.getCreatures()) {
+                if (c.targetable()) {
+                    plc.add(c);
                 }
             }
             do {
@@ -67,8 +79,6 @@ public class VolcanicHammer implements Card {
                 j = CardGame.instance.getScanner().nextInt();
                 if (j != 0 && j <= plc.size()) {
                     target = plc.get(j - 1);
-                } else {
-                    target = null;
                 }
             } while (j < 0 || j > plc.size());
         }
@@ -95,7 +105,7 @@ public class VolcanicHammer implements Card {
                         target = CardGame.instance.getRival(owner);
                     }
                 } else {
-                    System.out.println("Whom creature do you want to target:");
+                    System.out.println("Whose creature do you want to target:");
                     do {
                         System.out.println("[1]" + owner.name() + "\'s creature");
                         System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature");
@@ -112,10 +122,6 @@ public class VolcanicHammer implements Card {
 
         }
 
-        @Override
-        public Object getTarget() {
-            return target;
-        }
     }
 
     @Override

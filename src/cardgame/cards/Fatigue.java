@@ -19,6 +19,7 @@ import cardgame.SkipPhase;
  * @author denny
  */
 public class Fatigue implements Card {
+
     private class FatigueEffect extends AbstractCardEffect implements SingleTargetEffect {
 
         private Player target;
@@ -48,17 +49,11 @@ public class Fatigue implements Card {
                 System.out.println("[2] Adversary player " + CardGame.instance.getRival(owner).name());
                 last = CardGame.instance.getScanner().nextInt();
             } while (last < 1 || last > 2);
-            if(last==1){
-                target=owner;
+            if (last == 1) {
+                target = owner;
+            } else {
+                target = CardGame.instance.getRival(owner);
             }
-            else{
-                target=CardGame.instance.getRival(owner);
-            }
-        }
-
-        @Override
-        public Object getTarget() {
-            return target;
         }
 
     }

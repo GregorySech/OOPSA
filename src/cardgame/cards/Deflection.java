@@ -22,86 +22,85 @@ import java.util.List;
  */
 public class Deflection implements Card {
 
-    private class DeflectionEffect extends AbstractCardEffect implements SingleTargetEffect{
+    private class DeflectionEffect extends AbstractCardEffect implements SingleTargetEffect {
+
         private SingleTargetEffect target;
-        public DeflectionEffect(Player p, Card c){
-            super(p,c);
+
+        public DeflectionEffect(Player p, Card c) {
+            super(p, c);
         }
-        
+
         @Override
-        public boolean play(){
+        public boolean play() {
             chooseTarget();
             return super.play();
         }
-        
+
         @Override
         public void resolve() {
-           if(target != null){
-               target.chooseTarget();
-           }
+            if (target != null) {
+                target.chooseTarget();
+            }
         }
+
         @Override
-        public void chooseTarget(){
-            int i=0, j;
+        public void chooseTarget() {
+            int i = 0, j;
             SingleTargetEffect d;
-            CardStack StackEffetti =CardGame.instance.getStack();
-            
+            CardStack StackEffetti = CardGame.instance.getStack();
+
             //effectT will contain the effect that are SingleTargetEffect
-            List <Effect> effectT = new ArrayList();
-            Iterator it= StackEffetti.iterator();
-            while(it.hasNext()){
-                d=(SingleTargetEffect)(Effect)it.next();
-                if (d instanceof SingleTargetEffect)
+            List<Effect> effectT = new ArrayList();
+            Iterator it = StackEffetti.iterator();
+            while (it.hasNext()) {
+                d = (SingleTargetEffect) (Effect) it.next();
+                if (d instanceof SingleTargetEffect) {
                     effectT.add(d);
+                }
             }
-            
+
             Iterator iter = effectT.iterator();
-            while(iter.hasNext()){
-                System.out.println(Integer.toString(i+1)+ ") " + iter.next());
+            while (iter.hasNext()) {
+                System.out.println(Integer.toString(i + 1) + ") " + iter.next());
             }
-            j=CardGame.instance.getScanner().nextInt();
-            iter= effectT.iterator();
-            for(i=0 ; i<j-1; i++){
+            j = CardGame.instance.getScanner().nextInt();
+            iter = effectT.iterator();
+            for (i = 0; i < j - 1; i++) {
                 iter.next();
             }
-            target=(SingleTargetEffect) iter.next();
+            target = (SingleTargetEffect) iter.next();
         }
-        
-        @Override
-        public Object getTarget(){
-            return target;
-        }
-        
-        
+
     }
-     @Override
+
+    @Override
     public Effect getEffect(Player owner) {
         return new DeflectionEffect(owner, this);
     }
 
     @Override
     public String name() {
-       return "Deflection";
+        return "Deflection";
     }
 
     @Override
     public String type() {
-       return "Instant";
+        return "Instant";
     }
 
     @Override
     public String ruleText() {
-       return "Change the target of target spell with a single target";
+        return "Change the target of target spell with a single target";
     }
 
     @Override
     public boolean isInstant() {
         return true;
     }
-    
+
     @Override
     public String toString() {
         return name() + " (" + type() + ") [" + ruleText() + "]";
     }
-    
+
 }

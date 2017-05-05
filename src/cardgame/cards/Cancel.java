@@ -14,53 +14,52 @@ import cardgame.CardStack;
 import cardgame.SingleTargetEffect;
 import java.util.*;
 
-
 /**
  *
  * @author denny
  */
 public class Cancel implements Card {
-     private class CancelEffect extends AbstractCardEffect implements SingleTargetEffect {
+
+    private class CancelEffect extends AbstractCardEffect implements SingleTargetEffect {
+
         private Effect target;
-        public CancelEffect(Player p, Card c){
-            super(p,c);
+
+        public CancelEffect(Player p, Card c) {
+            super(p, c);
         }
+
         @Override
-        public boolean play(){
+        public boolean play() {
             chooseTarget();
             return super.play();
         }
 
         @Override
-        public void resolve(){
+        public void resolve() {
             CardGame.instance.getStack().remove(target);
         }
 
         @Override
         public void chooseTarget() {
-            int i =0,j; 
+            int i = 0, j;
             System.out.println("Cancel targeting phase :");
             System.out.println("Choose the target :");
-            
-            CardStack StackEffetti=CardGame.instance.getStack();
-            Iterator iter= StackEffetti.iterator();
-            while(iter.hasNext()){
+
+            CardStack StackEffetti = CardGame.instance.getStack();
+            Iterator iter = StackEffetti.iterator();
+            while (iter.hasNext()) {
                 System.out.println(Integer.toString(i + 1) + ") " + iter.next());
             }
-            j=CardGame.instance.getScanner().nextInt();
+            j = CardGame.instance.getScanner().nextInt();
             iter = StackEffetti.iterator();
-            for(i=0;i<j-1;i++){
-               iter.next();
+            for (i = 0; i < j - 1; i++) {
+                iter.next();
             }
-            target=(Effect)iter.next();
-            }
-
-        @Override
-        public Object getTarget() {
-            return target;
+            target = (Effect) iter.next();
         }
 
     }
+
     @Override
     public Effect getEffect(Player owner) {
         return new CancelEffect(owner, this);

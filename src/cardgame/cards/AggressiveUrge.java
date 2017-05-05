@@ -37,12 +37,12 @@ public class AggressiveUrge implements Card {
 
         @Override
         public void resolve() {
-            if(target!=null){
+            if (target != null) {
                 decoratore = new AggressiveUrgeDecorator(target);
                 deactivator = new AggressiveUrgeTriggerAction(decoratore);
                 target.addCreatureDecorator(decoratore);
                 target.setDamageLeft(target.getDamageLeft() + 1);
-                Triggers t= CardGame.instance.getTriggers();
+                Triggers t = CardGame.instance.getTriggers();
                 t.register(Triggers.END_FILTER, deactivator);
             }
         }
@@ -57,7 +57,7 @@ public class AggressiveUrge implements Card {
                     plC.add(c);
                 }
             }
-            
+
             int choose, i;
             do {
                 i = 0;
@@ -86,13 +86,16 @@ public class AggressiveUrge implements Card {
 
                 System.out.println("[1]" + owner.name() + "\'s creature :");
                 for (Creature c : (owner).getCreatures()) {
-                    if(c.targetable())
+                    if (c.targetable()) {
                         System.out.println("- " + c.toString());
+                    }
                 }
 
                 System.out.println("[2]" + CardGame.instance.getRival(owner).name() + "\'s creature :");
                 for (Creature c : CardGame.instance.getRival(owner).getCreatures()) {
-                    if(c.targetable())System.out.println("- " + c.toString());
+                    if (c.targetable()) {
+                        System.out.println("- " + c.toString());
+                    }
                 }
 
                 choose = CardGame.instance.getScanner().nextInt();
@@ -105,35 +108,31 @@ public class AggressiveUrge implements Card {
             }
         }
 
-        @Override
-        public Object getTarget() {
-            return target;
-        }
     }
 
-    private class AggressiveUrgeTriggerAction implements TriggerAction{
-        private AggressiveUrgeDecorator d ;
-       
-        public AggressiveUrgeTriggerAction( AggressiveUrgeDecorator decoratore){
+    private class AggressiveUrgeTriggerAction implements TriggerAction {
+
+        private AggressiveUrgeDecorator d;
+
+        public AggressiveUrgeTriggerAction(AggressiveUrgeDecorator decoratore) {
             d = decoratore;
         }
-        
+
         @Override
         public void execute(Object args) {
-           d.removeCreatureDecorator(d);
+            d.removeCreatureDecorator(d);
         }
-        
+
     }
-    
-    private class AggressiveUrgeDecorator extends ChangePowerToughnessCreatureDecorator{
-        
+
+    private class AggressiveUrgeDecorator extends ChangePowerToughnessCreatureDecorator {
+
         public AggressiveUrgeDecorator(Creature decoratore) {
             super(decoratore, 1, 1);
         }
-        
+
     }
-    
-    
+
     @Override
     public Effect getEffect(Player owner) {
         return new AggressiveUrgeEffect(owner, this);
