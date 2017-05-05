@@ -8,7 +8,6 @@ package cardgame.combatStrategy;
 import cardgame.CardGame;
 import cardgame.Creature;
 import cardgame.Player;
-import cardgame.Triggers;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,11 +15,11 @@ import java.util.Map;
 
 /**
  *
- * @author gregory
+ * @author jona
  */
 public class DefaultDamageStrategy implements DamageStrategy {
 
-    private DamageStrategyDecorator head;
+    private DamageStrategyDecorator head;//è decorabile serve un dummy decorator
 
     public DefaultDamageStrategy() {
         head = new DamageStrategyDecorator(){

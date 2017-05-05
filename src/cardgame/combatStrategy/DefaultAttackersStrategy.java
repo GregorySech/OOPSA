@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class DefaultAttackersStrategy implements AttackersStrategy {
 
-    public List<Creature> attackSubPhase() {
+    public List<Creature> attackSubPhase() {//Fase di deafault dlla scelta degli attaccanti
         List<Creature> attackers = new LinkedList<>();
         List<Creature> possible = new ArrayList<>();
         Creature t;

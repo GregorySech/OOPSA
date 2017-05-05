@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Decoratore della strategy della sottofase dei danni.
  * @author gregory
  */
 public class DamageStrategyDecorator implements DamageStrategy {

@@ -6,7 +6,7 @@
 package cardgame.playerDamageStrategy;
 
 /**
- *
+ * Astrazione di una strategy decorabile per il calcolo dei danni di un giocatore
  * @author gregory
  */
 public abstract class DefaultInflictDamageStrategy implements InflictDamageStrategy {
@@ -14,7 +14,7 @@ public abstract class DefaultInflictDamageStrategy implements InflictDamageStrat
     StrategyDecorator head;
 
     public DefaultInflictDamageStrategy() {
-        head = new StrategyDecorator(this) {
+        head = new StrategyDecorator(this) {//dummy
             @Override
             public InflictDamageStrategy getHeadStrategy() {
                 return this;

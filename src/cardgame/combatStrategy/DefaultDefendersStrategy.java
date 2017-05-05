@@ -16,9 +16,10 @@ import java.util.Scanner;
 
 /**
  *
- * @author gregory
+ * @author denny
  */
-public class DefaultDefendersStrategy implements DefendersStrategy{
+public class DefaultDefendersStrategy implements DefendersStrategy {
+
     public Map<Creature, List<Creature>> defenceSubPhase(List<Creature> attackers) {
         Creature t;
 
@@ -27,41 +28,42 @@ public class DefaultDefendersStrategy implements DefendersStrategy{
 
         Player adversaryPlayer = CardGame.instance.getCurrentAdversary();
         List<Creature> field = new ArrayList<>(adversaryPlayer.getCreatures());
+        if (!attackers.isEmpty()) {
+            System.out.println(adversaryPlayer.name() + ": Choose defenders");
+            Scanner reader = CardGame.instance.getScanner();
 
-        System.out.println(adversaryPlayer.name() + ": Choose defenders");
-        Scanner reader = CardGame.instance.getScanner();
+            for (Creature a : attackers) {
+                System.out.println("Attacker : " + a.name());
+                int idx;
+                do {
+                    System.out.println(adversaryPlayer.name() + " Choose a card or press 0");
 
-        for (Creature a : attackers) {
-            System.out.println("Attacker : " + a.name());
-            int idx;
-            do {
-                System.out.println(adversaryPlayer.name() + " Choose a card or press 0");
+                    for (int i = 0; i != field.size(); ++i) {
+                        System.out.println(Integer.toString(i + 1) + ") " + field.get(i));
+                    }
+                    idx = reader.nextInt();
 
-                for (int i = 0; i != field.size(); ++i) {
-                    System.out.println(Integer.toString(i + 1) + ") " + field.get(i));
-                }
-                idx = reader.nextInt();
+                    if (idx > 0 && idx <= field.size()) {
+                        t = field.remove(idx - 1);
+                        def.add(t);
+                        t.defend(a);
+                    }
+                } while (idx != 0);
+                atkDef.put(a, def);
+                def = new ArrayList<>();
+            }
 
-                if (idx > 0 && idx <= field.size()) {
-                    t = field.remove(idx - 1);
-                    def.add(t);
-                    t.defend(a);
-                }
-            } while (idx != 0);
-            atkDef.put(a, def);
-            def = new ArrayList<>();
-        }
+            CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentPlayer()));
 
-        CardGame.instance.getStack().fill(CardGame.instance.getPlayerID(CardGame.instance.getCurrentPlayer()));
-
-        for (Map.Entry<Creature, List<Creature>> entry : atkDef.entrySet()) {
-            if (!CardGame.instance.getCurrentPlayer().getCreatures().contains(entry.getKey())) {
-                atkDef.remove(entry.getKey());
-            } else {
-                def = entry.getValue();
-                for (Creature d : def) {
-                    if (!CardGame.instance.getCurrentAdversary().getCreatures().contains(d)) {
-                        def.remove(d);
+            for (Map.Entry<Creature, List<Creature>> entry : atkDef.entrySet()) {
+                if (!CardGame.instance.getCurrentPlayer().getCreatures().contains(entry.getKey())) {
+                    atkDef.remove(entry.getKey());
+                } else {
+                    def = entry.getValue();
+                    for (Creature d : def) {
+                        if (!CardGame.instance.getCurrentAdversary().getCreatures().contains(d)) {
+                            def.remove(d);
+                        }
                     }
                 }
             }
@@ -73,5 +75,5 @@ public class DefaultDefendersStrategy implements DefendersStrategy{
     public DefendersStrategy getFirst() {
         return this;
     }
-    
+
 }

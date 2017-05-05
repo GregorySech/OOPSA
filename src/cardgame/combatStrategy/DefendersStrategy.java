@@ -13,7 +13,9 @@ import java.util.Map;
  *
  * @author gregory
  */
-public interface DefendersStrategy {
+public interface DefendersStrategy { //Strategy sottofase difensori
+
     Map<Creature, List<Creature>> defenceSubPhase(List<Creature> attackers);
+
     DefendersStrategy getFirst();
 }

@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Strategy DECORABILE per la sottofase dei danni
  * @author gregory
  */
 public interface DamageStrategy {
+
     void damageSubPhase(Map<Creature, List<Creature>> battles);
+
     DamageStrategy getFirst();
+
     void decorate(DamageStrategyDecorator dsd);
+
     DamageStrategy removeDecorator(DamageStrategyDecorator dsd);
 }

@@ -9,10 +9,12 @@ import cardgame.Creature;
 import java.util.List;
 
 /**
- *
+ * Strategy per la sottofase degli attaccanti
  * @author gregory
  */
-public interface AttackersStrategy {
-        List<Creature> attackSubPhase();
-        AttackersStrategy getFirst();
+public interface AttackersStrategy { 
+
+    List<Creature> attackSubPhase();
+
+    AttackersStrategy getFirst();
 }
